@@ -16,20 +16,23 @@ Text Domain:  Newspaper-child
 .li-btn--yellow:hover { color:#ead810;background-color:#091f3d;border:1px solid #091f3d; }
 .li-btn--price-box { padding:15px 30px;text-decoration:none !important;font-family: Fira Sans; }
 
-/* Forms */
+/********************
+* Forms
+*********************/
 .wpcf7 select { font-size: 15px;line-height: 21px;color: #444;border: 1px solid #e1e1e1;width: 100%;max-width: 100%;height: 34px;padding: 3px 9px; }
 
-
-/* MemberPress General */
+/********************************
+* MemberPress
+*********************************/
 .mp_wrapper.mp_login_form #mepr-unauthorized-for-resource { display:none; }
 .mp_wrapper table,
 .mp_wrapper td,
 .mp_wrapper table.mepr-account-table td { background-color:#EEE;color:#333;border:1px solid #1e73be; }
 .mp_wrapper th { background-color:#1e73be;color:#FFF; }
-/* disable "Card Exp." column in Subscriptions Account page 
+/* disable "Card Exp." column in Subscriptions Account page
 #mepr-account-subscriptions-table :nth-child(5) { display:none; }*/
 
-/* MemberPress PayWall */
+/* PayWall */
 .li-paywall {
 	position:relative;
 	border-top:10px solid #141e4a;
@@ -47,7 +50,8 @@ Text Domain:  Newspaper-child
     background: -webkit-gradient(linear,left top,left bottom,color-stop(0,rgba(255,255,255,0)),to(#fff));
 	background: linear-gradient(to bottom,rgba(255,255,255,0) 0,#fff 100%);
 }
-/* MemberPress Price Boxes */
+
+/* Price Boxes */
 .mepr-price-menu.custom .mepr-price-boxes { display:flex;flex-direction:row;justify-content:center;font-family: Fira Sans; }
 .mepr-price-menu.custom .mepr-price-box { position:relative;display:flex;flex-direction:column;text-align:center;margin:0 10px;padding:30px 40px;border:1px solid #141e4a;background-color:#ededed; }
 .mepr-price-menu.custom .mepr-price-box .mepr-most-popular { display:none; }
@@ -77,6 +81,26 @@ Text Domain:  Newspaper-child
 .mepr-nav-item.mepr-active-nav-tab { background-color: #4db2ec; }
 .mepr-nav-item.mepr-active-nav-tab a { color: #FFF;font-weight: normal; }
 
+/********************************
+* bbPress
+*********************************/
+.bbpress .td-main-content { padding-top: 30px; }
+.bbpress.bbp-shortcode .td-main-content { padding-top: 0px; }
+
+.bbp-user-edit #bbpress-forums { padding-top: 16px; }
+
+.bbpress .bbp-template-notice,
+.bbpress .bbp-breadcrumb .bbp-breadcrumb-root,
+.bbpress .bbp-breadcrumb p :nth-child(2) { display: none; }
+
+/********************************
+* Newspaper Theme
+*********************************/
+/* Overwrites */
+.li-news-ticker.td_block_trending_now { z-index:100000;position:fixed;left:0;bottom:0;width:100%; }
+.td-scroll-up.td-scroll-up-visible { margin-bottom: 60px; }
+
+/* Custom */
 .li-donation { display:block;margin:20px 10px;text-align:center;border:1px solid #141e4a; }
 .li-donation__link { display:block;padding:30px 40px;color:#FFF;font-family:Fira Sans;font-size:36px;line-height:40px;background-color:#091f3d; }
 .li-donation__link:hover { color:#091f3d;background-color:#ededed; }
@@ -105,9 +129,24 @@ Text Domain:  Newspaper-child
 
 .li-countdown { margin:10px 0 50px 0; }
 .li-countdown__text { margin-bottom:0 !important;padding:10px 0;text-align:center;font-size:16px;line-height:20px; }
-.li-countdown__counter { display:flex;flex-direction:row;justify-content:center;text-align:center;font-family: Fira Sans;font-size:36px;line-height:40px;color:#CC0000;  }
+.li-countdown__counter { display:flex;flex-direction:row;justify-content:center;text-align:center;font-family: Fira Sans;font-size:36px;line-height:40px;color:#CC0000; }
 
-/* temporary hide
+/* Live News Plugin - overwrite for iubenda banner */
+#daln-container { z-index: 8888 !important; }
+
+/* print area */
+.td_block_wrap.li-print-n-pdf { margin-bottom:0; }
+.td_block_wrap.li-print-n-pdf p { display:inline-block;margin-bottom: 0;}
+.li-print-n-pdf__link { display: flex;font-size: 11px;font-weight: 700;color:#444;justify-content: flex-end;align-items: center; }
+.li-print-n-pdf__icon { padding-right:5px; }
+.li-print-n-pdf__icon:before { display:inline-block;font-size:18px;color:#000;font-family: 'newspaper';speak: none;font-style: normal;font-weight: normal;font-variant: normal;text-transform: none;line-height: 1;text-align: center; }
+.td_block_wrap.li-print-n-pdf .dkpdf-button-container { display:inline-block;margin-left:10px;padding-top:0;padding-bottom:0;width: auto;float: none; }
+.td_block_wrap.li-print-n-pdf .dkpdf-button { display: flex;align-items: center;font-size: 11px;font-weight: 700;color:#444; }
+.td_block_wrap.li-print-n-pdf .dkpdf-button-icon i { font-size:18px;color:#000; }
+
+/********************************
+* Temporary hide
+*********************************
 #mepr-account-nav .mepr-nav-item.mepr_bbpress_subscriptions,
 .grecaptcha-badge,
 body:not(.logged-in) .comments,*/
@@ -121,30 +160,6 @@ body:not(.logged-in) .comment-reply-login { display:none; }
 .regala-un-abbonamento-6-mesi .have-coupon-link,
 .regala-un-abbonamento-12-mesi .have-coupon-link{ display:none; }*/
 /*.memberpressproduct-template .have-coupon-link*/
-
-/* Live News Plugin - overwrite for iubenda banner */
-#daln-container { z-index: 8888 !important; }
-
-/* bbPress */
-.bbpress .td-main-content { padding-top: 30px; }
-.bbpress.bbp-shortcode .td-main-content { padding-top: 0px; }
-
-.bbp-user-edit #bbpress-forums { padding-top: 16px; }
-
-.bbpress .bbp-template-notice,
-.bbpress .bbp-breadcrumb .bbp-breadcrumb-root,
-.bbpress .bbp-breadcrumb p :nth-child(2) { display: none; }
-
-/* print area */
-.td_block_wrap.li-print-n-pdf { margin-bottom:0; }
-.td_block_wrap.li-print-n-pdf p { display:inline-block;margin-bottom: 0;}
-.li-print-n-pdf__link { display: flex;font-size: 11px;font-weight: 700;color:#444;justify-content: flex-end;align-items: center; }
-.li-print-n-pdf__icon { padding-right:5px; }
-.li-print-n-pdf__icon:before { display:inline-block;font-size:18px;color:#000;font-family: 'newspaper';speak: none;font-style: normal;font-weight: normal;font-variant: normal;text-transform: none;line-height: 1;text-align: center; }
-.td_block_wrap.li-print-n-pdf .dkpdf-button-container { display:inline-block;margin-left:10px;padding-top:0;padding-bottom:0;width: auto;float: none; }
-.td_block_wrap.li-print-n-pdf .dkpdf-button { display: flex;align-items: center;font-size: 11px;font-weight: 700;color:#444; }
-.td_block_wrap.li-print-n-pdf .dkpdf-button-icon i { font-size:18px;color:#000; }
-
 
 /* Tablet */
 @media only screen and (min-width: 768px) and (max-width: 1024px) {}
