@@ -42,12 +42,12 @@ Text Domain:  Newspaper-child
 }
 .li-paywall:before {
 	content: "";
-    position: absolute;
-    top: -160px;
-    left: 0;
-    right: 0;
-    height: 150px;
-    background: -webkit-gradient(linear,left top,left bottom,color-stop(0,rgba(255,255,255,0)),to(#fff));
+  position: absolute;
+  top: -160px;
+  left: 0;
+  right: 0;
+  height: 150px;
+  background: -webkit-gradient(linear,left top,left bottom,color-stop(0,rgba(255,255,255,0)),to(#fff));
 	background: linear-gradient(to bottom,rgba(255,255,255,0) 0,#fff 100%);
 }
 
@@ -97,7 +97,7 @@ Text Domain:  Newspaper-child
 * Newspaper Theme
 *********************************/
 /* Overwrites */
-.li-news-ticker.td_block_trending_now { z-index:100000;position:fixed;left:0;bottom:0;width:100%; }
+.li-news-ticker.td_block_trending_now { z-index:9998;position:fixed;left:0;bottom:0;width:100%; }
 .td-scroll-up.td-scroll-up-visible { margin-bottom: 60px; }
 
 /* Custom */
@@ -131,9 +131,6 @@ Text Domain:  Newspaper-child
 .li-countdown__text { margin-bottom:0 !important;padding:10px 0;text-align:center;font-size:16px;line-height:20px; }
 .li-countdown__counter { display:flex;flex-direction:row;justify-content:center;text-align:center;font-family: Fira Sans;font-size:36px;line-height:40px;color:#CC0000; }
 
-/* Live News Plugin - overwrite for iubenda banner */
-#daln-container { z-index: 8888 !important; }
-
 /* print area */
 .td_block_wrap.li-print-n-pdf { margin-bottom:0; }
 .td_block_wrap.li-print-n-pdf p { display:inline-block;margin-bottom: 0;}
@@ -156,6 +153,9 @@ body:not(.logged-in) .comment-reply-login { display:none; }
 .regala-un-abbonamento-6-mesi .mepr_payment_method-wrapper .mepr_payment_method:nth-child(3),
 .regala-un-abbonamento-12-mesi .mepr_payment_method-wrapper .mepr_payment_method:nth-child(3) { display:none; }
 .memberpressproduct-template label[for=mpgft-signup-gift-checkbox1] { display:none !important; }
+.regala-un-abbonamento-3-mesi .mepr_price,
+.regala-un-abbonamento-6-mesi .mepr_price,
+.regala-un-abbonamento-12-mesi .mepr_price { display:none; }
 /*.regala-un-abbonamento-3-mesi .have-coupon-link,
 .regala-un-abbonamento-6-mesi .have-coupon-link,
 .regala-un-abbonamento-12-mesi .have-coupon-link{ display:none; }*/
@@ -167,7 +167,7 @@ body:not(.logged-in) .comment-reply-login { display:none; }
 /* Smartphones  */
 @media only screen and (min-width: 320px) and (max-width: 767px) {
 	#mepr-account-nav { text-align:center; }
-    .li-header-user-panel { padding-top: 6px;padding-bottom: 6px; }
+  .li-header-user-panel { padding-top: 6px;padding-bottom: 6px; }
 	.li-gift-columns__wrapper,
 	.mepr-price-menu.custom .mepr-price-boxes { flex-direction:column; }
 	.li-gift-columns__item,
@@ -182,3 +182,6 @@ body:not(.logged-in) .comment-reply-login { display:none; }
 	.li-gift-columns { margin:40px 0 20px 0; }
 	.li-gift-columns__title { margin:0 0 20px 0; }
 }
+
+/* TO DELETE - Live News Plugin - overwrite for iubenda banner
+#daln-container { z-index: 8888 !important; } */
