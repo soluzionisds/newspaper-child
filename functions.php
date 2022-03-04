@@ -40,6 +40,11 @@ function mepr_custom_failed_status_email($txn) {
   \MeprUtils::send_failed_txn_notices($txn);
 }
 add_action('mepr-txn-status-failed', 'mepr_custom_failed_status_email');
+/* Send subscription resumed email */
+function mepr_capture_resumed_sub($event) {
+  \MeprUtils::send_resumed_sub_notices($event);
+}
+add_action('mepr-event-subscription-resumed', 'mepr_capture_resumed_sub');
 
 /***************************
 * Login logo
