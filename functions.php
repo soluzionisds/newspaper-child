@@ -17,7 +17,7 @@ if ( ! function_exists( 'suffice_child_enqueue_child_styles' ) ) {
 	    wp_enqueue_style( 'parente2-style' );
 	    // loading child style
 	    wp_register_style(
-	      'childe2-style', get_stylesheet_directory_uri() . '/style.css', array(), '1.0.11', 'all'
+	      'childe2-style', get_stylesheet_directory_uri() . '/style.css', array(), '1.0.12', 'all'
 	    );
 	    wp_enqueue_style( 'childe2-style');
 
@@ -40,11 +40,11 @@ function mepr_custom_failed_status_email($txn) {
   \MeprUtils::send_failed_txn_notices($txn);
 }
 add_action('mepr-txn-status-failed', 'mepr_custom_failed_status_email');
-/* Send subscription resumed email */
+/* Send subscription resumed email
 function mepr_capture_resumed_sub($event) {
   \MeprUtils::send_resumed_sub_notices($event);
 }
-add_action('mepr-event-subscription-resumed', 'mepr_capture_resumed_sub');
+add_action('mepr-event-subscription-resumed', 'mepr_capture_resumed_sub');*/
 
 /***************************
 * Login logo
