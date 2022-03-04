@@ -17,7 +17,7 @@ if ( ! function_exists( 'suffice_child_enqueue_child_styles' ) ) {
 	    wp_enqueue_style( 'parente2-style' );
 	    // loading child style
 	    wp_register_style(
-	      'childe2-style', get_stylesheet_directory_uri() . '/style.css', array(), '1.0.12', 'all'
+	      'childe2-style', get_stylesheet_directory_uri() . '/style.css', array(), '1.0.13', 'all'
 	    );
 	    wp_enqueue_style( 'childe2-style');
 
