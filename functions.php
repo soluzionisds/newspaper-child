@@ -21,7 +21,7 @@ if ( ! function_exists( 'suffice_child_enqueue_child_styles' ) ) {
 	    );
 	    wp_enqueue_style( 'childe2-style');
 
-		wp_enqueue_script( 'custom-script', get_stylesheet_directory_uri() . '/scripts.js', array( 'jquery' ));
+		wp_enqueue_script( 'custom-script', get_stylesheet_directory_uri() . '/scripts.js', array( 'jquery' ), '1');
 	 }
 }
 add_action( 'wp_enqueue_scripts', 'Newspaper_child_enqueue_child_styles' );
