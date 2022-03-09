@@ -105,7 +105,7 @@ add_filter('bbp_get_user_profile_url', 'user_profile_link');*/
  * FACEBOOK API
  */
 
-require __DIR__ . '/vendor/autoload.php';
+require ABSPATH . '/vendor/autoload.php';
 
 use FacebookAds\Api;
 use FacebookAds\Logger\CurlLogger;
