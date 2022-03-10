@@ -125,9 +125,9 @@ $api->setLogger(new CurlLogger());
 
 function fb_purchase($event)
 {
-	$transaction = $event->get_data();
-	var_dump($transaction);
-	$subscription = $transaction->subscription();
+	$subscription = $event->get_data();
+	error_log(serialize($subscription));
+	//$subscription = $transaction->subscription();
 }
 
 /*
@@ -167,7 +167,8 @@ $response = $request->execute();
 print_r($response);
 */
 
-add_action('mepr-event-transaction-completed', 'fb_purchase');
+//add_action('mepr-event-transaction-completed', 'fb_purchase');
+add_action('mepr-event-subscription-created', 'fb_purchase');
 
 /**
  * END API FACEBOOK
