@@ -1,14 +1,6 @@
 <?php
-/*Questo file è parte di Newspaper-child, Newspaper child theme.
 
-Tutte le funzioni di questo file saranno caricate prima delle funzioni del tema genitore.
-Per saperne di più https://codex.wordpress.org/Child_Themes.
-
-Nota: questa funzione carica prima il foglio di stile genitore, poi il foglio di stile figlio
-(non toccare se non sai cosa stai facendo)
-*/
-
-if (!function_exists('suffice_child_enqueue_child_styles')) {
+/*if (!function_exists('suffice_child_enqueue_child_styles')) {
 	function Newspaper_child_enqueue_child_styles()
 	{
 		// loading parent style
@@ -30,7 +22,18 @@ if (!function_exists('suffice_child_enqueue_child_styles')) {
 		wp_enqueue_script('custom-script', get_stylesheet_directory_uri() . '/scripts.js', array('jquery'));
 	}
 }
-add_action('wp_enqueue_scripts', 'Newspaper_child_enqueue_child_styles');
+add_action('wp_enqueue_scripts', 'Newspaper_child_enqueue_child_styles');*/
+
+/**
+ * Enqueues the parent stylesheet. Do not remove this function.
+ *
+ */
+add_action( 'wp_enqueue_scripts', 'newspaper_child_enqueue' );
+
+function newspaper_child_enqueue() {
+  wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
+	wp_enqueue_script( 'custom-script', get_stylesheet_directory_uri() . '/scripts.js', array( 'jquery' ), '1.0.1');
+}
 
 /*Scrivi qui le tue funzioni */
 
@@ -125,8 +128,8 @@ $api->setLogger(new CurlLogger());
 
 function fb_purchase($event)
 {
-	$subscription = $event->get_data();
-	error_log(serialize($subscription));
+	$transaction = $event->get_data();
+	var_dump($transaction);
 	//$subscription = $transaction->subscription();
 }
 
@@ -167,8 +170,8 @@ $response = $request->execute();
 print_r($response);
 */
 
-//add_action('mepr-event-transaction-completed', 'fb_purchase');
-add_action('mepr-event-subscription-created', 'fb_purchase');
+add_action('mepr-event-transaction-completed', 'fb_purchase');
+//add_action('mepr-event-subscription-created', 'fb_purchase');
 
 /**
  * END API FACEBOOK
