@@ -1,5 +1,7 @@
 <?php
 
+require get_stylesheet_directory() . '/api/facebook.php';
+
 /*if (!function_exists('suffice_child_enqueue_child_styles')) {
 	function Newspaper_child_enqueue_child_styles()
 	{
@@ -137,81 +139,3 @@ function user_profile_link(){
     return site_url()."/";
 }
 add_filter('bbp_get_user_profile_url', 'user_profile_link');*/
-
-/**
- * FACEBOOK API
- */
-
-require ABSPATH . '/vendor/autoload.php';
-
-use FacebookAds\Api;
-use FacebookAds\Logger\CurlLogger;
-use FacebookAds\Object\ServerSide\ActionSource;
-use FacebookAds\Object\ServerSide\Content;
-use FacebookAds\Object\ServerSide\CustomData;
-use FacebookAds\Object\ServerSide\Event;
-use FacebookAds\Object\ServerSide\EventRequest;
-use FacebookAds\Object\ServerSide\UserData;
-
-define('FB_TOKEN','EAATuyV8ZAilUBACp6F7B68HtEypnIBKcqIpZB8Nxq37iWZAAphTAc19EZAwEJTZBEs3UmVzlHJZACXA5GvKSZBqmoCvY3iIwpGZC4LM8roxu6DlFGBY9IiBadWN9NRtFXJV2Bl1X29opZC4GOQ4xbJ3ZBcFMh7GIqfZBmOPljf1ZA64jL4hzNPkp5IrX');
-define('FB_PIXEL_ID','586115422638324');
-define('MEMBERPRESS_API_KEY','qeCOHg9wSK');
-define('BASE_URL',"https://".$_SERVER['SERVER_NAME']."/wp-json/mp/v1/");
-define('TEST_EVENT_CODE','TEST95265');
-
-function fb_purchase($event)
-{
-	$id_transaction = $event->get_data()->rec->id;
-	$webhook_url = BASE_URL."transactions/$id_transaction";
-	$ch = curl_init($webhook_url);
-	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-	curl_setopt( $ch, CURLOPT_CUSTOMREQUEST, "GET" );
-	$header = array();
-	$header[] = 'MEMBERPRESS-API-KEY: '.MEMBERPRESS_API_KEY;
-	$header[] = 'Content-Type: application/json';
-	curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-	$response = json_decode(curl_exec($ch));
-	if(curl_errno($ch)){
-	  throw new Exception(curl_error($ch));
-	}
-	curl_close($ch);
-	$fb_api = Api::init(null, null, FB_TOKEN);
-	$fb_api->setLogger(new CurlLogger());
-	$user_data = (new UserData())
-	->setEmail($response->member->email);
-	/*->setPhones(array('12345678901', '14251234567'))
-	// It is recommended to send Client IP and User Agent for Conversions API Events.
-	->setClientIpAddress($_SERVER['REMOTE_ADDR'])
-	->setClientUserAgent($_SERVER['HTTP_USER_AGENT'])
-	->setFbc('fb.1.1554763741205.AbCdEfGhIjKlMnOpQrStUvWxYz1234567890')
-	->setFbp('fb.1.1558571054389.1098115397');*/
-	
-	$content = (new Content())
-	->setProductId($response->membership->title)
-	->setQuantity(1);
-	
-	$custom_data = (new CustomData())
-	->setContents(array($content))
-	->setCurrency('eur')
-	->setValue($response->total);
-	
-	$event = (new Event())
-	->setEventName('Purchase')
-	->setEventTime(time())
-	->setUserData($user_data)
-	->setCustomData($custom_data);
-	
-	$events = array();
-	array_push($events, $event);
-
-	(new EventRequest(FB_PIXEL_ID))
-	->setEvents($events)
-	->setTestEventCode(TEST_EVENT_CODE);
-}
-
-add_action('mepr-event-transaction-completed', 'fb_purchase');
-//add_action('mepr-event-subscription-created', 'fb_purchase');
-
-/**
- * END API FACEBOOK
- */
