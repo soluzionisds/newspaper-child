@@ -1,0 +1,51 @@
+<?php
+/***************************
+ * MemberPress
+
+Send transaction "failed" mail also if change status by backoffice
+ */
+function mepr_custom_failed_status_email($txn)
+{
+	\MeprUtils::send_failed_txn_notices($txn);
+}
+add_action('mepr-txn-status-failed', 'mepr_custom_failed_status_email');
+
+/* Send subscription resumed email
+function mepr_capture_resumed_sub($event) {
+  \MeprUtils::send_resumed_sub_notices($event);
+}
+add_action('mepr-event-subscription-resumed', 'mepr_capture_resumed_sub');*/
+
+//Used to check if a signup limit has been reached for a particular membership
+/*function has_reached_limit($membership_id, $limit) {
+  global $wpdb;
+
+  $query = "SELECT count(DISTINCT user_id)
+            FROM {$wpdb->prefix}mepr_transactions
+            WHERE status IN('complete', 'confirmed')
+              AND (
+                expires_at IS NULL
+                OR expires_at = '0000-00-00 00:00:00'
+                OR expires_at >= NOW()
+              )
+              AND product_id = {$membership_id}";
+
+  $count = $wpdb->get_var($query);
+
+  return ($count >= $limit);
+}
+//Limit membership premium
+function limit_signups_for_membership_premium($errors) {
+  //CHANGE THE FOLLOWING TWO VARS
+  $membership_id = 13565; //The Product you want to limits' ID
+  $limit = 1; //Number of signups allowed
+
+  if($_POST['mepr_product_id'] != $membership_id) { return $errors; }
+
+  if(has_reached_limit($membership_id, $limit)) {
+    $errors[] = __('Sorry, our signup limit of ' . $limit . ' members has been reached. No further signups are allowed.', 'memberpress');
+  }
+
+  return $errors;
+}
+add_filter('mepr-validate-signup', 'limit_signups_for_membership_premium');*/

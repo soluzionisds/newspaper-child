@@ -1,96 +1,21 @@
 <?php
-
-require get_stylesheet_directory() . '/api/facebook.php';
-
-/*if (!function_exists('suffice_child_enqueue_child_styles')) {
-	function Newspaper_child_enqueue_child_styles()
-	{
-		// loading parent style
-		wp_register_style(
-			'parente2-style',
-			get_template_directory_uri() . '/style.css'
-		);
-		wp_enqueue_style('parente2-style');
-		// loading child style
-		wp_register_style(
-			'childe2-style',
-			get_stylesheet_directory_uri() . '/style.css',
-			array(),
-			'1.0.15',
-			'all'
-		);
-		wp_enqueue_style('childe2-style');
-
-		wp_enqueue_script('custom-script', get_stylesheet_directory_uri() . '/scripts.js', array('jquery'));
-	}
-}
-add_action('wp_enqueue_scripts', 'Newspaper_child_enqueue_child_styles');*/
-
 /**
  * Enqueues the parent stylesheet. Do not remove this function.
- *
  */
-add_action( 'wp_enqueue_scripts', 'newspaper_child_enqueue' );
-
 function newspaper_child_enqueue() {
   wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
 	wp_enqueue_script( 'custom-script', get_stylesheet_directory_uri() . '/scripts.js', array( 'jquery' ), '1.0.1');
 }
+add_action( 'wp_enqueue_scripts', 'newspaper_child_enqueue' );
 
-/*Scrivi qui le tue funzioni */
+/***************************
+ * Includes
+ ***************************/
+require get_stylesheet_directory() . '/api/facebook.php';
+require get_stylesheet_directory() . '/functions/memberpress.php';
 
 previous_post_link('<span class="previous-post-link">%link</span>', apply_filters('wpbf_previous_post_link', __('&larr; Previous Post', 'page-builder-framework')));
 next_post_link('<span class="next-post-link">%link</span>', apply_filters('wpbf_next_post_link', __('Next Post &rarr;', 'page-builder-framework')));
-
-/***************************
- * MemberPress
-
-Send transaction "failed" mail also if change status by backoffice
- */
-function mepr_custom_failed_status_email($txn)
-{
-	\MeprUtils::send_failed_txn_notices($txn);
-}
-add_action('mepr-txn-status-failed', 'mepr_custom_failed_status_email');
-//Used to check if a signup limit has been reached for a particular membership
-function has_reached_limit($membership_id, $limit) {
-  global $wpdb;
-
-  $query = "SELECT count(DISTINCT user_id)
-            FROM {$wpdb->prefix}mepr_transactions
-            WHERE status IN('complete', 'confirmed')
-              AND (
-                expires_at IS NULL
-                OR expires_at = '0000-00-00 00:00:00'
-                OR expires_at >= NOW()
-              )
-              AND product_id = {$membership_id}";
-
-  $count = $wpdb->get_var($query);
-
-  return ($count >= $limit);
-}
-//Limit membership premium
-function limit_signups_for_membership_premium($errors) {
-  //CHANGE THE FOLLOWING TWO VARS
-  $membership_id = 13565; //The Product you want to limits' ID
-  $limit = 1; //Number of signups allowed
-
-  if($_POST['mepr_product_id'] != $membership_id) { return $errors; }
-
-  if(has_reached_limit($membership_id, $limit)) {
-    $errors[] = __('Sorry, our signup limit of ' . $limit . ' members has been reached. No further signups are allowed.', 'memberpress');
-  }
-
-  return $errors;
-}
-add_filter('mepr-validate-signup', 'limit_signups_for_membership_premium');
-
-/* Send subscription resumed email
-function mepr_capture_resumed_sub($event) {
-  \MeprUtils::send_resumed_sub_notices($event);
-}
-add_action('mepr-event-subscription-resumed', 'mepr_capture_resumed_sub');*/
 
 /***************************
  * Login logo
@@ -112,14 +37,12 @@ function lindipendente_login_logo()
 <?php }
 add_action('login_enqueue_scripts', 'lindipendente_login_logo');
 
-function lindipendente_login_logo_url()
-{
+function lindipendente_login_logo_url() {
 	return home_url();
 }
 add_filter('login_headerurl', 'lindipendente_login_logo_url');
 
-function lindipendente_login_logo_url_title()
-{
+function lindipendente_login_logo_url_title() {
 	return 'L\'INDIPENDENTE';
 }
 add_filter('login_headertext', 'lindipendente_login_logo_url_title');
