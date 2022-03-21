@@ -15,11 +15,11 @@ use FacebookAds\Object\ServerSide\Event;
 use FacebookAds\Object\ServerSide\EventRequest;
 use FacebookAds\Object\ServerSide\UserData;
 
-define('FB_TOKEN','EAATuyV8ZAilUBAHFVfQZA4IpvJOGn3b6MZCTaFNq4skZBNQONDcoFn21LOfZBCQBn6yZBCkeqbdBQCOi6FmqCdssU2WMqz1IVKweSvcn9XnwtzV8Tb0QccVecMrcGiS6v57pRpW9DIHIUB7i4rfZBOLfrMyNGfhK9oZCggSa2cJtDfZBu7cCqIWo9');
+define('FB_TOKEN','EAATuyV8ZAilUBACZCu26ExJheeoauZB31uUknqZArBB34DphaXZBaSYZAYIECadyKMkHd4AlDZBAxWWgSFU47hOcGIJeA1L2YO5Tf5mx8CRGA4qzEhWAu8VLXOH69cZADuWhIZApih7xD15IAEtLZBubkdl8mfuL4u1EnMnIW5g4y1F4uxE9tQXdvn');
 define('FB_PIXEL_ID','586115422638324');
 define('MEMBERPRESS_API_KEY','qeCOHg9wSK');
 define('BASE_URL',"https://".$_SERVER['SERVER_NAME']."/wp-json/mp/v1/");
-define('TEST_EVENT_CODE','TEST38049');
+define('TEST_EVENT_CODE','TEST84309');
 
 function get_from_webhook($webhook_url){
 	$ch = curl_init($webhook_url);
@@ -51,6 +51,7 @@ function fb_purchase($event)
 	if(isset($_COOKIE['_fbp'])) $fbp = $_COOKIE['_fbp'];
 	if(isset($_COOKIE['_fbc'])) $fbc = $_COOKIE['_fbc'];
 	
+	init_fb_api();
 	$user_data = (new UserData())
 	->setEmail($response->member->email)	
 	->setClientIpAddress($_SERVER['REMOTE_ADDR'])
@@ -59,24 +60,24 @@ function fb_purchase($event)
 	if(isset($_COOKIE['_fbc'])) $user_data->setFbc($fbc);
 	
 	$content = (new Content())
-	->setProductId($response->membership->subscription->subscr_id)
+	->setProductId($response->subscription->subscr_id)
 	->setTitle($response->membership->title)
 	->setQuantity(1);
 	
-	if($response->subscription->gateway=='qt1g6k-284') $method = 'offline';
+	if($response->gateway=='qt1g6k-284') $method = 'offline';
 	else $method = 'other';
 	if($response->subscription->period_type=='years') $period = '1 year';
-	else $method = 'other';
+	else $period = 'other';
 	
 	$custom_data = (new CustomData())
 	->setContents(array($content))
 	->setCurrency('EUR')
-	->setValue($response->total)
-	->addCustomProperty('payment_method',$method)
-	->addCustomProperty('period',$period);
+	->setValue($response->total);
+	$custom_data->addCustomProperty('payment_method',$method);
+	$custom_data->addCustomProperty('period',$period);
 	
 	$event = (new Event())
-	->setEventName('Subscribe')
+	->setEventName('Purchase')
 	->setEventTime(time())
 	->setUserData($user_data)
 	->setCustomData($custom_data);
@@ -86,10 +87,7 @@ function fb_purchase($event)
 
 	(new EventRequest(FB_PIXEL_ID))
 	->setEvents($events)
-	
-	/*Set test environment*/
 	->setTestEventCode(TEST_EVENT_CODE)
-	
 	->execute();
 }
 
@@ -100,6 +98,8 @@ function fb_signup($event)
 	$response = get_from_webhook($webhook_url);
 	if(isset($_COOKIE['_fbp'])) $fbp = $_COOKIE['_fbp'];
 	if(isset($_COOKIE['_fbc'])) $fbc = $_COOKIE['_fbc'];
+	
+	init_fb_api();
 	$user_data = (new UserData())
 	->setEmail($response->email)	
 	->setClientIpAddress($_SERVER['REMOTE_ADDR'])
@@ -116,16 +116,13 @@ function fb_signup($event)
 	array_push($events, $event);
 
 	(new EventRequest(FB_PIXEL_ID))
-	->setEvents($events)
-	
-	//Set test environment
+	->setEvents($events)	
 	->setTestEventCode(TEST_EVENT_CODE)
-	
 	->execute();
 }
 
 add_action('mepr-event-transaction-completed', 'fb_purchase');
-//add_action('mepr-event-member-signup-completed', 'fb_signup');
+add_action('mepr-event-member-signup-completed', 'fb_signup');
 
 /**
  * END API FACEBOOK
