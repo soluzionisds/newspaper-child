@@ -15,7 +15,7 @@ use FacebookAds\Object\ServerSide\Event;
 use FacebookAds\Object\ServerSide\EventRequest;
 use FacebookAds\Object\ServerSide\UserData;
 
-define('FB_TOKEN','EAATuyV8ZAilUBACZCu26ExJheeoauZB31uUknqZArBB34DphaXZBaSYZAYIECadyKMkHd4AlDZBAxWWgSFU47hOcGIJeA1L2YO5Tf5mx8CRGA4qzEhWAu8VLXOH69cZADuWhIZApih7xD15IAEtLZBubkdl8mfuL4u1EnMnIW5g4y1F4uxE9tQXdvn');
+define('FB_TOKEN','EAATuyV8ZAilUBAEwZAUJ3pK2qSJVmyaTq85MLwB1krWhHVnZCleevTxJrKng9yQl6m7XMY9ivpVXHnrvuvgmYXZAAKzDbH1luIZBPPX8BKOft6moIGpTPu8pY5YuDxx9zzlXX8GXbDkn7u1PZCzYWK0PUcOfZAIAPtqaiK5KVqkzb7FUo8r6usQ');
 define('FB_PIXEL_ID','586115422638324');
 define('MEMBERPRESS_API_KEY','qeCOHg9wSK');
 define('BASE_URL',"https://".$_SERVER['SERVER_NAME']."/wp-json/mp/v1/");
@@ -60,21 +60,34 @@ function fb_purchase($event)
 	if(isset($_COOKIE['_fbc'])) $user_data->setFbc($fbc);
 	
 	$content = (new Content())
-	->setProductId($response->subscription->subscr_id)
+	->setProductId($id_transaction)
 	->setTitle($response->membership->title)
 	->setQuantity(1);
-	
-	if($response->gateway=='qt1g6k-284') $method = 'offline';
-	else $method = 'other';
-	if($response->subscription->period_type=='years') $period = '1 year';
-	else $period = 'other';
 	
 	$custom_data = (new CustomData())
 	->setContents(array($content))
 	->setCurrency('EUR')
 	->setValue($response->total);
+	
+	if($response->gateway=='qt1g6k-284') $method = 'Offline payment';
+	else if($response->gateway=='r3uix2-e7') $method = 'Stripe';
+	else if($response->gateway=='qs2fvu-462') $method = 'Paypal Standard';
+	else $method = 'Other';
 	$custom_data->addCustomProperty('payment_method',$method);
+	
+	if($response->membership->period_type=='years') $period = '1 year';
+	else if($response->membership->period=='3') $period = '3 months';
+	else if($response->membership->period=='6') $period = '6 months';
+	else $period = 'other';
 	$custom_data->addCustomProperty('period',$period);
+	
+	if($response->prorated=='1') $up_down = 'Upgrade or downgrade';
+	else $up_down = '';
+	$custom_data->addCustomProperty('up_down',$up_down);
+	
+	if($response->subscription=='0') $is_gift = "Gift";
+	else $is_gift = "Subscription";
+	$custom_data->addCustomProperty('gift',$is_gift);
 	
 	$event = (new Event())
 	->setEventName('Purchase')
