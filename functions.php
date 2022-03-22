@@ -1,32 +1,12 @@
 <?php
-/*Questo file è parte di Newspaper-child, Newspaper child theme.
-
-Tutte le funzioni di questo file saranno caricate prima delle funzioni del tema genitore.
-Per saperne di più https://codex.wordpress.org/Child_Themes.
-
-Nota: questa funzione carica prima il foglio di stile genitore, poi il foglio di stile figlio
-(non toccare se non sai cosa stai facendo)
-*/
-
-if ( ! function_exists( 'suffice_child_enqueue_child_styles' ) ) {
-	function Newspaper_child_enqueue_child_styles() {
-	    // loading parent style
-	    wp_register_style(
-	      'parente2-style', get_template_directory_uri() . '/style.css'
-	    );
-	    wp_enqueue_style( 'parente2-style' );
-	    // loading child style
-	    wp_register_style(
-	      'childe2-style', get_stylesheet_directory_uri() . '/style.css', array(), '1.0.13', 'all'
-	    );
-	    wp_enqueue_style( 'childe2-style');
-
-		wp_enqueue_script( 'custom-script', get_stylesheet_directory_uri() . '/scripts.js', array( 'jquery' ), '1');
-	 }
+/**
+ * Enqueues the parent stylesheet. Do not remove this function.
+ */
+function newspaper_child_enqueue() {
+  wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
+	wp_enqueue_script( 'custom-script', get_stylesheet_directory_uri() . '/scripts.js', array( 'jquery' ), '1.0.1');
 }
-add_action( 'wp_enqueue_scripts', 'Newspaper_child_enqueue_child_styles' );
-
-/*Scrivi qui le tue funzioni */
+add_action( 'wp_enqueue_scripts', 'newspaper_child_enqueue' );
 
 previous_post_link( '<span class="previous-post-link">%link</span>', apply_filters( 'wpbf_previous_post_link', __( '&larr; Previous Post', 'page-builder-framework' ) ) );
 next_post_link( '<span class="next-post-link">%link</span>', apply_filters( 'wpbf_next_post_link', __( 'Next Post &rarr;', 'page-builder-framework' ) ) );
