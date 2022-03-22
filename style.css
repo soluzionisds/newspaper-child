@@ -153,7 +153,11 @@ body:not(.logged-in) .comment-reply-login { display:none; }
 .regala-un-abbonamento-3-mesi .mepr_payment_method-wrapper .mepr_payment_method:nth-child(3),
 .regala-un-abbonamento-6-mesi .mepr_payment_method-wrapper .mepr_payment_method:nth-child(3),
 .regala-un-abbonamento-12-mesi .mepr_payment_method-wrapper .mepr_payment_method:nth-child(3) { display:none; }
+/*.regala-un-abbonamento-3-mesi label[for=mpgft-signup-gift-checkbox1],
+.regala-un-abbonamento-6-mesi label[for=mpgft-signup-gift-checkbox1],
+.regala-un-abbonamento-12-mesi label[for=mpgft-signup-gift-checkbox1],*/
 .memberpressproduct-template label[for=mpgft-signup-gift-checkbox1] { display:none !important; }
+
 /*.regala-un-abbonamento-3-mesi .mepr_price,
 .regala-un-abbonamento-6-mesi .mepr_price,
 .regala-un-abbonamento-12-mesi .mepr_price { display:none; }
