@@ -42,7 +42,7 @@ window.addEventListener("load", function() {
     if (body.innerHTML.indexOf("Regala un Abbonamento") !== -1) {
         var checkbox = document.getElementById("mpgft-signup-gift-checkbox1");
         checkbox.click();
-        checkbox.parentNode.parentNode.className += " mepr-hidden";
+        //checkbox.parentNode.parentNode.className += " mepr-hidden";
         //document.getElementsByName("mepr_coupon_code")[0].value = coupon;
         //document.getElementsByClassName("have-coupon-link")[0].className += " mepr-hidden";
         //document.getElementsByClassName("mepr_price")[0].className += " mepr-hidden";

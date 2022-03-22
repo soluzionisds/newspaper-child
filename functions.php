@@ -4,7 +4,7 @@
  */
 function newspaper_child_enqueue() {
   wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
-	wp_enqueue_script( 'custom-script', get_stylesheet_directory_uri() . '/scripts.js', array( 'jquery' ), '1.0.1');
+	wp_enqueue_script( 'custom-script', get_stylesheet_directory_uri() . '/scripts.js', array( 'jquery' ), '1.0.2');
 }
 add_action( 'wp_enqueue_scripts', 'newspaper_child_enqueue' );
 
