@@ -1,4 +1,7 @@
-<?php /*** Template Name: Full Width Page*/get_header();?>
+<?php
+/*** Template Name: Full Width Page*/
+get_header();
+?>
 <div class="td-main-content-wrap td-container-wrap">
 	<div class="td-container">
 		<div class="td-crumb-container">
