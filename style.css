@@ -3,7 +3,7 @@ Theme Name: Newspaper child theme (lindipendente.online)
 Author: sebastiano.riva (office)
 Author URI: http://www.sebastianoriva.com/
 Template: Newspaper
-Version: 1.0.19
+Version: 1.0.20
 License: GNU General Public License v2 or later
 License URI:  http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:  Newspaper-child
@@ -68,7 +68,8 @@ Text Domain:  Newspaper-child
 .mepr-price-menu.custom .mepr-price-box-button { padding:20px 0; }
 .mepr-price-menu.custom .mepr-price-box-discount { position:absolute;z-index:10;top:-25px;right:-25px;display:flex;padding:18px 12px;font-size:25px;font-weight:400;border-radius:100px;justify-content:center;color:#FFF;background-color:#CC0000; }
 .mepr-price-menu.custom #mepr-price-box-10826,
-.mepr-price-menu.custom #mepr-price-box-18690 { display:none; }
+.mepr-price-menu.custom #mepr-price-box-18690,
+.mepr-price-menu.custom #mepr-price-box-13565 { display:none; }
 .mpgft-send-gift-submit { color:#091f3d !important;background-color: #ead810 !important; }
 .mpgft-send-gift-submit:hover { color:#ead810 !important;background-color:#091f3d !important; }
 /* coupon default
