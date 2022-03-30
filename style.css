@@ -3,7 +3,7 @@ Theme Name: Newspaper child theme (lindipendente.online)
 Author: sebastiano.riva (office)
 Author URI: http://www.sebastianoriva.com/
 Template: Newspaper
-Version: 1.0.20
+Version: 1.0.21
 License: GNU General Public License v2 or later
 License URI:  http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:  Newspaper-child
@@ -156,6 +156,8 @@ Text Domain:  Newspaper-child
 .li-countdown__text { margin-bottom:0 !important;padding:10px 0;text-align:center;font-size:16px;line-height:20px; }
 .li-countdown__counter { display:flex;flex-direction:row;justify-content:center;text-align:center;font-family: Fira Sans;font-size:36px;line-height:40px;color:#CC0000; }
 
+.li-bullet-blinker { margin:0 5px 0 0;display:inline-block;width:10px;height:10px;background-color:#CC3333;border-radius:50px;animation: blinker 1.8s linear infinite; }
+
 /* print area */
 .td_block_wrap.li-print-n-pdf { margin-bottom:0; }
 .td_block_wrap.li-print-n-pdf p { display:inline-block;margin-bottom: 0;}
@@ -165,6 +167,13 @@ Text Domain:  Newspaper-child
 .td_block_wrap.li-print-n-pdf .dkpdf-button-container { display:inline-block;margin-left:10px;padding-top:0;padding-bottom:0;width: auto;float: none; }
 .td_block_wrap.li-print-n-pdf .dkpdf-button { display: flex;align-items: center;font-size: 11px;font-weight: 700;color:#444; }
 .td_block_wrap.li-print-n-pdf .dkpdf-button-icon i { font-size:18px;color:#000; }
+
+/********************************
+* Animations
+*********************************/
+@keyframes blinker {
+  50% { opacity: 0; }
+}
 
 /********************************
 * Temporary hide
