@@ -41,6 +41,7 @@ window.addEventListener("load", function() {
     var coupon = "WOMENSDAY2022";
     if (body.innerHTML.indexOf("Regala un Abbonamento") !== -1) {
         var checkbox = document.getElementById("mpgft-signup-gift-checkbox1");
+		    //NOTA: click triggera gli eventi, l'attributo checked no.
         checkbox.click();
         //checkbox.parentNode.parentNode.className += " mepr-hidden";
         //document.getElementsByName("mepr_coupon_code")[0].value = coupon;

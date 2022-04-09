@@ -3,18 +3,11 @@ Theme Name: Newspaper child theme (lindipendente.online)
 Author: sebastiano.riva (office)
 Author URI: http://www.sebastianoriva.com/
 Template: Newspaper
-Version: 1.0.19
+Version: 1.0.22
 License: GNU General Public License v2 or later
 License URI:  http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:  Newspaper-child
 */
-
-.li-btn { padding:10px 20px;border-radius:5px;transition: 0.4s; }
-.li-btn--blue { color:#FFF;background-color: #141e4a;border:1px solid #141e4a; }
-.li-btn--blue:hover { color:#141e4a;background-color: transparent;border:1px solid #141e4a; }
-.li-btn--yellow { color:#091f3d;background-color: #ead810;border:1px solid #ead810; }
-.li-btn--yellow:hover { color:#ead810;background-color:#091f3d;border:1px solid #091f3d; }
-.li-btn--price-box { padding:15px 30px;text-decoration:none !important;font-family: Fira Sans; }
 
 /********************
 * Forms
@@ -31,6 +24,7 @@ Text Domain:  Newspaper-child
 .mp_wrapper th { background-color:#1e73be;color:#FFF; }
 /* disable "Card Exp." column in Subscriptions Account page
 #mepr-account-subscriptions-table :nth-child(5) { display:none; }*/
+.iti.iti--separate-dial-code { width: 100%; }
 
 /* PayWall */
 .li-paywall {
@@ -66,7 +60,9 @@ Text Domain:  Newspaper-child
 .mepr-price-menu.custom .mepr-price-box-button { padding:20px 0; }
 .mepr-price-menu.custom .mepr-price-box-discount { position:absolute;z-index:10;top:-25px;right:-25px;display:flex;padding:18px 12px;font-size:25px;font-weight:400;border-radius:100px;justify-content:center;color:#FFF;background-color:#CC0000; }
 .mepr-price-menu.custom #mepr-price-box-10826,
-.mepr-price-menu.custom #mepr-price-box-18690 { display:none; }
+.mepr-price-menu.custom #mepr-price-box-18690,
+.mepr-price-menu.custom #mepr-price-box-13565,
+.mepr-price-menu.custom #mepr-price-box-44603 { display:none; }
 .mpgft-send-gift-submit { color:#091f3d !important;background-color: #ead810 !important; }
 .mpgft-send-gift-submit:hover { color:#ead810 !important;background-color:#091f3d !important; }
 /* coupon default
@@ -102,6 +98,21 @@ Text Domain:  Newspaper-child
 .td-scroll-up.td-hide-scroll-up-on-mob { z-index:9997; }
 
 /* Custom */
+
+.li-btn { padding:10px 20px;border-radius:5px;transition: 0.4s; }
+.li-btn--blue { color:#FFF;background-color:#141e4a;border:1px solid #141e4a; }
+.li-btn--blue:hover { color:#FFF;background-color:#333;text-decoration:none !important;border:1px solid #333; }
+.li-btn--yellow { color:#091f3d;background-color:#ead810;border:1px solid #ead810; }
+.li-btn--yellow:hover { color:#ead810;background-color:#091f3d;border:1px solid #091f3d; }
+.li-btn--white { color:#091f3d;background-color:#FFF;border:1px solid #EEE; }
+.li-btn--white:hover { color:#333;background-color:#CCC;border:1px solid #CCC; }
+.li-btn--price-box { padding:15px 30px;text-decoration:none !important;font-family: Fira Sans; }
+
+.li-colored--yellow { color:#ead810; }
+
+.li-list.li-list--subscription { list-style-type:none;margin:0 0 20px 0;padding:0; }
+.li-list--subscription .li-list__item { margin:0 0 10px 0;padding:0 0 5px 0;border-bottom:1px solid #CCC; }
+
 .li-donation { display:block;margin:20px 10px;text-align:center;border:1px solid #141e4a; }
 .li-donation__link { display:block;padding:30px 40px;color:#FFF;font-family:Fira Sans;font-size:36px;line-height:40px;background-color:#091f3d; }
 .li-donation__link:hover { color:#091f3d;background-color:#ededed; }
@@ -113,14 +124,33 @@ Text Domain:  Newspaper-child
 .li-gift { display:block;margin:20px 10px;text-align:center;border:1px solid #141e4a; }
 .li-gift__link { display:block;padding:30px 40px;color:#091f3d;font-family:Fira Sans;font-size:36px;line-height:40px;background-color:#ead810; }
 .li-gift__link:hover { background-color:#ededed; }
-.li-gift-columns { margin:80px 0 20px 0; }
-.li-gift-columns__title { margin-bottom:30px;text-align:center;font-family:Fira Sans;font-size:36px;line-height:40px; }
-.li-gift-columns__wrapper { display:flex;flex-direction:row; }
-.li-gift-columns__item { position:relative;flex-basis:33.33%;margin:0 10px;padding:30px 40px;text-align:center;border:1px solid #141e4a;background-color:#ededed; }
-.li-gift-columns__item-title { font-family:Fira Sans;font-size:36px;line-height:40px; }
-.li-gift-columns__item-price { margin:20px 0 50px;font-family:Fira Sans;font-size:33px;line-height:37px; }
-.li-gift-columns__item-price--no-discount { text-decoration:line-through;font-size:20px;color:#666 }
-.li-gift-columns__item-discount { position:absolute;z-index:10;top:-25px;right:-25px;display:flex;padding:18px 12px;font-family:Fira Sans;font-size:25px;font-weight:400;border-radius:100px;justify-content:center;color:#FFF;background-color:#CC0000; }
+
+.li-product-columns { margin:20px 0; }
+.li-product-columns__title { margin-bottom:30px;text-align:center;font-family:Fira Sans;font-size:36px;line-height:40px; }
+.li-product-columns__wrapper { display:flex;flex-direction:row;justify-content:center;}
+/*.li-product-columns__wrapper--1-col .li-product-columns__item {}*/
+.li-product-columns__wrapper--2-col .li-product-columns__item { flex-basis:50%; }
+.li-product-columns__wrapper--3-col .li-product-columns__item { flex-basis:33.33%; }
+.li-product-columns__item { position:relative;margin:0 10px;padding:30px 40px;text-align:center; }
+/*.li-product-columns__item p { }*/
+.li-product-columns__item .li-btn--price-box { display:inline-block;margin-top:20px; }
+.li-product-columns__item--grey { border:1px solid #141e4a;background-color:#ededed; }
+.li-product-columns__item--blue { color:#FFF;border:1px solid #CCC;background-color:#091f3d; }
+.li-product-columns__item--blue .li-product-columns__item-title { color:#FFF; }
+.li-product-columns__item--blue .li-product-columns__item-text { color:#CCC; }
+.li-product-columns__item--yellow { border:1px solid #141e4a;background-color:#ead810; }
+.li-product-columns__item--yellow .li-product-columns__item-title { color:#091f3d; }
+.li-product-columns__item--yellow .li-product-columns__item-text { color:#333; }
+.li-product-columns__item-title { margin:8px 0;font-family:Fira Sans;font-size:36px;line-height:40px; }
+.li-product-columns__item-text { font-family:Fira Sans;font-size:15px;line-height:20px; }
+p.li-product-columns__item-text { margin-bottom:10px; } /* tagdiv overwrite */
+.li-product-columns__item-price { margin:20px 0;font-family:Fira Sans;font-size:33px;line-height:37px; }
+.li-product-columns__item-price--no-discount { text-decoration:line-through;font-size:20px;color:#666 }
+.li-product-columns__item-discount { position:absolute;z-index:10;top:-25px;right:-25px;display:flex;padding:18px 12px;font-family:Fira Sans;font-size:25px;font-weight:400;border-radius:100px;justify-content:center;color:#FFF;background-color:#CC0000; }
+.li-product-columns__item-img { margin:0 !important;max-width:100%; }
+.li-product-columns__inner { display:flex;align-items:center; }
+.li-product-columns__inner--left-vert-img { text-align:right;flex-basis:70%;margin-right:20px; }
+.li-product-columns__inner--right-vert-img { flex-basis:30%;text-align:center; }
 
 .li-header-user-panel { padding-top:2px;padding-bottom:2px;}
 .li-header-user-panel .td_block_text_with_title { margin-bottom:0; }
@@ -162,14 +192,17 @@ body:not(.logged-in) .comment-reply-login { display:none; }
 .regala-un-abbonamento-3-mesi .mepr_payment_method-wrapper .mepr_payment_method:nth-child(3),
 .regala-un-abbonamento-6-mesi .mepr_payment_method-wrapper .mepr_payment_method:nth-child(3),
 .regala-un-abbonamento-12-mesi .mepr_payment_method-wrapper .mepr_payment_method:nth-child(3) { display:none; }
-.regala-un-abbonamento-3-mesi label[for=mpgft-signup-gift-checkbox1],
+/*.regala-un-abbonamento-3-mesi label[for=mpgft-signup-gift-checkbox1],
 .regala-un-abbonamento-6-mesi label[for=mpgft-signup-gift-checkbox1],
-.regala-un-abbonamento-12-mesi label[for=mpgft-signup-gift-checkbox1],
+.regala-un-abbonamento-12-mesi label[for=mpgft-signup-gift-checkbox1],*/
+.memberpressproduct-template .mepr_custom_field.mepr_mepr_state,
+.memberpressproduct-template.premium .have-coupon-link,
 .memberpressproduct-template label[for=mpgft-signup-gift-checkbox1] { display:none !important; }
-.regala-un-abbonamento-3-mesi .mepr_price,
+
+/*.regala-un-abbonamento-3-mesi .mepr_price,
 .regala-un-abbonamento-6-mesi .mepr_price,
 .regala-un-abbonamento-12-mesi .mepr_price { display:none; }
-/*.regala-un-abbonamento-3-mesi .have-coupon-link,
+.regala-un-abbonamento-3-mesi .have-coupon-link,
 .regala-un-abbonamento-6-mesi .have-coupon-link,
 .regala-un-abbonamento-12-mesi .have-coupon-link{ display:none; }*/
 /*.memberpressproduct-template .have-coupon-link*/
@@ -181,19 +214,28 @@ body:not(.logged-in) .comment-reply-login { display:none; }
 @media only screen and (min-width: 320px) and (max-width: 767px) {
 	#mepr-account-nav { text-align:center; }
   .li-header-user-panel { padding-top: 6px;padding-bottom: 6px; }
-	.li-gift-columns__wrapper,
-	.mepr-price-menu.custom .mepr-price-boxes { flex-direction:column; }
-	.li-gift-columns__item,
-	.mepr-price-menu.custom .mepr-price-box { margin:10px 0;flex-basis:100%; }
-	.li-gift-columns__item-discount,
-	.mepr-price-menu.custom .mepr-price-box-discount { right:-16px; }
+	/*.li-gift-columns__wrapper,*/
+	.li-product-columns__wrapper,
+	.mepr-price-menu.custom .mepr-price-boxes,
+	.li-product-columns__inner { flex-direction:column; }
+	/*.li-gift-columns__item,*/
+	.li-product-columns__wrapper--1-col .li-product-columns__item,
+	.li-product-columns__wrapper--2-col .li-product-columns__item,
+	.li-product-columns__wrapper--3-col .li-product-columns__item,
+	.mepr-price-menu.custom .mepr-price-box,
+	.li-product-columns__inner--left-vert-img,
+	.li-product-columns__inner--right-vert-img { margin:10px 0;flex-basis:100%; }
+	.li-product-columns__item-discount,
+	.mepr-price-menu.custom .mepr-price-box-discount { top:-35px;right:-16px; }
+	.li-product-columns__inner--left-vert-img { text-align:center; }
 	.li-donation,
 	.li-gift { margin:20px 0px; }
-	.li-gift-columns__title,
+	.li-product-columns__title,
 	.li-donation__link,
 	.li-gift__link { font-size:30px;line-height:34px; }
-	.li-gift-columns { margin:40px 0 20px 0; }
-	.li-gift-columns__title { margin:0 0 20px 0; }
+	.li-product-columns__item-title { font-size:33px;line-height:36px; }
+	/*.li-gift-columns { margin:40px 0 20px 0; }
+	.li-gift-columns__title { margin:0 0 20px 0; }*/
 }
 
 /* TO DELETE - Live News Plugin - overwrite for iubenda banner
