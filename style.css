@@ -3,7 +3,7 @@ Theme Name: Newspaper child theme (lindipendente.online)
 Author: sebastiano.riva (office)
 Author URI: http://www.sebastianoriva.com/
 Template: Newspaper
-Version: 1.0.22
+Version: 1.0.23
 License: GNU General Public License v2 or later
 License URI:  http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:  Newspaper-child
@@ -98,7 +98,6 @@ Text Domain:  Newspaper-child
 .td-scroll-up.td-hide-scroll-up-on-mob { z-index:9997; }
 
 /* Custom */
-
 .li-btn { padding:10px 20px;border-radius:5px;transition: 0.4s; }
 .li-btn--blue { color:#FFF;background-color:#141e4a;border:1px solid #141e4a; }
 .li-btn--blue:hover { color:#FFF;background-color:#333;text-decoration:none !important;border:1px solid #333; }
@@ -189,23 +188,22 @@ p.li-product-columns__item-text { margin-bottom:10px; } /* tagdiv overwrite */
 body:not(.logged-in) .comments,*/
 body:not(.logged-in) .comment-respond,
 body:not(.logged-in) .comment-reply-login { display:none; }
-.regala-un-abbonamento-3-mesi .mepr_payment_method-wrapper .mepr_payment_method:nth-child(3),
-.regala-un-abbonamento-6-mesi .mepr_payment_method-wrapper .mepr_payment_method:nth-child(3),
-.regala-un-abbonamento-12-mesi .mepr_payment_method-wrapper .mepr_payment_method:nth-child(3) { display:none; }
-/*.regala-un-abbonamento-3-mesi label[for=mpgft-signup-gift-checkbox1],
-.regala-un-abbonamento-6-mesi label[for=mpgft-signup-gift-checkbox1],
-.regala-un-abbonamento-12-mesi label[for=mpgft-signup-gift-checkbox1],*/
 .memberpressproduct-template .mepr_custom_field.mepr_mepr_state,
 .memberpressproduct-template.premium .have-coupon-link,
 .memberpressproduct-template label[for=mpgft-signup-gift-checkbox1] { display:none !important; }
-
-/*.regala-un-abbonamento-3-mesi .mepr_price,
+/* Regala un Abbonamento */
+.regala-un-abbonamento-3-mesi label[for=mpgft-signup-gift-checkbox1],
+.regala-un-abbonamento-6-mesi label[for=mpgft-signup-gift-checkbox1],
+.regala-un-abbonamento-12-mesi label[for=mpgft-signup-gift-checkbox1],
+.regala-un-abbonamento-3-mesi .mepr_price,
 .regala-un-abbonamento-6-mesi .mepr_price,
-.regala-un-abbonamento-12-mesi .mepr_price { display:none; }
+.regala-un-abbonamento-12-mesi .mepr_price,
 .regala-un-abbonamento-3-mesi .have-coupon-link,
 .regala-un-abbonamento-6-mesi .have-coupon-link,
-.regala-un-abbonamento-12-mesi .have-coupon-link{ display:none; }*/
-/*.memberpressproduct-template .have-coupon-link*/
+.regala-un-abbonamento-12-mesi .have-coupon-link,
+.regala-un-abbonamento-3-mesi .mepr_payment_method-wrapper .mepr_payment_method:nth-child(3),
+.regala-un-abbonamento-6-mesi .mepr_payment_method-wrapper .mepr_payment_method:nth-child(3),
+.regala-un-abbonamento-12-mesi .mepr_payment_method-wrapper .mepr_payment_method:nth-child(3) { display:none !important; }
 
 /* Tablet */
 @media only screen and (min-width: 768px) and (max-width: 1024px) {}
