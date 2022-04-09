@@ -121,8 +121,11 @@ Text Domain:  Newspaper-child
 .li-donation--black-friday h3 { font-family: Fira Sans;color:#ffe500;margin:0;font-size:22px; }
 .li-donation--black-friday p { margin:0; }
 
-.li-product-columns { margin:20px 0; }
+.li-gift { display:block;margin:20px 10px;text-align:center;border:1px solid #141e4a; }
+.li-gift__link { display:block;padding:30px 40px;color:#091f3d;font-family:Fira Sans;font-size:36px;line-height:40px;background-color:#ead810; }
+.li-gift__link:hover { background-color:#ededed; }
 
+.li-product-columns { margin:20px 0; }
 .li-product-columns__title { margin-bottom:30px;text-align:center;font-family:Fira Sans;font-size:36px;line-height:40px; }
 .li-product-columns__wrapper { display:flex;flex-direction:row;justify-content:center;}
 /*.li-product-columns__wrapper--1-col .li-product-columns__item {}*/
@@ -148,18 +151,6 @@ p.li-product-columns__item-text { margin-bottom:10px; } /* tagdiv overwrite */
 .li-product-columns__inner { display:flex;align-items:center; }
 .li-product-columns__inner--left-vert-img { text-align:right;flex-basis:70%;margin-right:20px; }
 .li-product-columns__inner--right-vert-img { flex-basis:30%;text-align:center; }
-
-.li-gift { display:block;margin:20px 10px;text-align:center;border:1px solid #141e4a; }
-.li-gift__link { display:block;padding:30px 40px;color:#091f3d;font-family:Fira Sans;font-size:36px;line-height:40px;background-color:#ead810; }
-.li-gift__link:hover { background-color:#ededed; }
-/*.li-gift-columns { margin:80px 0 20px 0; }
-.li-gift-columns__title { margin-bottom:30px;text-align:center;font-family:Fira Sans;font-size:36px;line-height:40px; }
-.li-gift-columns__wrapper { display:flex;flex-direction:row; }
-.li-gift-columns__item { position:relative;flex-basis:33.33%;margin:0 10px;padding:30px 40px;text-align:center;border:1px solid #141e4a;background-color:#ededed; }
-.li-gift-columns__item-title { font-family:Fira Sans;font-size:36px;line-height:40px; }
-.li-gift-columns__item-price { margin:20px 0 50px;font-family:Fira Sans;font-size:33px;line-height:37px; }
-.li-gift-columns__item-price--no-discount { text-decoration:line-through;font-size:20px;color:#666 }
-.li-gift-columns__item-discount { position:absolute;z-index:10;top:-25px;right:-25px;display:flex;padding:18px 12px;font-family:Fira Sans;font-size:25px;font-weight:400;border-radius:100px;justify-content:center;color:#FFF;background-color:#CC0000; }*/
 
 .li-header-user-panel { padding-top:2px;padding-bottom:2px;}
 .li-header-user-panel .td_block_text_with_title { margin-bottom:0; }
