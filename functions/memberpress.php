@@ -10,6 +10,12 @@ function mepr_custom_failed_status_email($txn)
 }
 add_action('mepr-txn-status-failed', 'mepr_custom_failed_status_email');
 
+/* Add default country for phone field */
+function cp_filter_default_phone_input_country( $args ) {
+	$args['defaultCountry'] = strtolower( 'IT' ); 	return $args;
+}
+add_filter( 'mepr-phone-input-config', 'cp_filter_default_phone_input_country' );
+
 /* Send subscription resumed email
 function mepr_capture_resumed_sub($event) {
   \MeprUtils::send_resumed_sub_notices($event);
