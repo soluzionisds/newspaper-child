@@ -16,6 +16,21 @@ function cp_filter_default_phone_input_country( $args ) {
 }
 add_filter( 'mepr-phone-input-config', 'cp_filter_default_phone_input_country' );
 
+/*
+Custom fields: Add an Option to a Select indicated. ATTENTION: script add a field every load of the page
+add_action('init', function() {
+$options = get_option('mepr_options');
+foreach ($options['custom_fields'] as $key => $value) {
+  if ( $value['field_key'] == 'mepr_provincia' ) {
+    array_unshift($options['custom_fields'][$key]['options'], array(
+        'option_name' => '---',
+        'option_value' => ''
+    ));
+  }
+}
+update_option('mepr_options', $options);
+});*/
+
 /* Send subscription resumed email
 function mepr_capture_resumed_sub($event) {
   \MeprUtils::send_resumed_sub_notices($event);
