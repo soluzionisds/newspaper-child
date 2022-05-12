@@ -3,7 +3,7 @@ Theme Name: Newspaper child theme (lindipendente.online)
 Author: sebastiano.riva (office)
 Author URI: http://www.sebastianoriva.com/
 Template: Newspaper
-Version: 1.0.24
+Version: 1.0.26
 License: GNU General Public License v2 or later
 License URI:  http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:  Newspaper-child
@@ -152,11 +152,14 @@ p.li-product-columns__item-text { margin-bottom:10px; } /* tagdiv overwrite */
 .li-product-columns__inner--left-vert-img { text-align:right;flex-basis:70%;margin-right:20px; }
 .li-product-columns__inner--right-vert-img { flex-basis:30%;text-align:center; }
 
-.li-header-user-panel { padding-top:2px;padding-bottom:2px;}
+.li-header-user-panel { padding-top:2px;padding-bottom:2px; }
 .li-header-user-panel .td_block_text_with_title { margin-bottom:0; }
-.li-header-user-panel a { padding:2px 5px;border-radius:4px;border:1px solid #4db2ec;transition: all 0.3s ease 0s; }
-.li-header-user-panel a:hover { color:#FFF;border:1px solid #1e73be;background-color: #1e73be; }
-.li-header-user-panel__special-link { padding:2px 5px;border-radius:4px;color:#FFF;border:1px solid #4db2ec;background-color: #4db2ec; }
+.li-header-user-panel .tdi_7 p { line-height:24px !important; }
+.li-header-user-panel a,
+a.li-header-user-panel__link { padding:2px 5px;border-radius:4px;border:1px solid #4db2ec;transition: all 0.3s ease 0s; }
+a.li-header-user-panel__link:hover { color:#FFF;border:1px solid #1e73be;background-color: #1e73be; }
+a.li-header-user-panel__link--blue { color:#FFF;border:1px solid #4db2ec;background-color: #4db2ec; }
+a.li-header-user-panel__link--yellow { color:#03163f;border:1px solid #ead810;background-color:#ead810; }
 
 .li-countdown { margin:10px 0 50px 0; }
 .li-countdown__text { margin-bottom:0 !important;padding:10px 0;text-align:center;font-size:16px;line-height:20px; }
@@ -212,7 +215,12 @@ body:not(.logged-in) .comment-reply-login { display:none; }
 /* Smartphones  */
 @media only screen and (min-width: 320px) and (max-width: 767px) {
 	#mepr-account-nav { text-align:center; }
-  .li-header-user-panel { padding-top: 6px;padding-bottom: 6px; }
+	.mp_wrapper table, .mp_wrapper td, .mp_wrapper table.mepr-account-table td,
+	.mp_wrapper table.mepr-account-table tr { border:0; }
+	.mp_wrapper table.mepr-account-table td { border-bottom:1px solid #CCC; }
+
+  /*.li-header-user-panel { padding-top:6px;padding-bottom:6px; }*/
+	.li-header-user-panel p { text-align: center; }
 	/*.li-gift-columns__wrapper,*/
 	.li-product-columns__wrapper,
 	.mepr-price-menu.custom .mepr-price-boxes,
