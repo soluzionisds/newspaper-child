@@ -209,6 +209,11 @@ body:not(.logged-in) .comment-reply-login { display:none; }
 .regala-un-abbonamento-6-mesi .mepr_payment_method-wrapper .mepr_payment_method:nth-child(3),
 .regala-un-abbonamento-12-mesi .mepr_payment_method-wrapper .mepr_payment_method:nth-child(3) { display:none !important; }
 
+/* WordPress avatar */
+.comment .avatar,
+.bbp-author-avatar,
+#bbp-user-avatar { display: none; }
+
 /* Tablet */
 @media only screen and (min-width: 768px) and (max-width: 1024px) {}
 
