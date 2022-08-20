@@ -19,17 +19,6 @@ function theme_enqueue_styles() {
 previous_post_link( '<span class="previous-post-link">%link</span>', apply_filters( 'wpbf_previous_post_link', __( '&larr; Previous Post', 'page-builder-framework' ) ) );
 next_post_link( '<span class="next-post-link">%link</span>', apply_filters( 'wpbf_next_post_link', __( 'Next Post &rarr;', 'page-builder-framework' ) ) );
 
-// add custom class to tag
-add_filter( 'term_links-post_tag', function( array $links ) {
-  return preg_replace_callback(
-    '|href="[^"]*/([^"]+?)/?"|',
-    function( array $matches ) {
-      list( $href, $slug ) = $matches;
-      return "class=\"tag-{$slug}\" {$href}";
-    },
-    $links
-  );
-});
 /***************************
 * includes
 ****************************/
