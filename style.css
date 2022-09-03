@@ -69,6 +69,15 @@ Text Domain:  Newspaper-child
 .mpgft-send-gift-submit:hover { color:#ead810 !important;background-color:#091f3d !important; }
 /* coupon default
 .mepr-price-menu.custom .mepr-price-box-button { display:none; } */
+.mepr-price-menu.custom #mepr-price-box-10533 .mepr-price-box-button,
+.mepr-price-menu.custom #mepr-price-box-10495 .mepr-price-box-button,
+.mepr-price-menu.custom #mepr-price-box-18691 .mepr-price-box-button,
+.mepr-price-menu.custom #mepr-price-box-18692 .mepr-price-box-button { display:none; }
+.mepr-price-menu.custom #mepr-price-box-10533 .mepr-price-box-footer,
+.mepr-price-menu.custom #mepr-price-box-10495 .mepr-price-box-footer,
+.mepr-price-menu.custom #mepr-price-box-18691 .mepr-price-box-footer,
+.mepr-price-menu.custom #mepr-price-box-18692 .mepr-price-box-footer { padding: 20px 0; }
+
 /* 4 columns style:
 .mepr-price-menu.custom .mepr-price-box { display:flex;flex-direction:column;text-align:center;margin:0 5px;padding:20px 10px;border:1px solid #141e4a;background-color:#ededed; }
 .mepr-price-menu.custom .mepr-price-box-title { font-size:30px;line-height:34px; }
