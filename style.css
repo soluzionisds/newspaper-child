@@ -236,10 +236,11 @@ body:not(.logged-in) .comment-reply-login { display:none; }
 #bbp-user-avatar { display: none; }
 
 /* Smartphones & Tablet  */
-@media only screen and (min-width: 320px) and (max-width: 985px) {
+@media only screen and (min-width: 320px) and (max-width: 1024px) {
 	#cookie-law-info-bar[data-cli-style="cli-style-v2"] { padding: 8px 10px; }
-	.cli-bar-container .cli-bar-message { font-size:11px; line-height:15px;text-align: center; }
-	.cli-bar-container .cli-bar-btn_container { margin-top: 5px;width:100%;justify-content:center; }
+	.cli-bar-container .cli-bar-message { width: 100%;font-size: 11px;line-height: 15px;text-align: center; }
+	.cli-bar-container .cli-bar-btn_container { margin-top: 5px;width: 100%;justify-content: center; }
+	.cli-bar-container .cli-bar-btn_container .cli-plugin-button { margin:0; }
 }
 
 /* Tablet
