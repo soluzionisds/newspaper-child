@@ -10,3 +10,8 @@ With the giftee's transaction ID copied, you'll want to access your site's datab
 `SELECT * FROM wp_mepr_transaction_meta WHERE transaction_id = 123;`
 
 You'll want to replace 123 with the ID of the transaction you copied. In the results of this query, there should be a row with the "meta_key" of "_gifter_txn". The "meta_value" column will contain the ID of the gifter's transaction, so you can look up the gifter by searching for that transaction by its ID on the Transactions page
+
+
+### Select Active Users for certain period
+
+`SELECT count(DISTINCT "user_id") FROM "wpor_mepr_transactions" WHERE "created_at" <= "2022-01-13" and "expires_at" >= "2022-01-13";`
