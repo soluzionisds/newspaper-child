@@ -14,4 +14,4 @@ You'll want to replace 123 with the ID of the transaction you copied. In the res
 
 ### Select Active Users for certain period
 
-`SELECT count(DISTINCT "user_id") FROM "wpor_mepr_transactions" WHERE "created_at" <= "2022-01-13" and "expires_at" >= "2022-01-13";`
+`SELECT count(DISTINCT "user_id") FROM "wpor_mepr_transactions" WHERE "created_at" <= '2022-01-13' and "expires_at" >= '2022-01-13';`
