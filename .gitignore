@@ -1,5 +1,7 @@
 *.DS_Store
 Thumbs.db
+api/config-facebook.php
+api/config-erpnext.php
 
 ###
 ### GitHub repository .gitignore section
