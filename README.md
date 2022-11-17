@@ -7,20 +7,25 @@ Unfortunately, we don't currently have an easy way to display who gifted the mem
 
 With the giftee's transaction ID copied, you'll want to access your site's database and run this SQL query:
 
-`SELECT * FROM wp_mepr_transaction_meta WHERE transaction_id = 123;`
+```
+SELECT * FROM wp_mepr_transaction_meta WHERE transaction_id = 123;
+```
 
 You'll want to replace 123 with the ID of the transaction you copied. In the results of this query, there should be a row with the "meta_key" of "_gifter_txn". The "meta_value" column will contain the ID of the gifter's transaction, so you can look up the gifter by searching for that transaction by its ID on the Transactions page
 
 
 ### Select Active Users for certain period
 
-`SELECT count(DISTINCT "user_id") FROM "wpor_mepr_transactions" WHERE "created_at" <= '2022-01-13' and "expires_at" >= '2022-01-13';`
+```
+SELECT count(DISTINCT "user_id") FROM "wpor_mepr_transactions" WHERE "created_at" <= '2022-01-13' and "expires_at" >= '2022-01-13';
+```
 
 ### Expiration date Subscription Shortcode
 
 Print the date when subscription expire
 
-`//Shortcode Example: [mepr-sub-expiration membership='123']
+```
+//Shortcode Example: [mepr-sub-expiration membership='123']
 function mepr_sub_expiration_shortcode($atts = [], $content = null, $tag = '') {
   $sub_expire_html = '';
 
@@ -35,4 +40,5 @@ function mepr_sub_expiration_shortcode($atts = [], $content = null, $tag = '') {
 
   return $sub_expire_html;
 }
-add_shortcode('mepr-sub-expiration', 'mepr_sub_expiration_shortcode');`
+add_shortcode('mepr-sub-expiration', 'mepr_sub_expiration_shortcode');
+```
