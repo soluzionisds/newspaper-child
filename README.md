@@ -1,6 +1,6 @@
 # Newspaper child theme for Lindipendente.online
 
-## MemberPress Troubleshooting
+## MemberPress Utilities
 
 ### Gift purchased data
 Unfortunately, we don't currently have an easy way to display who gifted the membership but you could obtain this information if you have access to your site's database. The first thing you'll want to do is copy the ID of the giftee's transaction by navigating to the Transactions page (Wp-Admin -> MemberPress -> Transactions) and looking under the "Id" column.
@@ -15,3 +15,24 @@ You'll want to replace 123 with the ID of the transaction you copied. In the res
 ### Select Active Users for certain period
 
 `SELECT count(DISTINCT "user_id") FROM "wpor_mepr_transactions" WHERE "created_at" <= '2022-01-13' and "expires_at" >= '2022-01-13';`
+
+### Expiration date Subscription Shortcode
+
+Print the date when subscription expire
+
+`//Shortcode Example: [mepr-sub-expiration membership='123']
+function mepr_sub_expiration_shortcode($atts = [], $content = null, $tag = '') {
+  $sub_expire_html = '';
+
+  if($atts['membership'] && is_numeric($atts['membership'])) {
+    $date_str = MeprUser::get_user_product_expires_at_date(get_current_user_id(), $atts['membership']);
+
+		if ($date_str) {
+	      $date = date_create($date_str);
+	      $sub_expire_html = "<div>Expires: " . date_format($date,"Y/m/d") . "</div>";
+		}
+  }
+
+  return $sub_expire_html;
+}
+add_shortcode('mepr-sub-expiration', 'mepr_sub_expiration_shortcode');`
