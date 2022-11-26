@@ -3,7 +3,7 @@ Theme Name: Newspaper child theme (lindipendente.online)
 Author: sebastiano.riva (office)
 Author URI: http://www.sebastianoriva.com/
 Template: Newspaper
-Version: 1.1.0
+Version: 1.1.1
 License: GNU General Public License v2 or later
 License URI:  http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:  Newspaper-child
@@ -184,9 +184,6 @@ a.li-header-user-panel__link--yellow { color:#03163f;border:1px solid #ead810;ba
 
 /* privacy checkbox */
 .li-privacy-sub-text { display:block;font-size:13px;line-height:16px; }
-.regala-un-abbonamento-3-mesi .li-privacy-sub-text,
-.regala-un-abbonamento-6-mesi .li-privacy-sub-text,
-.regala-un-abbonamento-12-mesi .li-privacy-sub-text { display: none; }
 .mepr-form label[for=mepr_agree_to_privacy_policy1] { display: inline-block !important; }
 
 /* print area */
@@ -214,10 +211,27 @@ a.li-header-user-panel__link--yellow { color:#03163f;border:1px solid #ead810;ba
 body:not(.logged-in) .comments,*/
 body:not(.logged-in) .comment-respond,
 body:not(.logged-in) .comment-reply-login { display:none; }
-.memberpressproduct-template .mepr_custom_field.mepr_mepr_state,
+.memberpressproduct-template .mepr_custom_field.mepr_mepr_state { display:none !important; }
+
+/* Memberships */
+.memberpressproduct-template.postid-14623 .mepr_price,
+.memberpressproduct-template.postid-14617 .mepr_price,
+.memberpressproduct-template.postid-65188 .mepr_price,
+.memberpressproduct-template.postid-65189 .mepr_price,
+.memberpressproduct-template.postid-14623 .have-coupon-link,
+.memberpressproduct-template.postid-14617 .have-coupon-link,
+.memberpressproduct-template.postid-65188 .have-coupon-link,
+.memberpressproduct-template.postid-65189 .have-coupon-link,
+.memberpressproduct-template.postid-14006 .have-coupon-link,
+.memberpressproduct-template.postid-55581 .have-coupon-link,
 .memberpressproduct-template.premium .have-coupon-link,
-.memberpressproduct-template label[for=mpgft-signup-gift-checkbox1] { display:none !important; }
-/* Regala un Abbonamento */
+.memberpressproduct-template.postid-14623 .li-privacy-sub-text,
+.memberpressproduct-template.postid-14617 .li-privacy-sub-text,
+.memberpressproduct-template.postid-65188 .li-privacy-sub-text,
+.memberpressproduct-template.postid-65189 .li-privacy-sub-text,
+.memberpressproduct-template .mepr-checkbox-field[for=mpgft-signup-gift-checkbox1] { display:none !important; }
+
+/*Regala un Abbonamento - to remove
 .regala-un-abbonamento-3-mesi label[for=mpgft-signup-gift-checkbox1],
 .regala-un-abbonamento-6-mesi label[for=mpgft-signup-gift-checkbox1],
 .regala-un-abbonamento-12-mesi label[for=mpgft-signup-gift-checkbox1],
@@ -229,7 +243,7 @@ body:not(.logged-in) .comment-reply-login { display:none; }
 .regala-un-abbonamento-12-mesi .have-coupon-link,
 .regala-un-abbonamento-3-mesi .mepr_payment_method-wrapper .mepr_payment_method:nth-child(3),
 .regala-un-abbonamento-6-mesi .mepr_payment_method-wrapper .mepr_payment_method:nth-child(3),
-.regala-un-abbonamento-12-mesi .mepr_payment_method-wrapper .mepr_payment_method:nth-child(3) { display:none !important; }
+.regala-un-abbonamento-12-mesi .mepr_payment_method-wrapper .mepr_payment_method:nth-child(3) { display:none !important; }*/
 
 /* WordPress avatar */
 .comment .avatar,
@@ -279,6 +293,3 @@ body:not(.logged-in) .comment-reply-login { display:none; }
 	/*.li-gift-columns { margin:40px 0 20px 0; }
 	.li-gift-columns__title { margin:0 0 20px 0; }*/
 }
-
-/* TO DELETE - Live News Plugin - overwrite for iubenda banner
-#daln-container { z-index: 8888 !important; } */
