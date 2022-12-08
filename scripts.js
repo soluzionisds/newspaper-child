@@ -1,11 +1,37 @@
-/*
-Script for gifts: flag automatically the gift checkbox
-*/
 (function($) {
   $(document).ready(function() {
+    /*
+    Script for gifts: flag automatically the gift checkbox
+    */
     var input = $('input[name=mpgft-signup-gift-checkbox]');
     if(input.length) {
       input.prop('checked', 'true');
+    }
+
+    /*
+    Script for gifts: Remove some fields for Premium membership buyers
+    */
+    var url = window.location.href;
+		if(url.toLowerCase().indexOf('premium-regalo')>=0){
+			if(url.toLowerCase().indexOf('gift-')==-1){
+				$('#mepr_address1').val("---");
+				$('#mepr_cap1').val("---");
+				$('#mepr_city1').val("---");
+				$('#mepr_provincia1').val("ag");
+				$('.mepr_mepr_address').hide();
+				$('.mepr_mepr_cap').hide();
+				$('.mepr_mepr_city').hide();
+				$('.mepr_mepr_provincia').hide();
+				$('.mepr_mepr_phone').hide();
+			}
+		}
+    /*
+    Script for gifts: Remove membership description for gift destinataires
+    */
+    if((url.toLowerCase().indexOf('premium-regalo')>=0) || (url.toLowerCase().indexOf('6-mesi-regalo')>=0) || (url.toLowerCase().indexOf('12-mesi-regalo')>=0)){
+      if(url.toLowerCase().indexOf('gift-')>=0){
+        $('.li-gift-text').addClass('mepr-hidden');
+      }
     }
   });
 })(jQuery);
@@ -32,7 +58,6 @@ window.addEventListener("load", function() {
 });*/
 
 /*Script for gifts, deactivate mouse on box to send gift
-
 window.addEventListener("load", function(){
 	var links = document.getElementsByClassName("mpgft-open-send-gift");
 	var body = document.getElementsByTagName("body")[0];
