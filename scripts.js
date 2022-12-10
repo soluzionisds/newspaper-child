@@ -14,10 +14,18 @@
     var url = window.location.href;
 		if(url.toLowerCase().indexOf('premium-regalo')>=0){
 			if(url.toLowerCase().indexOf('gift-')==-1){
-				$('#mepr_address1').val("---");
-				$('#mepr_cap1').val("---");
-				$('#mepr_city1').val("---");
-				$('#mepr_provincia1').val("ag");
+				if( !$('#mepr_address1').val() ) {
+          $('#mepr_address1').val("---");
+        }
+        if( !$('#mepr_cap1').val() ) {
+          $('#mepr_cap1').val("---");
+        }
+        if( !$('#mepr_city1').val() ) {
+          $('#mepr_city1').val("---");
+        }
+        if( !$('#mepr_provincia1').val() ) {
+          $('#mepr_provincia1').val("ag");
+        }
 				$('.mepr_mepr_address').hide();
 				$('.mepr_mepr_cap').hide();
 				$('.mepr_mepr_city').hide();
