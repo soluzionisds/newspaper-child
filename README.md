@@ -8,7 +8,7 @@ Unfortunately, we don't currently have an easy way to display who gifted the mem
 With the giftee's transaction ID copied, you'll want to access your site's database and run this SQL query:
 
 ```
-SELECT * FROM wp_mepr_transaction_meta WHERE transaction_id = 123;
+SELECT * FROM wpor_mepr_transaction_meta WHERE transaction_id = 123;
 ```
 
 You'll want to replace 123 with the ID of the transaction you copied. In the results of this query, there should be a row with the "meta_key" of "_gifter_txn". The "meta_value" column will contain the ID of the gifter's transaction, so you can look up the gifter by searching for that transaction by its ID on the Transactions page
@@ -17,7 +17,7 @@ You'll want to replace 123 with the ID of the transaction you copied. In the res
 ### Select Active Users for certain period
 
 ```
-SELECT count(DISTINCT user_id) FROM wpor_mepr_transactions WHERE created_at <= "2022-11-01" and expires_at >= "2022-11-01";
+SELECT count(DISTINCT user_id) FROM wpor_mepr_transactions WHERE status IN('complete', 'confirmed') AND ( expires_at >= '2023-01-14 00:00:00' OR expires_at < '0000-01-01 00:00:00' OR expires_at = NULL );
 ```
 
 ### Expiration date Subscription Shortcode
