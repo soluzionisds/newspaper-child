@@ -44,27 +44,6 @@
   });
 })(jQuery);
 
-/* Script for gifts, fix some pages
-window.addEventListener("load", function() {
-    var body = document.getElementsByTagName("body")[0];
-    var href = window.location.href;
-    var coupon = "WOMENSDAY2022";
-    if (body.innerHTML.indexOf("Regala un Abbonamento") !== -1) {
-        var checkbox = document.getElementById("mpgft-signup-gift-checkbox1");
-        checkbox.click();
-        //checkbox.parentNode.parentNode.className += " mepr-hidden";
-        //document.getElementsByName("mepr_coupon_code")[0].value = coupon;
-        //document.getElementsByClassName("have-coupon-link")[0].className += " mepr-hidden";
-        //document.getElementsByClassName("mepr_price")[0].className += " mepr-hidden";
-    }
-    if (
-        href.indexOf("/abbonamento/3-mesi") > -1 ||
-        href.indexOf("/abbonamento/6-mesi") > -1 ||
-        href.indexOf("/abbonamento/12-mesi") > -1) {
-        document.getElementsByName("mepr_coupon_code")[0].value = coupon;
-    }
-});*/
-
 /*Script for gifts, deactivate mouse on box to send gift
 window.addEventListener("load", function(){
 	var links = document.getElementsByClassName("mpgft-open-send-gift");
@@ -84,4 +63,25 @@ window.addEventListener("load", function(){
 			}
 		});
 	}
+});*/
+
+/* Script for gifts, fix some pages
+window.addEventListener("load", function() {
+    var body = document.getElementsByTagName("body")[0];
+    var href = window.location.href;
+    var coupon = "WOMENSDAY2022";
+    if (body.innerHTML.indexOf("Regala un Abbonamento") !== -1) {
+        var checkbox = document.getElementById("mpgft-signup-gift-checkbox1");
+        checkbox.click();
+        //checkbox.parentNode.parentNode.className += " mepr-hidden";
+        //document.getElementsByName("mepr_coupon_code")[0].value = coupon;
+        //document.getElementsByClassName("have-coupon-link")[0].className += " mepr-hidden";
+        //document.getElementsByClassName("mepr_price")[0].className += " mepr-hidden";
+    }
+    if (
+        href.indexOf("/abbonamento/3-mesi") > -1 ||
+        href.indexOf("/abbonamento/6-mesi") > -1 ||
+        href.indexOf("/abbonamento/12-mesi") > -1) {
+        document.getElementsByName("mepr_coupon_code")[0].value = coupon;
+    }
 });*/
