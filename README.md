@@ -20,6 +20,13 @@ You'll want to replace 123 with the ID of the transaction you copied. In the res
  SELECT count(DISTINCT user_id) FROM wpor_mepr_transactions WHERE status = 'complete' AND ( created_at <= '2023-01-02 00:00:00' AND expires_at >= '2023-01-02 00:00:00' OR expires_at = '0000-00-00 00:00:00' OR expires_at = NULL ) ;
 ```
 
+With confirmed status, no created_at parameter (MemberPress support suggestion)
+
+```
+SELECT count(DISTINCT user_id) FROM wpor_mepr_transactions WHERE status IN('complete', 'confirmed') AND ( expires_at >= NOW() OR expires_at = '0000-00-00 00:00:00' OR expires_at = NULL );
+```
+
+
 ### Expiration date Subscription Shortcode
 
 Print the date when subscription expire
