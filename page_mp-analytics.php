@@ -5,7 +5,8 @@ get_header();
 
 <style>
 .td-container { width: 95%; }
-.li-mp-analytics-table {}
+.li-mp-analytics-table { font-size: 12px; }
+.li-mp-analytics-table tr:hover { background-color:#EEE; }
 .li-mp-analytics-table tr:first-child { background-color:#CCC; }
 .li-mp-analytics-table tr:last-child { background-color:#EEE; }
 .li-mp-analytics-table tr:last-child td:last-child { padding: 0.5rem;text-align: right; }
