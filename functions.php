@@ -12,7 +12,7 @@
 add_action( 'wp_enqueue_scripts', 'theme_enqueue_styles');
 function theme_enqueue_styles() {
   wp_enqueue_style('td-theme', get_template_directory_uri() . '/style.css', '', TD_THEME_VERSION, 'all' );
-  wp_enqueue_style('td-theme-child', get_stylesheet_directory_uri() . '/style.css', array('td-theme'), '1.3.1', 'all' );
+  wp_enqueue_style('td-theme-child', get_stylesheet_directory_uri() . '/style.css', array('td-theme'), '1.4.1', 'all' );
   wp_enqueue_script('td-custom-script', get_stylesheet_directory_uri() . '/scripts.js', array( 'jquery' ), '1.2.4');
 }
 
@@ -27,6 +27,15 @@ require_once get_stylesheet_directory() . '/api/facebook.php';
 //require_once get_stylesheet_directory() . '/api/wordpress.php';
 require_once get_stylesheet_directory() . '/functions/memberpress.php';
 require_once get_stylesheet_directory() . '/functions/login-logo.php';
+
+/***************************
+* Cookie Session
+* keep users logged in
+****************************/
+add_filter( 'auth_cookie_expiration', 'keep_me_logged_in_for_90_days' );
+function keep_me_logged_in_for_90_days( $expirein ) {
+  return 7776000; // 90 days in seconds
+}
 
 /***************************
 * MonsterInsights
