@@ -1,9 +1,51 @@
 <?php
 /***************************
  * MemberPress
+****************************/
 
-Send transaction "failed" mail also if change status by backoffice
- */
+/**
+ * PROBLEM: Mailchimp users remains active if transacion expire
+ **/
+//Turn off Auto rebill for offline gateway if a transactions expires
+add_action( 'mepr-txn-store', function ( $txn ) {
+  // Bail if no id's
+  if(!isset($txn->id) || $txn->id <= 0 || !isset($txn->user_id) || $txn->user_id <= 0) { return; }
+
+  // Ignore "pending" txns
+  if(!isset($txn->status) || empty($txn->status) || $txn->status == MeprTransaction::$pending_str) { return; }
+
+  $active_status  = array(MeprTransaction::$complete_str, MeprTransaction::$confirmed_str);
+  $now            = time();
+  $expires        = 0; // Lifetime
+
+  if ( ! empty( $txn->expires_at ) && $txn->expires_at != MeprUtils::db_lifetime() ) {
+    $expires = strtotime($txn->expires_at);
+  }
+
+  if(in_array($txn->status, $active_status)) {
+    if($expires !== 0 && $expires < $now && $txn->payment_method() instanceof MeprArtificialGateway && $sub = $txn->subscription()) {
+      $sub->status = MeprSubscription::$cancelled_str;
+      $sub->store();
+    }
+  }
+}, 9999 );
+
+//If a transaction is completed on an offline gateway subscription - turn auto rebill back on
+add_action ( 'mepr-txn-status-complete', function ( $txn ) {
+	$expires = 0; // Lifetime
+	$now = time();
+
+	if ( ! empty( $txn->expires_at ) && $txn->expires_at != MeprUtils::db_lifetime() ) {
+	  $expires = strtotime($txn->expires_at);
+	}
+
+	if ( ( $expires === 0 || $expires >= $now ) && $txn->payment_method() instanceof MeprArtificialGateway && $sub = $txn->subscription() ) {
+		$sub->status = MeprSubscription::$active_str;
+		$sub->store();
+	}
+});
+
+/* Send transaction "failed" mail also if change status by backoffice */
 function mepr_custom_failed_status_email($txn)
 {
 	\MeprUtils::send_failed_txn_notices($txn);
@@ -97,48 +139,6 @@ function mepr_remove_closures() {
     }
 }
 add_action( 'wp_head', 'mepr_remove_closures', 9 );
-
-/**
- * PROBLEM: Mailchimp users remains active if transacion expire
- **/
-//Turn off Auto rebill for offline gateway if a transactions expires
-add_action( 'mepr-txn-store', function ( $txn ) {
-  // Bail if no id's
-  if(!isset($txn->id) || $txn->id <= 0 || !isset($txn->user_id) || $txn->user_id <= 0) { return; }
-
-  // Ignore "pending" txns
-  if(!isset($txn->status) || empty($txn->status) || $txn->status == MeprTransaction::$pending_str) { return; }
-
-  $active_status  = array(MeprTransaction::$complete_str, MeprTransaction::$confirmed_str);
-  $now            = time();
-  $expires        = 0; // Lifetime
-
-  if ( ! empty( $txn->expires_at ) && $txn->expires_at != MeprUtils::db_lifetime() ) {
-    $expires = strtotime($txn->expires_at);
-  }
-
-  if(in_array($txn->status, $active_status)) {
-    if($expires !== 0 && $expires < $now && $txn->payment_method() instanceof MeprArtificialGateway && $sub = $txn->subscription()) {
-      $sub->status = MeprSubscription::$cancelled_str;
-      $sub->store();
-    }
-  }
-}, 9999 );
-
-//If a transaction is completed on an offline gateway subscription - turn auto rebill back on
-add_action ( 'mepr-txn-status-complete', function ( $txn ) {
-	$expires = 0; // Lifetime
-	$now = time();
-
-	if ( ! empty( $txn->expires_at ) && $txn->expires_at != MeprUtils::db_lifetime() ) {
-	  $expires = strtotime($txn->expires_at);
-	}
-
-	if ( ( $expires === 0 || $expires >= $now ) && $txn->payment_method() instanceof MeprArtificialGateway && $sub = $txn->subscription() ) {
-		$sub->status = MeprSubscription::$active_str;
-		$sub->store();
-	}
-});
 
 /*
 ////////////////////////////////////////////////////////////////////////////////
