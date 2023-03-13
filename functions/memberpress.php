@@ -4,9 +4,9 @@
 ****************************/
 
 /**
- * PROBLEM: Mailchimp users remains active if transacion expire
+ * PROBLEM: Mailchimp users remains active if transaction expire (offline payment)
  **/
-//Turn off Auto rebill for offline gateway if a transactions expires
+//Turn off Auto rebill for offline gateway if a transactions expires manually.
 add_action( 'mepr-txn-store', function ( $txn ) {
   // Bail if no id's
   if(!isset($txn->id) || $txn->id <= 0 || !isset($txn->user_id) || $txn->user_id <= 0) { return; }
@@ -29,6 +29,56 @@ add_action( 'mepr-txn-store', function ( $txn ) {
     }
   }
 }, 9999 );
+
+// Turn off Auto rebill for offline gateway when a transaction expires naturally.
+add_action('mepr-txn-expired', function($txn) {
+	// Bail if no id's
+  if(!isset($txn->id) || $txn->id <= 0 || !isset($txn->user_id) || $txn->user_id <= 0) { return; }
+
+  // Ignore "pending" txns
+  if(!isset($txn->status) || empty($txn->status) || $txn->status == MeprTransaction::$pending_str) { return; }
+
+  if($txn->payment_method() instanceof MeprArtificialGateway && $sub = $txn->subscription()) {
+	  $sub->status = MeprSubscription::$cancelled_str;
+	  $sub->store();
+
+	  remove_action('mepr-txn-expired', array('MeprActiveInactiveHooksCtrl', 'handle_txn_expired'), 11);
+
+	  add_action('mepr-txn-expired', function($txn) {
+		  global $wpdb;
+
+      	// Allow third party plugins to stop the running of the method
+      	if(MeprHooks::apply_filters('mepr-active-inactive-hooks-skip', false, $txn)){
+        	return;
+      	}
+
+      	// Go directly to the database and maybe flush caches beforehand
+      	if(MeprHooks::apply_filters('mepr-autoresponder-flush-caches', true)) {
+        	wp_cache_flush();
+        	$wpdb->flush();
+      	}
+
+      	$query = $wpdb->prepare(
+        	"SELECT count(*) FROM {$wpdb->prefix}mepr_transactions WHERE user_id = %d AND product_id = %d AND status IN (%s, %s) AND (expires_at >= %s OR expires_at = %s)",
+        	$txn->user_id,
+        	$txn->product_id,
+        	MeprTransaction::$complete_str,
+        	MeprTransaction::$confirmed_str,
+        	MeprUtils::db_now(),
+        	MeprUtils::db_lifetime()
+      	);
+
+      	$active_on_membership = $wpdb->get_var($query);
+
+      	if($active_on_membership) {
+        	MeprHooks::do_action('mepr-account-is-active', $txn);
+      	}
+      	else {
+        	MeprHooks::do_action('mepr-account-is-inactive', $txn);
+      	}
+      }, 11, 1);
+  	}
+}, 1, 1);
 
 //If a transaction is completed on an offline gateway subscription - turn auto rebill back on
 add_action ( 'mepr-txn-status-complete', function ( $txn ) {
