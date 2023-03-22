@@ -49,3 +49,8 @@ function mepr_sub_expiration_shortcode($atts = [], $content = null, $tag = '') {
 }
 add_shortcode('mepr-sub-expiration', 'mepr_sub_expiration_shortcode');
 ```
+
+
+### Coupon Usage
+
+Find coupon usage number shown in the coupon page: "You can find the `_mepr_coupons_usage_count` record in the `wpor_postmeta` table based on `post_id` column, which is coupon ID, and update meta_value with correct value."
