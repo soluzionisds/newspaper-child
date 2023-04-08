@@ -8,14 +8,14 @@ AND status = %s
 AND txn_type = %s
 AND subscription_id > 0
 AND user_id != 0
-AND (expires_at > %s OR expires_at = %s)", $date_from, $date_to, 'complete', 'payment', $date_to, '0000-00-00 00:00:00');
+OR expires_at = %s", $date_from, $date_to, 'complete', 'payment', '0000-00-00 00:00:00');
 
 $txn_ids = $wpdb->get_col($txn_query);
 
 if ( ! empty( $txn_ids ) ) {
   $count = 0;
   ?>
-  <h3>Utenti che hanno rinnovato dal <?php echo $date_from; ?> al <?php echo $date_to; ?></h3>
+  <h3>Utenti che si sono iscritti dal <?php echo $date_from; ?> al <?php echo $date_to; ?></h3>
   <table class="li-mp-analytics-table">
   <tr><th>Mail</th><th>User</th><th>Membership</th><th>Subscription</th><th>Subscription Created At</th><th>Transaction Expired At</th></tr>
   <?php
@@ -24,7 +24,7 @@ if ( ! empty( $txn_ids ) ) {
     $user = new MeprUser($subscription->user_id);
     $product = new MeprProduct($subscription->product_id);
 
-    if($subscription->txn_count > 1) {
+    if($subscription->created_at >= $date_from && $subscription->created_at <= $date_to) {
       echo '<tr>';
       echo '<td>'.$user->user_email.'</td>';
       $csv_output .= $user->user_email . ", ";

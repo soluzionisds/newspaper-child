@@ -3,7 +3,7 @@ Theme Name: Newspaper child theme (lindipendente.online)
 Author: sebastiano.riva (office)
 Author URI: http://www.sebastianoriva.com/
 Template: Newspaper
-Version: 1.4.3
+Version: 1.5.1
 License: GNU General Public License v2 or later
 License URI:  http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:  Newspaper-child
@@ -180,12 +180,20 @@ a.li-header-user-panel__link--yellow { color:#03163f;border:1px solid #ead810;ba
 
 .li-bullet-blinker { margin:0 5px 0 0;display:inline-block;width:10px;height:10px;background-color:#CC3333;border-radius:50px;animation: blinker 1.8s linear infinite; }
 
+.td-container { width: 95%; }
+.li-mp-analytics-table { font-size: 12px; }
+.li-mp-analytics-table tr:hover { background-color:#EEE; }
+.li-mp-analytics-table tr:first-child { background-color:#CCC; }
+.li-mp-analytics-table tr:last-child { background-color:#EEE; }
+.li-mp-analytics-table tr:last-child td:last-child { padding: 0.5rem;text-align: right; }
+
 .wpp-list ul,
 .wpp-list p { margin: 0;padding: 0; } /* fix Tagdiv html additions */
 .li-wpp .wpp-thumbnail { max-width: 100px; }
 
 /* privacy checkbox */
 .li-privacy-sub-text { padding-top:5px;display:block;font-size:13px;line-height:16px; }
+.li-privacy-sub-text__highlight { color: #CC3333; }
 .mepr-form label[for=mepr_agree_to_privacy_policy1] { display: inline-block !important; }
 
 /* print area */
@@ -233,6 +241,7 @@ body:not(.logged-in) .li-views-counter { display:none; }
 .memberpressproduct-template.postid-14617 .li-privacy-sub-text,
 .memberpressproduct-template.postid-65188 .li-privacy-sub-text,
 .memberpressproduct-template.postid-65189 .li-privacy-sub-text,
+.memberpressproduct-template.postid-75716 .li-privacy-sub-text,
 .memberpressproduct-template.premium-regalo .li-privacy-sub-text,
 .memberpressproduct-template.postid-55581 .li-privacy-sub-text__reminder,
 .memberpressproduct-template .mepr-checkbox-field[for=mpgft-signup-gift-checkbox1] { display:none !important; }

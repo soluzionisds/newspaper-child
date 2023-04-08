@@ -3,16 +3,6 @@
 get_header();
 ?>
 
-<style>
-.td-container { width: 95%; }
-.li-mp-analytics-table { font-size: 12px; }
-.li-mp-analytics-table tr:hover { background-color:#EEE; }
-.li-mp-analytics-table tr:first-child { background-color:#CCC; }
-.li-mp-analytics-table tr:last-child { background-color:#EEE; }
-.li-mp-analytics-table tr:last-child td:last-child { padding: 0.5rem;text-align: right; }
-</style>
-
-
 <div class="td-main-content-wrap td-container-wrap">
 	<div class="td-container">
 		<div class="td-crumb-container">
@@ -44,16 +34,31 @@ get_header();
 									global $wpdb;
 									$user = wp_get_current_user();
 									$allowed_roles = array('user_manager', 'administrator');
-									$date_no_renewals_from = '2023-03-01 00:00:00';
+									$date_from = '2023-03-01 00:00:00';
 									//$date_no_renewals_to = date('Y-m-d H:i:s', time());
-									$date_no_renewals_to = '2023-03-31 00:00:00';
+									$date_to = '2023-03-31 00:00:00';
 									//Now that we've created such a nice heading for our html table, lets create a heading for our csv table
 									$csv_hdr = "Mail, User, Membership, Subscription, Subscription Created At, Transaction Expired At";
 									//Quickly create a variable for our output that'll go into the CSV file (we'll make it blank to start).
-								  	$csv_output_no_renewals="";
-								 	$csv_output_renewals="";
+								  	$csv_output="";
 
 									if( array_intersect($allowed_roles, $user->roles ) ) {
+
+										$page_to_load = "new_subscribers";
+
+										switch ($page_to_load) {
+										case "new_subscribers":
+											require_once get_stylesheet_directory() . '/utility/mp-analytics-new-subscribers.php';
+											break;
+										case "no_renewals":
+											require_once get_stylesheet_directory() . '/utility/mp-analytics-no-renewals.php';
+											break;
+										case "renewals":
+											require_once get_stylesheet_directory() . '/utility/mp-analytics-renewals.php';
+											break;
+										default:
+											echo "No selected page";
+										}
 
 										///////////////////////////////////////
 										// Active users at
@@ -65,9 +70,6 @@ get_header();
 										'complete', $date_no_renewals_from, $date_no_renewals_from, '0000-00-00 00:00:00'));
 
 										print_r($active_urers_query);*/
-
-										require_once get_stylesheet_directory() . '/utility/mp-analytics-no-renewals.php';
-										//require_once get_stylesheet_directory() . '/utility/mp-analytics-renewals.php';
 									}
 
 									?>

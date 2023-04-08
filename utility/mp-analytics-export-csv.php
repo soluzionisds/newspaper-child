@@ -17,18 +17,12 @@ $out .= $_POST['csv_hdr'];
 $out .= "\n";
 }
 
-if (isset($_POST['csv_output_no_renewals'])) {
-$out .= $_POST['csv_output_no_renewals'];
-$name = 'no_renewals';
-}
-
-if (isset($_POST['csv_output_renewals'])) {
-$out .= $_POST['csv_output_renewals'];
-$name = 'renewals';
+if (isset($_POST['csv_output'])) {
+$out .= $_POST['csv_output'];
 }
 
 //Now we're ready to create a file. This method generates a filename based on the current date & time.
-$filename = $filename_prefix."_".$name."_".date("Y-m-d__H-i",time());
+$filename = $filename_prefix."_members_".date("Y-m-d__H-i",time());
 
 //Generate the CSV file header
 header("Content-type: application/vnd.ms-excel");
