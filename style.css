@@ -3,7 +3,7 @@ Theme Name: Newspaper child theme (lindipendente.online)
 Author: sebastiano.riva (office)
 Author URI: http://www.sebastianoriva.com/
 Template: Newspaper
-Version: 1.5.1
+Version: 1.5.3
 License: GNU General Public License v2 or later
 License URI:  http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:  Newspaper-child
@@ -54,12 +54,12 @@ Text Domain:  Newspaper-child
 .mepr-price-menu.custom .mepr-price-box-foot { margin: auto auto 0 auto; }
 .mepr-price-menu.custom .mepr-price-box-button { padding:20px 0; }
 .mepr-price-menu.custom .mepr-price-box-discount { position:absolute;z-index:10;top:-25px;right:-25px;display:flex;padding:18px 12px;font-size:25px;font-weight:400;border-radius:100px;justify-content:center;color:#FFF;background-color:#CC0000; }
-.mepr-price-menu.custom #mepr-price-box-10826,
-.mepr-price-menu.custom #mepr-price-box-18690,
+.mepr-price-menu.custom #mepr-price-box-14006,
 .mepr-price-menu.custom #mepr-price-box-13565,
 .mepr-price-menu.custom #mepr-price-box-44603,
 .mepr-price-menu.custom #mepr-price-box-23719,
-.mepr-price-menu.custom #mepr-price-box-12852 { display:none; }
+.mepr-price-menu.custom #mepr-price-box-12852,
+.mepr-price-menu.custom #mepr-price-box-55581 { display:none; }
 .mpgft-send-gift-submit { color:#091f3d !important;background-color: #ead810 !important; }
 .mpgft-send-gift-submit:hover { color:#ead810 !important;background-color:#091f3d !important; }
 /* coupon default
@@ -180,7 +180,7 @@ a.li-header-user-panel__link--yellow { color:#03163f;border:1px solid #ead810;ba
 
 .li-bullet-blinker { margin:0 5px 0 0;display:inline-block;width:10px;height:10px;background-color:#CC3333;border-radius:50px;animation: blinker 1.8s linear infinite; }
 
-.td-container { width: 95%; }
+.page-template-page_mp-analytics .td-container { width: 95%; }
 .li-mp-analytics-table { font-size: 12px; }
 .li-mp-analytics-table tr:hover { background-color:#EEE; }
 .li-mp-analytics-table tr:first-child { background-color:#CCC; }
