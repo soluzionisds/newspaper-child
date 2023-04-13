@@ -27,7 +27,10 @@ $filename = $filename_prefix."_members_".date("Y-m-d__H-i",time());
 //Generate the CSV file header
 header("Content-type: application/vnd.ms-excel");
 header("Content-Encoding: UTF-8");
-header("Content-type: text/csv; charset=UTF-8");
+//header("Content-type: text/csv; charset=UTF-8");
+header("Content-Type: application/force-download");
+header("Content-Type: application/octet-stream");
+header("Content-Type: application/download");
 header("Content-disposition: csv" . date("Y-m-d") . ".csv");
 header("Content-disposition: filename=".$filename.".csv");
 echo "\xEF\xBB\xBF"; // UTF-8 BOM
