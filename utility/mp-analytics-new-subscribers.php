@@ -1,30 +1,26 @@
 <?php
 
-$txn_query = $wpdb->prepare("SELECT subscription_id
-FROM {$wpdb->prefix}mepr_transactions
+$txn_query = $wpdb->prepare("SELECT first_txn_id
+FROM {$wpdb->prefix}mepr_members
 WHERE created_at > %s
-AND created_at < %s
-AND status = %s
-AND txn_type = %s
-AND subscription_id > 0
-AND user_id != 0
-OR expires_at = %s", $date_from, $date_to, 'complete', 'payment', '0000-00-00 00:00:00');
+AND created_at < %s", $date_from, $date_to);
 
 $txn_ids = $wpdb->get_col($txn_query);
 
 if ( ! empty( $txn_ids ) ) {
   $count = 0;
   ?>
-  <h3>Utenti che si sono iscritti dal <?php echo $date_from; ?> al <?php echo $date_to; ?></h3>
+  <h3>Nuovi abbonati dal <?php echo $date_from; ?> al <?php echo $date_to; ?></h3>
   <table class="li-mp-analytics-table">
   <tr><th>Mail</th><th>User</th><th>Membership</th><th>Subscription</th><th>Subscription Created At</th><th>Transaction Expired At</th></tr>
   <?php
   foreach ( $txn_ids as $txn_id ) {
-    $subscription = new MeprSubscription($txn_id);
-    $user = new MeprUser($subscription->user_id);
-    $product = new MeprProduct($subscription->product_id);
+    $txn = new MeprTransaction($txn_id);
+    $user = new MeprUser($txn->user_id);
+    $subscription = new MeprSubscription($txn->subscription_id);
+    $product = new MeprProduct($txn->product_id);
 
-    if($subscription->created_at >= $date_from && $subscription->created_at <= $date_to) {
+    if($txn->status = 'complete' && $txn->subscription_id > 0 && $txn->user_id != 0) {
       echo '<tr>';
       echo '<td>'.$user->user_email.'</td>';
       $csv_output .= $user->user_email . ", ";
