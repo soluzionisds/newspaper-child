@@ -1,8 +1,7 @@
 <?php
-/* ----------------------------------------------------------------------------
-    add featured image to JSON
- */
+
 add_action( 'rest_api_init', 'register_rest_images' );
+
 function register_rest_images() {
     register_rest_field( array( 'post' ),
         'fimg_url',
@@ -13,6 +12,7 @@ function register_rest_images() {
         )
     );
 }
+
 function get_rest_featured_image( $object, $field_name, $request ) {
     if ( $object['featured_media'] ) {
         $img = wp_get_attachment_image_src( $object['featured_media'], 'large' ); // change 'thumbnail' to other image size if needed
@@ -24,8 +24,7 @@ function get_rest_featured_image( $object, $field_name, $request ) {
     return false;
 }
 
-/* ----------------------------------------------------------------------------
-    add user role to JSON
+/* roles */
 
 function get_user_roles($object, $field_name, $request) {
   return get_userdata($object['id'])->roles;
@@ -40,4 +39,3 @@ add_action('rest_api_init', function() {
     )
   ));
 });
-*/

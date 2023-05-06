@@ -46,8 +46,7 @@ function init_fb_data(){
 
 function execute_call($curl, $data){
 	curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data) );
-	//error_log(print_r(curl_exec($curl),true),LOG_TYPE,__DIR__.'/debug.log');
-	curl_exec($curl);
+	error_log(print_r(curl_exec($curl),true),LOG_TYPE,__DIR__.'/debug.log');
 	curl_close($curl);
 }
 
