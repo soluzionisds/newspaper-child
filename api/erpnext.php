@@ -46,7 +46,8 @@ function execute_call_erpnext($curl, $url, $type_request, $type, $data)
     }
     $result = curl_exec($curl);
     error_log($type_request . ' ' . $url . "\n", LOG_TYPE, __DIR__ . '/debug-erpnext.log');
-    error_log('[' . date("F j, Y, g:i a e O") . ']' . curl_getinfo($curl, CURLINFO_RESPONSE_CODE) . ' ' . print_r($result, true) . "\n", LOG_TYPE, __DIR__ . '/debug-erpnext.log');
+	error_log('[' . date("F j, Y, g:i a e O") . '] Input: ' . print_r($json_data, true) . "\n", LOG_TYPE, __DIR__ . '/debug-erpnext.log');
+    error_log('[' . date("F j, Y, g:i a e O") . '] ' . curl_getinfo($curl, CURLINFO_RESPONSE_CODE) . ' ' . print_r($result, true) . "\n", LOG_TYPE, __DIR__ . '/debug-erpnext.log');
     error_log(print_r(curl_errno($curl) . "\n\n", true), LOG_TYPE, __DIR__ . '/debug-erpnext.log');
     return $result;
 }
@@ -61,6 +62,7 @@ function environmental_deduction_stripe($total){
 }
 function create_payment(
     $api,
+    $id_transaction,
     $created_at,
     $method,
     $username,
@@ -85,6 +87,7 @@ function create_payment(
     $data = array();
     $data['data']['docstatus'] = 1;
     $data['data']['naming_series'] = 'ACC-PAY-.YYYY.-';
+    $data['data']['mepr_name'] = 'en-pe-'.$id_transaction;
     $data['data']['payment_type'] = "Receive";
     $data['data']['payment_order_status'] = "Initiated";
     $data['data']['posting_date'] = $created_at;
@@ -114,21 +117,21 @@ function create_payment(
 		$data['data']['deductions'] = array();
 		$data['data']['deductions'][0]['doctype'] = 'Payment Entry Deduction';
 		$data['data']['deductions'][0]['docstatus'] = 1;
-		$data['data']['deductions'][0]['account'] = 'Stripe - LI';
-		$data['data']['deductions'][0]['cost_center'] = 'Main - LI';
+		$data['data']['deductions'][0]['account'] = 'Stripe Fee - LI';
+		$data['data']['deductions'][0]['cost_center'] = 'MemberPress - LI';
 		$data['data']['deductions'][0]['amount'] = $stripe_deduction;
 		$data['data']['deductions'][1]['doctype'] = 'Payment Entry Deduction';
 		$data['data']['deductions'][1]['docstatus'] = 1;
-		$data['data']['deductions'][1]['account'] = 'Contributo ambientale - LI';
-		$data['data']['deductions'][1]['cost_center'] = 'Main - LI';
+		$data['data']['deductions'][1]['account'] = 'Stripe Climate Fee - LI';
+		$data['data']['deductions'][1]['cost_center'] = 'MemberPress - LI';
 		$data['data']['deductions'][1]['amount'] = $environmental_deduction_stripe;
 	}
 	elseif($method=="PayPal"){
 		$data['data']['deductions'] = array();
 		$data['data']['deductions'][0]['doctype'] = 'Payment Entry Deduction';
 		$data['data']['deductions'][0]['docstatus'] = 1;
-		$data['data']['deductions'][0]['account'] = 'PayPal - LI';
-		$data['data']['deductions'][0]['cost_center'] = 'Main - LI';
+		$data['data']['deductions'][0]['account'] = 'PayPal Fee - LI';
+		$data['data']['deductions'][0]['cost_center'] = 'MemberPress - LI';
 		$data['data']['deductions'][0]['amount'] = $paypal_deduction;
 	}
     $data['data']['references'] = array();
@@ -145,6 +148,7 @@ function create_payment(
 }
 function create_invoice(
     $api,
+	$id_transaction,
     $created_at,
     $expires_at,
     $username,
@@ -161,6 +165,7 @@ function create_invoice(
     $data['data']['docstatus'] = 1;
     $data['data']['title'] = $username;
     $data['data']['naming_series'] = 'ACC-SINV-.YYYY.-';
+    $data['data']['mepr_name'] = 'en-si-'.$id_transaction;
     $data['data']['customer'] = $username;
     $data['data']['company'] = "L'Indipendente S.r.l.";
     $data['data']['company_tax_id'] = 'tax-0';
@@ -169,7 +174,7 @@ function create_invoice(
     $data['data']['is_return'] = 0;
     $data['data']['update_billed_amount_in_sales_order'] = 0;
     $data['data']['is_debit_note'] = 0;
-    $data['data']['cost_center'] = 'Main - LI';
+    $data['data']['cost_center'] = 'MemberPress - LI';
     $data['data']['currency'] = 'EUR';
     $data['data']['conversion_rate'] = 1.0;
     $data['data']['selling_price_list'] = 'Standard Selling';
@@ -222,13 +227,16 @@ function create_invoice(
     $data['data']['total_commission'] = 0.0;
     $data['data']['group_same_items'] = 0;
     $data['data']['language'] = 'en';
-    $data['data']['status'] = 'Unpaid';
-    $data['data']['customer_group'] = 'Individual';
+    if($total!==$discount)$data['data']['status'] = 'Unpaid';
+	else $data['data']['status'] = 'Paid';
+    $data['data']['customer_group'] = 'MemberPress';
     $data['data']['is_internal_customer'] = 0;
-    $data['data']['is_discounted'] = 0;
+    if($discount===0)$data['data']['is_discounted'] = 0;
+	else $data['data']['is_discounted'] = 1;
     $data['data']['remarks'] = "No Remarks";
     $data['data']['customer_fiscal_code'] = "0";
     $data['data']['group_same_items'] = 0;
+    $data['data']['mepr_coupon'] = $coupon;
     $data['data']['items'] = array();
     $data['data']['items'][0] = array();
     $data['data']['items'][0]['docstatus'] = 1;
@@ -275,7 +283,7 @@ function create_invoice(
     $data['data']['items'][0]['actual_batch_qty'] = 0.0;
     $data['data']['items'][0]['actual_qty'] = 0.0;
     $data['data']['items'][0]['delivered_qty'] = 0.0;
-    $data['data']['items'][0]['cost_center'] = 'Main - LI';
+    $data['data']['items'][0]['cost_center'] = 'MemberPress - LI';
     $data['data']['payment_schedule'] = array();
     $data['data']['payment_schedule'][0] = array();
     $data['data']['payment_schedule'][0]['docstatus'] = 1;
@@ -299,7 +307,7 @@ function create_invoice(
     $data['data']['taxes'][0]['included_in_print_rate'] = 1;
     $data['data']['taxes'][0]['tax_exemption_reason'] = 'N4-Esenti';
     $data['data']['taxes'][0]['included_in_paid_amount'] = 1;
-    $data['data']['taxes'][0]['cost_center'] = 'Main - LI';
+    $data['data']['taxes'][0]['cost_center'] = 'MemberPress - LI';
     $data['data']['taxes'][0]['rate'] = 4.0;
     $data['data']['taxes'][0]['account_currency'] = 'EUR';
     $data['data']['taxes'][0]['total'] = $total;
@@ -318,7 +326,7 @@ function create_customer(
     $data['data']['first_name'] = $first_name;
     $data['data']['last_name'] = $last_name;
     $data['data']['customer_type'] = 'Individual';
-    $data['data']['customer_group'] = 'Individual';
+    $data['data']['customer_group'] = 'MemberPress';
     $data['data']['territory'] = 'Italy';
     $data['data']['fiscal_code'] = '0';
     $data['data']['recipient_code'] = '0000000';
@@ -434,22 +442,24 @@ function create_subscription_plan(
     $data['data']['cost'] = $total;
     $data['data']['billing_interval'] = $membership_period_type;
     $data['data']['billing_interval_count'] = $membership_period;
-    $data['data']['cost__center'] = 'Main - LI';
+    $data['data']['cost_center'] = 'MemberPress - LI';
     execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription%20Plan', 'POST', 'json', $data);
 }
 function create_subscription(
     $api,
     $subscription_id,
+	$mepr_subscription,
     $username,
     $created_at,
     $membership_title
 ) {
     $data = array();
-    $data['data']['doctype'] = "Subscription";
-    $data['data']['mepr'] = $subscription_id;
+    $data['data']['doctype'] = 'Subscription';
+    $data['data']['mepr_id'] = $subscription_id;
+    $data['data']['mepr_name'] = 'mp-sub-id-'.$subscription_id;
     $data['data']['party_type'] = "Customer";
     $data['data']['party'] = $username;
-    $data['data']['company'] = "L'Indipendente S.r.l.";
+    $data['data']['company'] = 'L\'Indipendente S.r.l.';
     $data['data']['start_date'] = $created_at;
     $data['data']['follow_calendar_months'] = 0;
     $data['data']['generate_new_invoices_past_due_date'] = 0;
@@ -457,18 +467,18 @@ function create_subscription(
     $data['data']['days_until_due'] = 0;
     $data['data']['cancel_at_period_end'] = 0;
     $data['data']['generate_invoice_at_period_start'] = 0;
-    $data['data']['sales_tax_template'] = "Italy VAT 4% - LI";
-    $data['data']['apply_additional_discount'] = "";
+    $data['data']['sales_tax_template'] = 'Italy VAT 4% - LI';
+    $data['data']['apply_additional_discount'] = '';
     $data['data']['additional_discount_percentage'] = 0.0;
     $data['data']['additional_discount_amount'] = 0.0;
     $data['data']['submit_invoice'] = 0;
-    $data['data']['cost_center'] = "Main - LI";
+    $data['data']['cost_center'] = 'MemberPress - LI';
     $data['data']['plans'] = array();
     $data['data']['plans'][0] = array();
     $data['data']['plans'][0]['name'] = $membership_title;
     $data['data']['plans'][0]['plan'] = $membership_title;
     $data['data']['plans'][0]['qty'] = 1;
-    $data['data']['plans'][0]['doctype'] = "Subscription Plan Detail";
+    $data['data']['plans'][0]['doctype'] = 'Subscription Plan Detail';
     return json_decode(execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription', 'POST', 'json', $data), true);
 }
 function cancel_subscription(
@@ -484,6 +494,7 @@ function erpnext_transaction_completed($event)
     $id_transaction = $event->get_data()->rec->id;
     $webhook_url = BASE_URL . "transactions/$id_transaction";
     $transaction = get_from_webhook($webhook_url);
+	$trans_num = $transaction->trans_num;
     $username = $transaction->member->username;
     $membership_id = '' . $transaction->membership->id;
     $membership_title = '' . $transaction->membership->title;
@@ -498,16 +509,21 @@ function erpnext_transaction_completed($event)
     $trial_amount = round((float) $transaction->subscription->trial_amount, 2, PHP_ROUND_HALF_EVEN);
     if ($trial_amount > 0) $discount = round((float) $total - $trial_amount, 2, PHP_ROUND_HALF_EVEN);
     else $discount = 0;
+	if($total==0) {
+		$total = round((float) $transaction->membership->price, 2, PHP_ROUND_HALF_EVEN);
+		$discount = $total;
+	}
 	if($transaction->coupon !== "0") $coupon = $transaction->coupon->coupon_code;
 	else $coupon = "0";
     //init API
     $api = init_erpnext_api();
 	if("0"!==$transaction->subscription){
-    	$subscription_name = json_decode(execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription', 'GET', 'x-www-form-urlencoded', 'filters=[["Subscription","mepr","=","' . $transaction->subscription->id . '"]]'))->data[0]->name;
+    	$subscription_name = json_decode(execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription', 'GET', 'x-www-form-urlencoded', 'filters=[["Subscription","mepr_id","=","' . $transaction->subscription->id . '"]]'))->data[0]->name;
     	$subscription = json_decode(execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription/' . $subscription_name, 'GET', null, null), true);
-		if (count($subscription['data']['invoices']) > 1) {
+		//if (count($subscription['data']['invoices']) > 1) {
 			$invoice = create_invoice(
 				$api,
+				$trans_num,
 				$created_at,
 				$expires_at,
 				$username,
@@ -527,13 +543,13 @@ function erpnext_transaction_completed($event)
 				'parent' => $subscription_name,
 				'idx' => count($subscription['data']['invoices']) + 1
 			);
-		}
+		//}
 		$invoice_name = $subscription['data']['invoices'][count($subscription['data']['invoices']) - 1]['invoice'];
-		if(count($subscription['data']['invoices']) == 1){
+		/*if(count($subscription['data']['invoices']) == 1){
 			$invoice = json_decode(execute_call_erpnext($api, ROOT_URL . '/api/resource/Sales%20Invoice/' . $invoice_name, 'GET', null,null), true);
 			$invoice['data']['to_date'] = $expires_at;
 			execute_call_erpnext($api, ROOT_URL . '/api/resource/Sales%20Invoice/' . $invoice_name, 'PUT', 'json', $invoice);
-		}
+		}*/
 		$subscription['data']['current_invoice_start'] = $created_at;
 		$subscription['data']['current_invoice_end'] = $expires_at;
 		execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription/' . $subscription_name, 'PUT', 'json', $subscription);
@@ -560,6 +576,7 @@ function erpnext_transaction_completed($event)
 		}
 		$invoice = create_invoice(
 			$api,
+			$trans_num,
 			$created_at,
 			$expires_at,
 			$username,
@@ -572,14 +589,17 @@ function erpnext_transaction_completed($event)
 		);
 		$invoice_name = $invoice->data->name;
 	}
-	create_payment(
-		$api,
-		$created_at,
-		$method,
-		$username,
-		$total,
-		$invoice_name
-	);
+	if($total != $discount){
+		create_payment(
+			$api,
+			$trans_num,
+			$created_at,
+			$method,
+			$username,
+			$total,
+			$invoice_name
+		);
+	}
     curl_close($api);
 }
 function erpnext_signup_completed($event)
@@ -639,7 +659,7 @@ function erpnext_subscription_created($event)
     $email = $subscription->member->email;
     $membership_id = '' . $subscription->membership->id;
     $membership_title = '' . $subscription->membership->title;
-    $membership_period = $subscription->membership->expire_after;
+    $membership_period = intval($subscription->membership->expire_after);
     $membership_period_type = ucfirst(rtrim($subscription->membership->period_type, " s"));
     $total = round((float) $subscription->total, 2, PHP_ROUND_HALF_EVEN);
     $created_at = substr($subscription->created_at, 0, 10);
@@ -709,15 +729,18 @@ function erpnext_subscription_created($event)
             $membership_period_type
         );
     }
+	$mepr_subscription = $subscription->subscr_id;
     $subscription = create_subscription(
         $api,
         $subscription->id,
+		$mepr_subscription,
         $username,
         $created_at,
         $membership_title
     );
-    $invoice = create_invoice(
+    /*$invoice = create_invoice(
         $api,
+		null,
         $created_at,
         $expires_at,
         $username,
@@ -727,9 +750,9 @@ function erpnext_subscription_created($event)
         $method,
         $discount,
 		$coupon
-    );
+    );*/
     $subscription_name = $subscription['data']['name'];
-    $subscription['data']['invoices'][] = array(
+    /*$subscription['data']['invoices'][] = array(
         'docstatus' => 0,
         'invoice' => $invoice->data->name,
         'document_type' => 'Sales Invoice',
@@ -737,7 +760,7 @@ function erpnext_subscription_created($event)
         'parentfield' => 'invoices',
         'parent' => $subscription_name,
         'idx' => count($subscription['data']['invoices']) + 1
-    );
+    );*/
     $subscription['data']['status'] = "Unpaid";
     $subscription['data']['current_invoice_start'] = $created_at;
     $subscription['data']['current_invoice_end'] = $expires_at;
