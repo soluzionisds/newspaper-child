@@ -9,7 +9,7 @@ if (strpos($_SERVER['SERVER_NAME'], "www.lindipendente.online") !== false){
     require_once get_stylesheet_directory() . '/api/config-erpnext--staging.php';
 }
 
-function get_from_webhook($webhook_url)
+function get_from_webhook_en_api($webhook_url)
 {
     $ch = curl_init($webhook_url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -499,7 +499,7 @@ function erpnext_transaction_completed($event)
 {
     $id_transaction = $event->get_data()->rec->id;
     $webhook_url = BASE_URL . "transactions/$id_transaction";
-    $transaction = get_from_webhook($webhook_url);
+    $transaction = get_from_webhook_en_api($webhook_url);
 	$trans_num = $transaction->trans_num;
     $username = $transaction->member->username;
     $membership_id = '' . $transaction->membership->id;
@@ -612,7 +612,7 @@ function erpnext_signup_completed($event)
 {
     $id_member = $event->get_data()->rec->ID;
     $webhook_url = BASE_URL . "members/$id_member";
-    $signup = get_from_webhook($webhook_url);
+    $signup = get_from_webhook_en_api($webhook_url);
     $username = $signup->username;
     $first_name = $signup->first_name;
     $last_name = $signup->last_name;
@@ -658,7 +658,7 @@ function erpnext_subscription_created($event)
 {
     $id_subscription = $event->get_data()->rec->id;
     $webhook_url = BASE_URL . "subscriptions/$id_subscription";
-    $subscription = get_from_webhook($webhook_url);
+    $subscription = get_from_webhook_en_api($webhook_url);
     $username = $subscription->member->username;
     $first_name = $subscription->member->first_name;
     $last_name = $subscription->member->last_name;
@@ -792,12 +792,12 @@ function erpnext_subscription_expired($subscription, $transaction)
     error_log(print_r($subscription . "\n\n", true), LOG_TYPE, __DIR__ . '/debug-erpnext-expired.log');
     error_log(print_r($transaction . "\n\n", true), LOG_TYPE, __DIR__ . '/debug-erpnext-expired.log');
 }
-add_action('mepr-event-transaction-completed', 'erpnext_transaction_completed', 999);
-add_action('mepr-event-member-signup-completed', 'erpnext_signup_completed', 999);
-add_action('mepr-event-subscription-created', 'erpnext_subscription_created', 999);
-add_action('mepr-event-subscription-stopped', 'erpnext_subscription_stopped', 999);
-add_action('mepr-event-transaction-refunded', 'erpnext_transaction_refunded', 999);
-add_action('mepr-event-subscription-expired', 'erpnext_subscription_expired', 999, 2);
+add_action('mepr-event-transaction-completed', 'erpnext_transaction_completed', 9992);
+add_action('mepr-event-member-signup-completed', 'erpnext_signup_completed', 9992);
+add_action('mepr-event-subscription-created', 'erpnext_subscription_created', 9992);
+add_action('mepr-event-subscription-stopped', 'erpnext_subscription_stopped', 9992);
+add_action('mepr-event-transaction-refunded', 'erpnext_transaction_refunded', 9992);
+add_action('mepr-event-subscription-expired', 'erpnext_subscription_expired', 9992, 2);
 /**
  * END API ERPNEXT
  */

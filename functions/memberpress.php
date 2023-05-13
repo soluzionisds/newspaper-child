@@ -28,7 +28,7 @@ add_action( 'mepr-txn-store', function ( $txn ) {
       $sub->store();
     }
   }
-}, 9999 );
+}, 9991 );
 
 // Turn off Auto rebill for offline gateway when a transaction expires naturally.
 add_action('mepr-txn-expired', function($txn) {

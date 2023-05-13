@@ -6,7 +6,7 @@
  
 require_once get_stylesheet_directory() . '/api/config-facebook.php';
 
-function get_from_webhook($webhook_url){
+function get_from_webhook_fb_api($webhook_url){
 	$ch = curl_init($webhook_url);
 	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
 	curl_setopt( $ch, CURLOPT_CUSTOMREQUEST, "GET" );
@@ -54,7 +54,7 @@ function fb_purchase($event)
 {
 	$id_transaction = $event->get_data()->rec->id;
 	$webhook_url = BASE_URL."transactions/$id_transaction";
-	$response = get_from_webhook($webhook_url);
+	$response = get_from_webhook_fb_api($webhook_url);
 	if(isset($_COOKIE['_fbp'])) $fbp = $_COOKIE['_fbp'];
 	if(isset($_COOKIE['_fbc'])) $fbc = $_COOKIE['_fbc'];
 	
@@ -102,7 +102,7 @@ function fb_signup($event)
 {
 	$id = $event->get_data()->rec->ID;
 	$webhook_url = BASE_URL."members/$id";
-	$response = get_from_webhook($webhook_url);
+	$response = get_from_webhook_fb_api($webhook_url);
 	if(isset($_COOKIE['_fbp'])) $fbp = $_COOKIE['_fbp'];
 	if(isset($_COOKIE['_fbc'])) $fbc = $_COOKIE['_fbc'];
 	
@@ -124,8 +124,8 @@ function fb_signup($event)
 	execute_call($api, $data);
 }
 
-add_action('mepr-event-transaction-completed', 'fb_purchase');
-add_action('mepr-event-member-signup-completed', 'fb_signup');
+add_action('mepr-event-transaction-completed', 'fb_purchase', 9993);
+add_action('mepr-event-member-signup-completed', 'fb_signup', 9993);
 
 /**
  * END API FACEBOOK
