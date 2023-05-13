@@ -2,7 +2,13 @@
 /**
  * ERPNEXT API
  */
-require_once get_stylesheet_directory() . '/api/config-erpnext.php';
+
+if (strpos($_SERVER['SERVER_NAME'], "www.lindipendente.online") !== false){
+    require_once get_stylesheet_directory() . '/api/config-erpnext--prod.php';
+} else {
+    require_once get_stylesheet_directory() . '/api/config-erpnext--staging.php';
+}
+
 function get_from_webhook($webhook_url)
 {
     $ch = curl_init($webhook_url);
@@ -454,12 +460,12 @@ function create_subscription(
     $membership_title
 ) {
     $data = array();
-    $data['data']['doctype'] = 'Subscription';
+    $data['data']['doctype'] = "Subscription";
     $data['data']['mepr_id'] = $subscription_id;
     $data['data']['mepr_name'] = 'mp-sub-id-'.$subscription_id;
     $data['data']['party_type'] = "Customer";
     $data['data']['party'] = $username;
-    $data['data']['company'] = 'L\'Indipendente S.r.l.';
+    $data['data']['company'] = "L'Indipendente S.r.l.";
     $data['data']['start_date'] = $created_at;
     $data['data']['follow_calendar_months'] = 0;
     $data['data']['generate_new_invoices_past_due_date'] = 0;
@@ -467,8 +473,8 @@ function create_subscription(
     $data['data']['days_until_due'] = 0;
     $data['data']['cancel_at_period_end'] = 0;
     $data['data']['generate_invoice_at_period_start'] = 0;
-    $data['data']['sales_tax_template'] = 'Italy VAT 4% - LI';
-    $data['data']['apply_additional_discount'] = '';
+    $data['data']['sales_tax_template'] = "Italy VAT 4% - LI";
+    $data['data']['apply_additional_discount'] = "";
     $data['data']['additional_discount_percentage'] = 0.0;
     $data['data']['additional_discount_amount'] = 0.0;
     $data['data']['submit_invoice'] = 0;
@@ -478,7 +484,7 @@ function create_subscription(
     $data['data']['plans'][0]['name'] = $membership_title;
     $data['data']['plans'][0]['plan'] = $membership_title;
     $data['data']['plans'][0]['qty'] = 1;
-    $data['data']['plans'][0]['doctype'] = 'Subscription Plan Detail';
+    $data['data']['plans'][0]['doctype'] = "Subscription Plan Detail";
     return json_decode(execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription', 'POST', 'json', $data), true);
 }
 function cancel_subscription(
