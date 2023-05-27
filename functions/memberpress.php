@@ -108,28 +108,6 @@ function cp_filter_default_phone_input_country( $args ) {
 }
 add_filter( 'mepr-phone-input-config', 'cp_filter_default_phone_input_country' );
 
-/* Substitute a translation string to use HTML */
-add_action('wp_head', function() { ?>
-<script>
-(function($) {
-  $(document).ready(function() {
-    var rowProratio = $('.account #mepr-account-subscriptions-table .mepr-account-terms');
-		var rowCancelSubscription  = $('.account .mp_wrapper .mepr_updated');
-    if(rowProratio.length) {
-      rowProratio.html(function(i, html) {
-        return html.replace('(compensazione)', '(<a href="/termini-e-condizioni" target="_blank">compensazione</a>)');
-      });
-    }
-    if(rowCancelSubscription.length) {
-      rowCancelSubscription.html(function(i, html) {
-        return html.replace('Il rinnovo automatico del tuo abbonamento è stato cancellato con successo.', 'Il rinnovo automatico del tuo abbonamento è stato cancellato con successo. Facci sapere come possiamo migliorare, <a href="https://us2.list-manage.com/survey?u=fc6a2373726095bfbf68aad96&id=53bdbf3acb&attribution=false" target="_blank">clicca qui</a>.');
-      });
-    }
-	});
-})(jQuery);
-</script>
-<?php });
-
 /**
  * PROBLEM - Stripe payments fail when the tagDiv Composer plugin is activated. Other themes that come with tagDiv Composer bundled may run into the same issue.
  * SOLUTION - Please add this code snippet using.
