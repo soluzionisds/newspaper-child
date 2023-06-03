@@ -2,13 +2,12 @@
 /**
  * ERPNEXT API
  */
-
+date_default_timezone_set('Europe/Rome');
 if (strpos($_SERVER['SERVER_NAME'], "www.lindipendente.online") !== false){
     require_once get_stylesheet_directory() . '/api/config-erpnext--prod.php';
 } else {
     require_once get_stylesheet_directory() . '/api/config-erpnext--staging.php';
 }
-
 function get_from_webhook_en_api($webhook_url)
 {
     $ch = curl_init($webhook_url);
@@ -37,7 +36,6 @@ function init_erpnext_api()
 }
 function execute_call_erpnext($curl, $url, $type_request, $type, $data)
 {
-    date_default_timezone_set('Europe/Rome');
     $header = array();
     $header[] = 'Authorization: Basic ' . base64_encode(ERPNEXT_API_KEY . ':' . ERPNEXT_API_SECRET);
     if (!is_null($type)) $header[] = 'Content-Type: application/' . $type;
@@ -454,15 +452,14 @@ function create_subscription_plan(
 function create_subscription(
     $api,
     $subscription_id,
-	$mepr_subscription,
     $username,
     $created_at,
     $membership_title
 ) {
     $data = array();
     $data['data']['doctype'] = "Subscription";
-    $data['data']['mepr_id'] = $subscription_id;
-    $data['data']['mepr_name'] = 'mp-sub-id-'.$subscription_id;
+    $data['data']['mepr_name'] = "mp-sub-id-$subscription_id";
+    $data['data']['mepr_id'] = "$subscription_id";
     $data['data']['party_type'] = "Customer";
     $data['data']['party'] = $username;
     $data['data']['company'] = "L'Indipendente S.r.l.";
@@ -502,11 +499,14 @@ function erpnext_transaction_completed($event)
     $transaction = get_from_webhook_en_api($webhook_url);
 	$trans_num = $transaction->trans_num;
     $username = $transaction->member->username;
+	$first_name = $transaction->member->first_name;
+	$last_name = $transaction->member->last_name;
+	$email = $transaction->member->email;
     $membership_id = '' . $transaction->membership->id;
     $membership_title = '' . $transaction->membership->title;
     $total = round((float) $transaction->total, 2, PHP_ROUND_HALF_EVEN);
-    $created_at = substr($transaction->created_at, 0, 10);
-    $expires_at = substr($transaction->expires_at, 0, 10);
+    $created_at = date("Y-m-d",strtotime($transaction->created_at)+7200);
+    $expires_at = date("Y-m-d",strtotime($transaction->expires_at)+7200);
     $payment_gateway = $transaction->gateway;
     if ($payment_gateway == PAYMENT_OFFLINE) $method = 'Bank Draft';
     else if ($payment_gateway == PAYMENT_STRIPE) $method = 'Stripe';
@@ -523,39 +523,101 @@ function erpnext_transaction_completed($event)
 	else $coupon = "0";
     //init API
     $api = init_erpnext_api();
+    execute_call_erpnext($api, ROOT_URL . '/api/resource/Customer/' . $username, 'GET', null, null);
+    if (curl_getinfo($api, CURLINFO_RESPONSE_CODE) == 404) {
+        create_customer(
+            $api,
+            $username,
+            $first_name,
+            $last_name
+        );
+        execute_call_erpnext($api, ROOT_URL . '/api/resource/Address/' . $username . '-Billing', 'GET', null, null);
+        if (curl_getinfo($api, CURLINFO_RESPONSE_CODE) == 404) {
+            create_address(
+                $api,
+                $username,
+                'Billing'
+            );
+        }
+        execute_call_erpnext($api, ROOT_URL . '/api/resource/Address/' . $username . '-Shipping', 'GET', null, null);
+        if (curl_getinfo($api, CURLINFO_RESPONSE_CODE) == 404) {
+            create_address(
+                $api,
+                $username,
+                'Shipping'
+            );
+        }
+        execute_call_erpnext($api, ROOT_URL . '/api/resource/Contact/' . $username . '-' . $username, 'GET', null, null);
+        if (curl_getinfo($api, CURLINFO_RESPONSE_CODE) == 404) {
+            create_contact(
+                $api,
+                $username,
+                $email
+            );
+        }
+    }
+    execute_call_erpnext($api, ROOT_URL . '/api/resource/Item/' . $membership_id, 'GET', null, null);
+    if (curl_getinfo($api, CURLINFO_RESPONSE_CODE) == 404) {
+        create_item(
+            $api,
+            $membership_id,
+            $membership_title,
+            $total
+        );
+    }
+    execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription%20Plan/' . str_replace(' ', '%20', $membership_title), 'GET', null, null);
+    if (curl_getinfo($api, CURLINFO_RESPONSE_CODE) == 404) {
+        create_subscription_plan(
+            $api,
+            $membership_id,
+            $membership_title,
+            $total,
+            $membership_period,
+            $membership_period_type
+        );
+    }	
 	if("0"!==$transaction->subscription){
-    	$subscription_name = json_decode(execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription', 'GET', 'x-www-form-urlencoded', 'filters=[["Subscription","mepr_id","=","' . $transaction->subscription->id . '"]]'))->data[0]->name;
-    	$subscription = json_decode(execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription/' . $subscription_name, 'GET', null, null), true);
-		//if (count($subscription['data']['invoices']) > 1) {
-			$invoice = create_invoice(
+    	$data = json_decode(execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription', 'GET', 'x-www-form-urlencoded', 'filters=[["Subscription","mepr_id","=","' . $transaction->subscription->id . '"]]'))->data;
+		if(empty($data)){
+			$mepr_subscription_id = $transaction->subscription->id;
+            $subscription_name = 'mp-sub-id-'.$mepr_subscription_id;
+			$subscription = create_subscription(
 				$api,
-				$trans_num,
-				$created_at,
-				$expires_at,
+				$mepr_subscription_id,
 				$username,
-				$total,
-				$membership_id,
-				$membership_title,
-				$method,
-				$discount,
-				$coupon
+				$created_at,
+				$membership_title
 			);
-			$subscription['data']['invoices'][] = array(
-				'docstatus' => 0,
-				'invoice' => $invoice->data->name,
-				'document_type' => 'Sales Invoice',
-				'doctype' => 'Subscription Invoice',
-				'parentfield' => 'invoices',
-				'parent' => $subscription_name,
-				'idx' => count($subscription['data']['invoices']) + 1
-			);
-		//}
+			$subscription['data']['status'] = "Unpaid";
+			$subscription['data']['current_invoice_start'] = $created_at;
+			$subscription['data']['current_invoice_end'] = $expires_at;
+			execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription/' . $subscription_name, 'PUT', 'json', $subscription);
+		}
+		else $subscription_name = $data[0]->name;
+    	$subscription = json_decode(execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription/' . $subscription_name, 'GET', null, null), true);
+		$invoice = create_invoice(
+			$api,
+			$trans_num,
+			$created_at,
+			$expires_at,
+			$username,
+			$total,
+			$membership_id,
+			$membership_title,
+			$method,
+			$discount,
+			$coupon
+		);
+		$subscription['data']['invoices'][] = array(
+			'docstatus' => 0,
+			'invoice' => $invoice->data->name,
+			'document_type' => 'Sales Invoice',
+			'doctype' => 'Subscription Invoice',
+			'parentfield' => 'invoices',
+			'parent' => $subscription_name,
+			'idx' => count($subscription['data']['invoices']) + 1
+		);
 		$invoice_name = $subscription['data']['invoices'][count($subscription['data']['invoices']) - 1]['invoice'];
-		/*if(count($subscription['data']['invoices']) == 1){
-			$invoice = json_decode(execute_call_erpnext($api, ROOT_URL . '/api/resource/Sales%20Invoice/' . $invoice_name, 'GET', null,null), true);
-			$invoice['data']['to_date'] = $expires_at;
-			execute_call_erpnext($api, ROOT_URL . '/api/resource/Sales%20Invoice/' . $invoice_name, 'PUT', 'json', $invoice);
-		}*/
 		$subscription['data']['current_invoice_start'] = $created_at;
 		$subscription['data']['current_invoice_end'] = $expires_at;
 		execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription/' . $subscription_name, 'PUT', 'json', $subscription);
@@ -668,7 +730,7 @@ function erpnext_subscription_created($event)
     $membership_period = intval($subscription->membership->expire_after);
     $membership_period_type = ucfirst(rtrim($subscription->membership->period_type, " s"));
     $total = round((float) $subscription->total, 2, PHP_ROUND_HALF_EVEN);
-    $created_at = substr($subscription->created_at, 0, 10);
+    $created_at = date("Y-m-d",strtotime($subscription->created_at)+7200);;
 	$expires_at = '';
     $payment_gateway = $subscription->gateway;
     if ($payment_gateway == PAYMENT_OFFLINE) $method = 'Bank Draft';
@@ -735,38 +797,14 @@ function erpnext_subscription_created($event)
             $membership_period_type
         );
     }
-	$mepr_subscription = $subscription->subscr_id;
     $subscription = create_subscription(
         $api,
-        $subscription->id,
-		$mepr_subscription,
+        $id_subscription,
         $username,
         $created_at,
         $membership_title
     );
-    /*$invoice = create_invoice(
-        $api,
-		null,
-        $created_at,
-        $expires_at,
-        $username,
-        $total,
-        $membership_id,
-        $membership_title,
-        $method,
-        $discount,
-		$coupon
-    );*/
     $subscription_name = $subscription['data']['name'];
-    /*$subscription['data']['invoices'][] = array(
-        'docstatus' => 0,
-        'invoice' => $invoice->data->name,
-        'document_type' => 'Sales Invoice',
-        'doctype' => 'Subscription Invoice',
-        'parentfield' => 'invoices',
-        'parent' => $subscription_name,
-        'idx' => count($subscription['data']['invoices']) + 1
-    );*/
     $subscription['data']['status'] = "Unpaid";
     $subscription['data']['current_invoice_start'] = $created_at;
     $subscription['data']['current_invoice_end'] = $expires_at;
@@ -777,7 +815,7 @@ function erpnext_subscription_stopped($event)
 {
     $id_subscription = $event->get_data()->rec->id;
     $api = init_erpnext_api();
-    $subscription_name = json_decode(execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription', 'GET', 'x-www-form-urlencoded', 'filters=[["Subscription","mepr","=","' . $id_subscription . '"]]'))->data[0]->name;
+    $subscription_name = json_decode(execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription', 'GET', 'x-www-form-urlencoded', 'filters=[["Subscription","mepr_id","=","' . $id_subscription . '"]]'))->data[0]->name;
     cancel_subscription(
         $api,
         $subscription_name
@@ -796,8 +834,8 @@ add_action('mepr-event-transaction-completed', 'erpnext_transaction_completed', 
 add_action('mepr-event-member-signup-completed', 'erpnext_signup_completed', 9992);
 add_action('mepr-event-subscription-created', 'erpnext_subscription_created', 9992);
 add_action('mepr-event-subscription-stopped', 'erpnext_subscription_stopped', 9992);
-add_action('mepr-event-transaction-refunded', 'erpnext_transaction_refunded', 9992);
-add_action('mepr-event-subscription-expired', 'erpnext_subscription_expired', 9992, 2);
+//add_action('mepr-event-transaction-refunded', 'erpnext_transaction_refunded', 9992);
+//add_action('mepr-event-subscription-expired', 'erpnext_subscription_expired', 9992, 2);
 /**
  * END API ERPNEXT
  */
