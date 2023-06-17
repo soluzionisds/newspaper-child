@@ -2,7 +2,6 @@
 /**
  * ERPNEXT API
  */
-date_default_timezone_set('Europe/Rome');
 if (strpos($_SERVER['SERVER_NAME'], "www.lindipendente.online") !== false){
     require_once get_stylesheet_directory() . '/api/config-erpnext--prod.php';
 } else {
@@ -36,6 +35,8 @@ function init_erpnext_api()
 }
 function execute_call_erpnext($curl, $url, $type_request, $type, $data)
 {
+	$default_tz = date_default_timezone_get();
+	date_default_timezone_set('Europe/Rome');
     $header = array();
     $header[] = 'Authorization: Basic ' . base64_encode(ERPNEXT_API_KEY . ':' . ERPNEXT_API_SECRET);
     if (!is_null($type)) $header[] = 'Content-Type: application/' . $type;
@@ -53,6 +54,7 @@ function execute_call_erpnext($curl, $url, $type_request, $type, $data)
 	error_log('[' . date("F j, Y, g:i a e O") . '] Input: ' . print_r($json_data, true) . "\n", LOG_TYPE, __DIR__ . '/debug-erpnext.log');
     error_log('[' . date("F j, Y, g:i a e O") . '] ' . curl_getinfo($curl, CURLINFO_RESPONSE_CODE) . ' ' . print_r($result, true) . "\n", LOG_TYPE, __DIR__ . '/debug-erpnext.log');
     error_log(print_r(curl_errno($curl) . "\n\n", true), LOG_TYPE, __DIR__ . '/debug-erpnext.log');
+	date_default_timezone_set($default_tz);
     return $result;
 }
 function paypal_deduction($total){
@@ -621,7 +623,9 @@ function erpnext_transaction_completed($event)
 		$subscription['data']['current_invoice_start'] = $created_at;
 		$subscription['data']['current_invoice_end'] = $expires_at;
 		execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription/' . $subscription_name, 'PUT', 'json', $subscription);
-		$to_disable_name = json_decode(execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription', 'GET', 'x-www-form-urlencoded', 'filters=[["Subscription","status","=","Active"],["Subscription","party","=","' . $username . '"]]'),true)['data'][0]['name'];
+		$to_disable_name = json_decode(execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription', 'GET', 'x-www-form-urlencoded', 'filters=%5B%5B%22Subscription%22%2C%22status%22%2C%22%3D%22%2C%22Active%22%5D%2C%5B%22Subscription%22%2C%22party%22%2C%22%3D%22%2C%22' . $username . '%22%5D%5D'));
+		if(isset($to_disable_name->data[0]->name))$to_disable_name = $to_disable_name->data[0]->name;
+		else $to_disable_name = '';
 		if($to_disable_name!=''){
 			cancel_subscription(
 				$api,
@@ -664,7 +668,7 @@ function erpnext_transaction_completed($event)
 			$created_at,
 			$method,
 			$username,
-			$total,
+			$total - $discount,
 			$invoice_name
 		);
 	}
