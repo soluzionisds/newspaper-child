@@ -4,7 +4,7 @@ Description: informazione senza padroni - no pubblicità, no fake news, no click
 Author: sebastiano.riva (office)
 Author URI: http://www.sebastianoriva.com/
 Template: Newspaper
-Version: 1.5.3
+Version: 1.5.5
 License: GNU General Public License v2 or later
 License URI:  http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:  Newspaper-child
@@ -29,16 +29,7 @@ Text Domain:  Newspaper-child
 
 /* PayWall */
 .li-paywall { position:relative;border-top:10px solid #141e4a;padding:25px;margin-bottom:30px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); }
-.li-paywall:before {
-	content: "";
-  position: absolute;
-  top: -160px;
-  left: 0;
-  right: 0;
-  height: 150px;
-  background: -webkit-gradient(linear,left top,left bottom,color-stop(0,rgba(255,255,255,0)),to(#fff));
-	background: linear-gradient(to bottom,rgba(255,255,255,0) 0,#fff 100%);
-}
+.li-paywall:before {content: "";position: absolute;top: -160px;left: 0;right: 0;height: 150px;background: -webkit-gradient(linear,left top,left bottom,color-stop(0,rgba(255,255,255,0)),to(#fff));background: linear-gradient(to bottom,rgba(255,255,255,0) 0,#fff 100%); }
 .page-template-page_full-width--no-title .li-paywall--top-spacer { margin-top: 50px; }
 
 /* Price Boxes */
@@ -188,9 +179,12 @@ a.li-header-user-panel__link--yellow { color:#03163f;border:1px solid #ead810;ba
 .li-mp-analytics-table tr:last-child { background-color:#EEE; }
 .li-mp-analytics-table tr:last-child td:last-child { padding: 0.5rem;text-align: right; }
 
-.wpp-list ul,
-.wpp-list p { margin: 0;padding: 0; } /* fix Tagdiv html additions */
-.li-wpp .wpp-thumbnail { max-width: 100px; }
+.li-wpp { display: flex;flex-direction: column; }
+.li-wpp p { margin: 0;padding: 0; } /* fix Tagdiv html additions */
+.li-wpp .wpp-thumbnail { margin-bottom: 0;max-width: 100px; }
+.li-wpp__item { padding-bottom:20px;margin-bottom: 20px;border-bottom: 1px solid #CCC; }
+.li-wpp__title { font-size: 14px;line-height: 14px;font-weight: 700; }
+.li-wpp__date { display: block;font-size: 12px; }
 
 /* privacy checkbox */
 .li-privacy-sub-text { padding-top:5px;display:block;font-size:13px;line-height:16px; }
@@ -202,7 +196,7 @@ a.li-header-user-panel__link--yellow { color:#03163f;border:1px solid #ead810;ba
 .td_block_wrap.li-print-n-pdf p { display:inline-block;margin-bottom: 0;}
 .li-print-n-pdf__link { display: flex;font-size: 11px;font-weight: 700;color:#444;justify-content: flex-end;align-items: center; }
 .li-print-n-pdf__icon { padding-right:5px; }
-.li-print-n-pdf__icon:before { display:inline-block;font-size:18px;color:#000;font-family: 'newspaper';speak: none;font-style: normal;font-weight: normal;font-variant: normal;text-transform: none;line-height: 1;text-align: center; }
+.li-print-n-pdf__icon:before { display:inline-block;font-size:18px;color:#000;font-family: 'newspaper';/*speak: none;*/font-style: normal;font-weight: normal;font-variant: normal;text-transform: none;line-height: 1;text-align: center; }
 .td_block_wrap.li-print-n-pdf .dkpdf-button-container { display:inline-block;margin-left:10px;padding-top:0;padding-bottom:0;width: auto;float: none; }
 .td_block_wrap.li-print-n-pdf .dkpdf-button { display: flex;align-items: center;font-size: 11px;font-weight: 700;color:#444; }
 .td_block_wrap.li-print-n-pdf .dkpdf-button-icon i { font-size:18px;color:#000; }
