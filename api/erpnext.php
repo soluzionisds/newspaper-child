@@ -2,11 +2,13 @@
 /**
  * ERPNEXT API
  */
+
 if (strpos($_SERVER['SERVER_NAME'], "www.lindipendente.online") !== false){
     require_once get_stylesheet_directory() . '/api/config-erpnext--prod.php';
 } else {
     require_once get_stylesheet_directory() . '/api/config-erpnext--staging.php';
 }
+
 function get_from_webhook_en_api($webhook_url)
 {
     $ch = curl_init($webhook_url);
@@ -294,7 +296,7 @@ function create_invoice(
     $data['data']['payment_schedule'][0] = array();
     $data['data']['payment_schedule'][0]['docstatus'] = 1;
     $data['data']['payment_schedule'][0]['payment_term'] = 'Immediate';
-    $data['data']['payment_schedule'][0]['due_date'] = $created_at;
+    $data['data']['payment_schedule'][0]['due_date'] = $expires_at;
     $data['data']['payment_schedule'][0]['mode_of_payment'] = $method;
     $data['data']['payment_schedule'][0]['invoice_portion'] = 100.0;
     $data['data']['payment_schedule'][0]['discount_type'] = 'Percentage';
@@ -381,11 +383,14 @@ function create_address(
 function create_contact(
     $api,
     $username,
-    $email
+    $email,
+    $first_name,
+    $last_name
 ) {
     $data = array();
     $data['data']['name'] = $username;
-    $data['data']['first_name'] = $username;
+    $data['data']['first_name'] = $first_name;
+    $data['data']['last_name'] = $last_name;
     $data['data']['email_id'] = $email;
     $data['data']['sync_with_google_contacts'] = 0;
     $data['data']['status'] = 'Passive';
@@ -469,7 +474,7 @@ function create_subscription(
     $data['data']['follow_calendar_months'] = 0;
     $data['data']['generate_new_invoices_past_due_date'] = 0;
     $data['data']['current_invoice_start'] = $created_at;
-    $data['data']['days_until_due'] = 0;
+    $data['data']['days_until_due'] = 360;
     $data['data']['cancel_at_period_end'] = 0;
     $data['data']['generate_invoice_at_period_start'] = 0;
     $data['data']['sales_tax_template'] = "Italy VAT 4% - LI";
@@ -510,12 +515,13 @@ function erpnext_transaction_completed($event)
     $created_at = date("Y-m-d",strtotime($transaction->created_at)+7200);
     $expires_at = date("Y-m-d",strtotime($transaction->expires_at)+7200);
     $payment_gateway = $transaction->gateway;
-    if ($payment_gateway == PAYMENT_OFFLINE) $method = 'Bank Draft';
+    if ($payment_gateway == PAYMENT_BANKDRAFT) $method = 'Bank Draft';
+    else if ($payment_gateway == PAYMENT_CASH) $method = 'Cash';
     else if ($payment_gateway == PAYMENT_STRIPE) $method = 'Stripe';
     else if ($payment_gateway == PAYMENT_PAYPAL) $method = 'PayPal';
     else if ($payment_gateway == PAYMENT_FREE) $method = 'Free';
-    $trial_amount = round((float) $transaction->subscription->trial_amount, 2, PHP_ROUND_HALF_EVEN);
-    if ($trial_amount > 0) $discount = round((float) $total - $trial_amount, 2, PHP_ROUND_HALF_EVEN);
+	$amount = round((float) $transaction->amount, 2, PHP_ROUND_HALF_EVEN);
+    if ($amount != $total) $discount = round((float) $total - $amount, 2, PHP_ROUND_HALF_EVEN);
     else $discount = 0;
 	if($total==0) {
 		$total = round((float) $transaction->membership->price, 2, PHP_ROUND_HALF_EVEN);
@@ -549,12 +555,14 @@ function erpnext_transaction_completed($event)
                 'Shipping'
             );
         }
-        execute_call_erpnext($api, ROOT_URL . '/api/resource/Contact/' . $username . '-' . $username, 'GET', null, null);
+        execute_call_erpnext($api, ROOT_URL . '/api/resource/Contact/' . $first_name .'%20'. $last_name . '-' . $username, 'GET', null, null);
         if (curl_getinfo($api, CURLINFO_RESPONSE_CODE) == 404) {
             create_contact(
                 $api,
                 $username,
-                $email
+                $email,
+                $first_name,
+                $last_name
             );
         }
     }
@@ -623,15 +631,6 @@ function erpnext_transaction_completed($event)
 		$subscription['data']['current_invoice_start'] = $created_at;
 		$subscription['data']['current_invoice_end'] = $expires_at;
 		execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription/' . $subscription_name, 'PUT', 'json', $subscription);
-		$to_disable_name = json_decode(execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription', 'GET', 'x-www-form-urlencoded', 'filters=%5B%5B%22Subscription%22%2C%22status%22%2C%22%3D%22%2C%22Active%22%5D%2C%5B%22Subscription%22%2C%22party%22%2C%22%3D%22%2C%22' . $username . '%22%5D%5D'));
-		if(isset($to_disable_name->data[0]->name))$to_disable_name = $to_disable_name->data[0]->name;
-		else $to_disable_name = '';
-		if($to_disable_name!=''){
-			cancel_subscription(
-				$api,
-				$to_disable_name
-			);
-		}
 	} else {
 		$membership_id = '' . $transaction->membership->id;
 		$membership_title = '' . $transaction->membership->title;
@@ -672,6 +671,15 @@ function erpnext_transaction_completed($event)
 			$invoice_name
 		);
 	}
+	$to_disable_name = json_decode(execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription', 'GET', 'x-www-form-urlencoded', 'filters=%5B%5B%22Subscription%22%2C%22party%22%2C%22%3D%22%2C%22'.$username.'%22%5D%5D&or_filters=%5B%5B%22Subscription%22%2C%22status%22%2C%22%3D%22%2C%22Active%22%5D%2C%5B%22Subscription%22%2C%22status%22%2C%22%3D%22%2C%22Unpaid%22%5D%5D'));
+	if(count($to_disable_name->data) > 1 && isset($to_disable_name->data[0]->name)) $to_disable_name = $to_disable_name->data[0]->name;
+	else $to_disable_name = '';
+	if($to_disable_name!=''){
+		cancel_subscription(
+			$api,
+			$to_disable_name
+		);
+	}
     curl_close($api);
 }
 function erpnext_signup_completed($event)
@@ -709,12 +717,14 @@ function erpnext_signup_completed($event)
                 'Shipping'
             );
         }
-        execute_call_erpnext($api, ROOT_URL . '/api/resource/Contact/' . $username . '-' . $username, 'GET', null, null);
+        execute_call_erpnext($api, ROOT_URL . '/api/resource/Contact/' . $first_name .'%20'. $last_name . '-' . $username, 'GET', null, null);
         if (curl_getinfo($api, CURLINFO_RESPONSE_CODE) == 404) {
             create_contact(
                 $api,
                 $username,
-                $email
+                $email,
+                $first_name,
+                $last_name
             );
         }
     }
@@ -737,7 +747,8 @@ function erpnext_subscription_created($event)
     $created_at = date("Y-m-d",strtotime($subscription->created_at)+7200);;
 	$expires_at = '';
     $payment_gateway = $subscription->gateway;
-    if ($payment_gateway == PAYMENT_OFFLINE) $method = 'Bank Draft';
+    if ($payment_gateway == PAYMENT_BANKDRAFT) $method = 'Bank Draft';
+    else if ($payment_gateway == PAYMENT_CASH) $method = 'Cash';
     else if ($payment_gateway == PAYMENT_STRIPE) $method = 'Stripe';
     else if ($payment_gateway == PAYMENT_PAYPAL) $method = 'PayPal';
     else if ($payment_gateway == PAYMENT_FREE) $method = 'Free';
@@ -772,12 +783,14 @@ function erpnext_subscription_created($event)
                 'Shipping'
             );
         }
-        execute_call_erpnext($api, ROOT_URL . '/api/resource/Contact/' . $username . '-' . $username, 'GET', null, null);
+        execute_call_erpnext($api, ROOT_URL . '/api/resource/Contact/' . $first_name .'%20'. $last_name . '-' . $username, 'GET', null, null);
         if (curl_getinfo($api, CURLINFO_RESPONSE_CODE) == 404) {
             create_contact(
                 $api,
                 $username,
-                $email
+                $email,
+                $first_name,
+                $last_name
             );
         }
     }
