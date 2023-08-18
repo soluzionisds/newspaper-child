@@ -1,0 +1,171 @@
+<?php
+
+function create_invoice(
+    $api,
+	$id_transaction,
+    $created_at,
+    $expires_at,
+    $username,
+    $total,
+    $membership_id,
+    $membership_title,
+    $method,
+    $discount,
+	$coupon
+) {
+    $data = array();
+    $data['data']['from_date'] = $created_at;
+    $data['data']['to_date'] = $expires_at;
+    $data['data']['docstatus'] = 1;
+    $data['data']['title'] = $username;
+    $data['data']['naming_series'] = 'ACC-SINV-.YYYY.-';
+    $data['data']['mepr_name'] = 'en-si-'.$id_transaction;
+    $data['data']['customer'] = $username;
+    $data['data']['company'] = "L'Indipendente S.r.l.";
+    $data['data']['company_tax_id'] = 'tax-0';
+    $data['data']['is_pos'] = 0;
+    $data['data']['is_consolidated'] = 0;
+    $data['data']['is_return'] = 0;
+    $data['data']['update_billed_amount_in_sales_order'] = 0;
+    $data['data']['is_debit_note'] = 0;
+    $data['data']['cost_center'] = 'MemberPress - LI';
+    $data['data']['currency'] = 'EUR';
+    $data['data']['conversion_rate'] = 1.0;
+    $data['data']['selling_price_list'] = 'Standard Selling';
+    $data['data']['price_list_currency'] = 'EUR';
+    $data['data']['plc_conversion_rate'] = 1.0;
+    $data['data']['ignore_pricing_rule'] = 0;
+    $data['data']['update_stock'] = 0;
+    $data['data']['total_qty'] = 1.0;
+    $data['data']['total_net_weight'] = 0.0;
+    $data['data']['base_total'] = $total;
+    $data['data']['total'] = $total;
+    $data['data']['taxes_and_charges'] = 'Italy VAT 4% - LI';
+    $data['data']['base_grand_total'] = $total;
+    $data['data']['base_rounding_adjustment'] = 0.0;
+    $data['data']['base_rounded_total'] = $total;
+    $data['data']['grand_total'] = $total;
+    $data['data']['rounding_adjustment'] = 0.0;
+    $data['data']['rounded_total'] = $total;
+    $data['data']['base_total_taxes_and_charges'] = 0.0;
+    $data['data']['total_advance'] = 0.0;
+    $data['data']['outstanding_amount'] = 0.0;
+    $data['data']['disable_rounded_total'] = 0;
+    $data['data']['apply_discount_on'] = 'Grand Total';
+    $data['data']['base_discount_amount'] = 0.0;
+    $data['data']['is_cash_or_non_trade_discount'] = 0;
+    $data['data']['additional_discount_percentage'] = 0.0;
+    $data['data']['discount_amount'] = $discount;
+    $data['data']['total_billing_hours'] = 0.0;
+    $data['data']['total_billing_amount'] = 0.0;
+    $data['data']['base_paid_amount'] = 0.0;
+    $data['data']['paid_amount'] = 0.0;
+    $data['data']['base_change_amount'] = 0.0;
+    $data['data']['change_amount'] = 0.0;
+    $data['data']['allocate_advances_automatically'] = 0;
+    $data['data']['write_off_amount'] = 0.0;
+    $data['data']['base_write_off_amount'] = 0.0;
+    $data['data']['write_off_outstanding_amount_automatically'] = 0;
+    $data['data']['redeem_loyalty_points'] = 0;
+    $data['data']['loyalty_points'] = 0;
+    $data['data']['loyalty_amount'] = 0.0;
+    $data['data']['company_address'] = "L'Indipendente S.r.l.-Billing";
+    $data['data']['ignore_default_payment_terms_template'] = 0;
+    $data['data']['payment_terms_template'] = 'Abbonamenti';
+    $data['data']['debit_to'] = "Debtors - LI";
+    $data['data']['party_account_currency'] = "EUR";
+    $data['data']['is_opening'] = 'No';
+    $data['data']['against_income_account'] = 'Sales - LI';
+    $data['data']['company_fiscal_regime'] = 'RF01-Ordinario';
+    $data['data']['commission_rate'] = 0.0;
+    $data['data']['total_commission'] = 0.0;
+    $data['data']['group_same_items'] = 0;
+    $data['data']['language'] = 'en';
+    if($total!==$discount)$data['data']['status'] = 'Unpaid';
+	else $data['data']['status'] = 'Paid';
+    $data['data']['customer_group'] = 'MemberPress';
+    $data['data']['is_internal_customer'] = 0;
+    if($discount===0)$data['data']['is_discounted'] = 0;
+	else $data['data']['is_discounted'] = 1;
+    $data['data']['remarks'] = "No Remarks";
+    $data['data']['customer_fiscal_code'] = "0";
+    $data['data']['group_same_items'] = 0;
+    $data['data']['mepr_coupon'] = $coupon;
+    $data['data']['items'] = array();
+    $data['data']['items'][0] = array();
+    $data['data']['items'][0]['docstatus'] = 1;
+    $data['data']['items'][0]['item_code'] = $membership_id;
+    $data['data']['items'][0]['name'] = $membership_title;
+    $data['data']['items'][0]['description'] = $membership_title;
+    $data['data']['items'][0]['has_item_scanned'] = 0;
+    $data['data']['items'][0]['item_code'] = $membership_id;
+    $data['data']['items'][0]['item_name'] = $membership_title;
+    $data['data']['items'][0]['description'] = $membership_title;
+    $data['data']['items'][0]['tax_rate'] = 4.0;
+    $data['data']['items'][0]['total_amount'] = $total;
+    $data['data']['items'][0]['item_group'] = 'Abbonamenti';
+    $data['data']['items'][0]['qty'] = 1;
+    $data['data']['items'][0]['stock_uom'] = 'Nos';
+    $data['data']['items'][0]['uom'] = 'Nos';
+    $data['data']['items'][0]['conversion_factor'] = 1.0;
+    $data['data']['items'][0]['stock_qty'] = 1.0;
+    $data['data']['items'][0]['price_list_rate'] = $total;
+    $data['data']['items'][0]['base_price_list_rate'] = $total;
+    $data['data']['items'][0]['margin_rate_or_amount'] = 0.0;
+    $data['data']['items'][0]['rate_with_margin'] = 0.0;
+    $data['data']['items'][0]['discount_percentage'] = 0.0;
+    $data['data']['items'][0]['discount_amount'] = 0.0;
+    $data['data']['items'][0]['rate'] = $total;
+    $data['data']['items'][0]['base_rate_with_margin'] = $total;
+    $data['data']['items'][0]['amount'] = $total;
+    $data['data']['items'][0]['base_rate_with_margin'] = $total;
+    $data['data']['items'][0]['base_rate'] = $total;
+    $data['data']['items'][0]['base_amount'] = $total;
+    $data['data']['items'][0]['stock_uom_rate'] = $total;
+    $data['data']['items'][0]['is_free_item'] = 0;
+    $data['data']['items'][0]['grant_commission'] = 1;
+    $data['data']['items'][0]['delivered_by_supplier'] = 0;
+    $data['data']['items'][0]['income_account'] = 'Sales - LI';
+    $data['data']['items'][0]['is_fixed_asset'] = 0;
+    $data['data']['items'][0]['expense_account'] = 'Cost of Goods Sold - LI';
+    $data['data']['items'][0]['enable_deferred_revenue'] = 0;
+    $data['data']['items'][0]['weight_per_unit'] = 0.0;
+    $data['data']['items'][0]['total_weight'] = 0.0;
+    $data['data']['items'][0]['warehouse'] = 'Stores - LI';
+    $data['data']['items'][0]['incoming_rate'] = 0;
+    $data['data']['items'][0]['allow_zero_valuation_rate'] = 0;
+    $data['data']['items'][0]['actual_batch_qty'] = 0.0;
+    $data['data']['items'][0]['actual_qty'] = 0.0;
+    $data['data']['items'][0]['delivered_qty'] = 0.0;
+    $data['data']['items'][0]['cost_center'] = 'MemberPress - LI';
+    $data['data']['payment_schedule'] = array();
+    $data['data']['payment_schedule'][0] = array();
+    $data['data']['payment_schedule'][0]['docstatus'] = 1;
+    $data['data']['payment_schedule'][0]['payment_term'] = 'Immediate';
+    $data['data']['payment_schedule'][0]['due_date'] = $expires_at;
+    $data['data']['payment_schedule'][0]['mode_of_payment'] = $method;
+    $data['data']['payment_schedule'][0]['invoice_portion'] = 100.0;
+    $data['data']['payment_schedule'][0]['discount_type'] = 'Percentage';
+    $data['data']['payment_schedule'][0]['discount'] = 0.0;
+    $data['data']['payment_schedule'][0]['payment_amount'] = $total;
+    $data['data']['payment_schedule'][0]['outstanding'] = 0.0;
+    $data['data']['payment_schedule'][0]['paid_amount'] = $total;
+    $data['data']['payment_schedule'][0]['discounted_amount'] = 0.0;
+    $data['data']['payment_schedule'][0]['base_payment_amount'] = $total;
+    $data['data']['taxes'] = array();
+    $data['data']['taxes'][0] = array();
+    $data['data']['taxes'][0]['docstatus'] = 1;
+    $data['data']['taxes'][0]['charge_type'] = 'On Net Total';
+    $data['data']['taxes'][0]['account_head'] = 'IVA 4% - LI';
+    $data['data']['taxes'][0]['description'] = 'IVA 4%';
+    $data['data']['taxes'][0]['included_in_print_rate'] = 1;
+    $data['data']['taxes'][0]['tax_exemption_reason'] = 'N4-Esenti';
+    $data['data']['taxes'][0]['included_in_paid_amount'] = 1;
+    $data['data']['taxes'][0]['cost_center'] = 'MemberPress - LI';
+    $data['data']['taxes'][0]['rate'] = 4.0;
+    $data['data']['taxes'][0]['account_currency'] = 'EUR';
+    $data['data']['taxes'][0]['total'] = $total;
+    $data['data']['taxes'][0]['base_total'] = $total;
+    $data['data']['taxes'][0]['dont_recompute_tax'] = 0;
+    return json_decode(execute_call_erpnext($api, ROOT_URL . '/api/resource/Sales%20Invoice', 'POST', 'json', $data));
+}
