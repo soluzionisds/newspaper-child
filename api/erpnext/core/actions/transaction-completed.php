@@ -21,6 +21,7 @@ function erpnext_transaction_completed($event)
     else if ($payment_gateway == PAYMENT_STRIPE) $method = 'Stripe';
     else if ($payment_gateway == PAYMENT_PAYPAL) $method = 'PayPal';
     else if ($payment_gateway == PAYMENT_FREE) $method = 'Free';
+	else if ($payment_gateway == PAYMENT_MANUAL) $method = 'Manual';
 	$amount = round((float) $transaction->amount, 2, PHP_ROUND_HALF_EVEN);
     if ($amount != $total) $discount = round((float) $total - $amount, 2, PHP_ROUND_HALF_EVEN);
     else $discount = 0;

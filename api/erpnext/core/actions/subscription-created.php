@@ -22,6 +22,7 @@ function erpnext_subscription_created($event)
     else if ($payment_gateway == PAYMENT_STRIPE) $method = 'Stripe';
     else if ($payment_gateway == PAYMENT_PAYPAL) $method = 'PayPal';
     else if ($payment_gateway == PAYMENT_FREE) $method = 'Free';
+    else if ($payment_gateway == PAYMENT_MANUAL) $method = 'Manual';
     $trial_amount = round((float) $subscription->trial_amount, 2, PHP_ROUND_HALF_EVEN);
     if ($trial_amount > 0) $discount = round((float) $total - $trial_amount, 2, PHP_ROUND_HALF_EVEN);
     else $discount = 0;
