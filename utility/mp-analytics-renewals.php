@@ -17,12 +17,13 @@ if ( ! empty( $txn_ids ) ) {
   ?>
   <h3>Utenti che hanno rinnovato dal <?php echo $date_from; ?> al <?php echo $date_to; ?></h3>
   <table class="li-mp-analytics-table">
-  <tr><th>Mail</th><th>User</th><th>Membership</th><th>Subscription</th><th>Subscription Created At</th><th>Transaction Expired At</th></tr>
+  <tr><th>Mail</th><th>User</th><th>Membership</th><th>Subscription</th><th>Auto Rebill</th><th>Subscription Created At</th><th>Transaction Expired At</th></tr>
   <?php
   foreach ( $txn_ids as $txn_id ) {
     $subscription = new MeprSubscription($txn_id);
     $user = new MeprUser($subscription->user_id);
     $product = new MeprProduct($subscription->product_id);
+    $autorebill = $subscription->status;
 
     if($subscription->txn_count > 1) {
       echo '<tr>';
@@ -34,6 +35,8 @@ if ( ! empty( $txn_ids ) ) {
       $csv_output .= $product->post_title . ", ";
       echo '<td>'.$subscription->subscr_id.'</td>';
       $csv_output .= $subscription->subscr_id . ", ";
+      echo '<td>'.$autorebill.'</td>';
+      $csv_output .= $autorebill . ", ";
       echo '<td>'.$subscription->created_at.'</td>';
       $csv_output .= $subscription->created_at . ", ";
       echo '<td>'.$subscription->expires_at.'</td>';
@@ -44,7 +47,7 @@ if ( ! empty( $txn_ids ) ) {
   }
   ?>
   <tr>
-      <td colspan="5"><strong>Number of users: <?php echo $count; ?></strong></td>
+      <td colspan="6"><strong>Number of users: <?php echo $count; ?></strong></td>
       <td>
         <form name="export" action="/wp-content/themes/Newspaper-child/utility/mp-analytics-export-csv.php" method="post">
         <input type="submit" value="Export table to CSV">

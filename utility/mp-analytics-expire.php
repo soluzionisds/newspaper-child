@@ -1,31 +1,32 @@
 <?php
 
-$txn_query = $wpdb->prepare("SELECT first_txn_id
-FROM {$wpdb->prefix}mepr_members
-WHERE created_at > %s
-AND created_at < %s", $date_from, $date_to);
+$txn_query = $wpdb->prepare("SELECT DISTINCT subscription_id
+FROM {$wpdb->prefix}mepr_transactions
+WHERE txn_type = %s
+AND status = %s
+AND user_id != 0
+AND (expires_at >= %s AND expires_at <= %s)" , 'payment', 'complete', $date_from, $date_to);
 
 $txn_ids = $wpdb->get_col($txn_query);
 
 if ( ! empty( $txn_ids ) ) {
   $count = 0;
   ?>
-  <h3>Nuovi abbonati dal <?php echo $date_from; ?> al <?php echo $date_to; ?></h3>
+  <h3>Abbonamenti che scadono dal <?php echo $date_from; ?> al <?php echo $date_to; ?></h3>
   <table class="li-mp-analytics-table">
   <tr><th>Mail</th><th>User</th><th>Membership</th><th>Subscription</th><th>Auto Rebill</th><th>Subscription Created At</th><th>Transaction Expired At</th></tr>
   <?php
   foreach ( $txn_ids as $txn_id ) {
-    $txn = new MeprTransaction($txn_id);
-    $user = new MeprUser($txn->user_id);
-    $subscription = new MeprSubscription($txn->subscription_id);
-    $product = new MeprProduct($txn->product_id);
+    $subscription = new MeprSubscription($txn_id);
+    $user = new MeprUser($subscription->user_id);
+    $product = new MeprProduct($subscription->product_id);
     $autorebill = $subscription->status;
 
-    if($txn->status = 'complete' && $txn->subscription_id > 0 && $txn->user_id != 0) {
+    if($subscription->product_id == 18691 || $subscription->product_id == 18692) {
       echo '<tr>';
       echo '<td>'.$user->user_email.'</td>';
       $csv_output .= $user->user_email . ", ";
-      echo '<td>'. $user->user_login.'</td>';
+      echo '<td>'.$user->user_login.'</td>';
       $csv_output .= $user->user_login . ", ";
       echo '<td>'.$product->post_title.'</td>';
       $csv_output .= $product->post_title . ", ";
