@@ -19,7 +19,7 @@ function create_invoice(
     $data['data']['docstatus'] = 1;
     $data['data']['title'] = $username;
     $data['data']['naming_series'] = 'ACC-SINV-.YYYY.-';
-    $data['data']['mepr_name'] = 'en-si-'.$id_transaction;
+    $data['data']['mepr_name'] = 'si-'.$id_transaction;
     $data['data']['customer'] = $username;
     $data['data']['company'] = "L'Indipendente S.r.l.";
     $data['data']['company_tax_id'] = 'tax-0';

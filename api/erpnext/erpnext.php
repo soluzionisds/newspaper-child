@@ -3,7 +3,9 @@
  * ERPNext API
 **/
 
-if (strpos($_SERVER['SERVER_NAME'], "www.lindipendente.online") !== false){
+$prod_env = strpos($_SERVER['SERVER_NAME'], "www.lindipendente.online");
+
+if ($prod_env !== false){
     require_once get_stylesheet_directory() . '/api/erpnext/config/config-erpnext--prod.php';
 } else {
     require_once get_stylesheet_directory() . '/api/erpnext/config/config-erpnext--staging.php';

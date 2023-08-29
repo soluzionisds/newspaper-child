@@ -43,7 +43,7 @@ function create_payment(
     $data = array();
     $data['data']['docstatus'] = 1;
     $data['data']['naming_series'] = 'ACC-PAY-.YYYY.-';
-    $data['data']['mepr_name'] = 'en-pe-'.$id_transaction;
+    $data['data']['mepr_name'] = 'pe-'.$id_transaction;
     $data['data']['payment_type'] = "Receive";
     $data['data']['payment_order_status'] = "Initiated";
     $data['data']['posting_date'] = $created_at;

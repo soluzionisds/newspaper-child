@@ -89,9 +89,9 @@ function erpnext_transaction_completed($event)
         );
     }	
 	if("0"!==$transaction->subscription){
-    	$data = json_decode(execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription', 'GET', 'x-www-form-urlencoded', 'filters=[["Subscription","mepr_id","=","' . $transaction->subscription->id . '"]]'))->data;
+    	$data = json_decode(execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription', 'GET', 'x-www-form-urlencoded', 'filters=[["Subscription","mepr_id","=","' . PREFIX_SUB . $transaction->subscription->id . '"]]'))->data;
 		if(empty($data)){
-			$mepr_subscription_id = $transaction->subscription->id;
+			$mepr_subscription_id = PREFIX_SUB . $transaction->subscription->id;
             $subscription_name = 'mp-sub-id-'.$mepr_subscription_id;
 			$subscription = create_subscription(
 				$api,
@@ -100,7 +100,7 @@ function erpnext_transaction_completed($event)
 				$created_at,
 				$membership_title
 			);
-			$subscription['data']['status'] = "Unpaid";
+			$subscription['data']['status'] = "Active";
 			$subscription['data']['current_invoice_start'] = $created_at;
 			$subscription['data']['current_invoice_end'] = $expires_at;
 			execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription/' . $subscription_name, 'PUT', 'json', $subscription);
@@ -132,6 +132,7 @@ function erpnext_transaction_completed($event)
 		$invoice_name = $subscription['data']['invoices'][count($subscription['data']['invoices']) - 1]['invoice'];
 		$subscription['data']['current_invoice_start'] = $created_at;
 		$subscription['data']['current_invoice_end'] = $expires_at;
+		$subscription['data']['status'] = "Active";
 		execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription/' . $subscription_name, 'PUT', 'json', $subscription);
 	} else {
 		$membership_id = '' . $transaction->membership->id;
@@ -173,11 +174,11 @@ function erpnext_transaction_completed($event)
 			$invoice_name
 		);
 	}
-	$to_disable_name = json_decode(execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription', 'GET', 'x-www-form-urlencoded', 'filters=%5B%5B%22Subscription%22%2C%22party%22%2C%22%3D%22%2C%22'.$username.'%22%5D%5D&or_filters=%5B%5B%22Subscription%22%2C%22status%22%2C%22%3D%22%2C%22Active%22%5D%2C%5B%22Subscription%22%2C%22status%22%2C%22%3D%22%2C%22Unpaid%22%5D%5D'));
+	$to_disable_name = json_decode(execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription', 'GET', 'x-www-form-urlencoded', 'filters=%5B%5B%22Subscription%22%2C%22party%22%2C%22%3D%22%2C%22'.$username.'%22%5D%2C%5B%22Subscription%22%2C%22status%22%2C%22%3D%22%2C%22Active%22%5D%5D'));
 	if(count($to_disable_name->data) > 1 && isset($to_disable_name->data[0]->name)) $to_disable_name = $to_disable_name->data[0]->name;
 	else $to_disable_name = '';
 	if($to_disable_name!=''){
-		cancel_subscription(
+		upgraded_subscription(
 			$api,
 			$to_disable_name
 		);
