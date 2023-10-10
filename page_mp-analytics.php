@@ -34,17 +34,17 @@ get_header();
 									global $wpdb;
 									$user = wp_get_current_user();
 									$allowed_roles = array('user_manager', 'administrator');
-									$date_from = '2023-08-28 00:00:00';
+									$date_from = '2023-09-01 00:00:00';
 									//$date_no_renewals_to = date('Y-m-d H:i:s', time());
-									$date_to = '2023-08-31 23:59:59';
+									$date_to = '2023-09-30 23:59:59';
 									//Now that we've created such a nice heading for our html table, lets create a heading for our csv table
-									$csv_hdr = "Mail, User, Membership, Subscription, Auto Rebill, Subscription Created At, Transaction Expired At";
+									$csv_hdr = "Mail, User, Membership, Subscription, Auto Rebill, Subscription Created At, Transaction Expired At, Transaction Amount";
 									//Quickly create a variable for our output that'll go into the CSV file (we'll make it blank to start).
 								  	$csv_output="";
 
 									if( array_intersect($allowed_roles, $user->roles ) ) {
 
-										$page_to_load = "expired";
+										$page_to_load = "renewals";
 
 										switch ($page_to_load) {
 										case "new_subscribers":

@@ -4,7 +4,7 @@ Description: informazione senza padroni - no pubblicità, no fake news, no click
 Author: sebastiano.riva (office)
 Author URI: http://www.sebastianoriva.com/
 Template: Newspaper
-Version: 1.6.1
+Version: 1.6.2
 License: GNU General Public License v2 or later
 License URI:  http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:  Newspaper-child
@@ -186,6 +186,11 @@ a.li-header-user-panel__link--yellow { color:#03163f;border:1px solid #ead810;ba
 .li-wpp__title { font-size: 14px;line-height: 14px;font-weight: 700; }
 .li-wpp__date { display: block;font-size: 12px; }
 
+.tdc-rist-top-active .li-sticky-menu { opacity: 0.9; }
+.li-sticky-menu .li-sticky-menu__logo .wpb_wrapper { animation: fadeInLogo 1s;display:none; }
+.tdc-rist-top-active .li-sticky-menu .li-sticky-menu__logo .wpb_wrapper { display:block; }
+/*.li-sticky-menu .li-sticky-menu__items {}*/
+
 /* privacy checkbox */
 .li-privacy-sub-text { padding-top:5px;display:block;font-size:13px;line-height:16px; }
 .li-privacy-sub-text__highlight { color: #CC3333; }
@@ -206,6 +211,10 @@ a.li-header-user-panel__link--yellow { color:#03163f;border:1px solid #ead810;ba
 *********************************/
 @keyframes blinker {
   50% { opacity: 0; }
+}
+@keyframes fadeInLogo {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 /********************************
