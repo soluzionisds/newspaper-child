@@ -74,12 +74,12 @@ function create_payment(
 		$data['data']['deductions'][0]['doctype'] = 'Payment Entry Deduction';
 		$data['data']['deductions'][0]['docstatus'] = 1;
 		$data['data']['deductions'][0]['account'] = 'Stripe Fee - LI';
-		$data['data']['deductions'][0]['cost_center'] = 'MemberPress - LI';
+		$data['data']['deductions'][0]['cost_center'] = 'Stripe Fee - LI';
 		$data['data']['deductions'][0]['amount'] = $stripe_deduction;
 		$data['data']['deductions'][1]['doctype'] = 'Payment Entry Deduction';
 		$data['data']['deductions'][1]['docstatus'] = 1;
 		$data['data']['deductions'][1]['account'] = 'Stripe Climate Fee - LI';
-		$data['data']['deductions'][1]['cost_center'] = 'MemberPress - LI';
+		$data['data']['deductions'][1]['cost_center'] = 'Stripe Climate Fee - LI';
 		$data['data']['deductions'][1]['amount'] = $environmental_deduction_stripe;
 	}
 	elseif($method=="PayPal"){
@@ -87,7 +87,7 @@ function create_payment(
 		$data['data']['deductions'][0]['doctype'] = 'Payment Entry Deduction';
 		$data['data']['deductions'][0]['docstatus'] = 1;
 		$data['data']['deductions'][0]['account'] = 'PayPal Fee - LI';
-		$data['data']['deductions'][0]['cost_center'] = 'MemberPress - LI';
+		$data['data']['deductions'][0]['cost_center'] = 'PayPal Fee - LI';
 		$data['data']['deductions'][0]['amount'] = $paypal_deduction;
 	}
     $data['data']['references'] = array();
