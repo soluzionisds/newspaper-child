@@ -46,7 +46,7 @@
     }
     if(rowCancelSubscription.length) {
       var cancelContent = rowCancelSubscription.html();
-      var newCancelContent = cancelContent.replace('Il rinnovo automatico del tuo abbonamento è stato cancellato con successo.', 'Il rinnovo automatico del tuo abbonamento è stato cancellato con successo. Facci sapere come possiamo migliorare, <a href="https://us2.list-manage.com/survey?u=fc6a2373726095bfbf68aad96&id=53bdbf3acb&attribution=false" target="_blank">clicca qui</a>.');
+      var newCancelContent = cancelContent.replace('Il rinnovo automatico del tuo abbonamento è stato cancellato con successo.', 'Il rinnovo automatico del tuo abbonamento è stato cancellato con successo. Facci sapere come possiamo migliorare, <a href="https://us2.list-manage.com/survey?u=fc6a2373726095bfbf68aad96&id=64e9dad630&attribution=false" target="_blank">clicca qui</a>.');
       rowCancelSubscription.html(newCancelContent);
     }
   });
