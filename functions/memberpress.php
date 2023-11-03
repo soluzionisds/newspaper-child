@@ -168,6 +168,15 @@ function mepr_remove_closures() {
 }
 add_action( 'wp_head', 'mepr_remove_closures', 9 );
 
+/**
+ * Print mail variable {$product-price} in order to show membership price without discount
+ **/
+add_filter('mepr_transaction_email_params', function($params, $txn) {
+  $sub = $txn->subscription();
+  $params['product-price'] = str_replace( '.', ',', $sub->total );
+  return $params;
+}, 10, 2);
+
 /*
 ////////////////////////////////////////////////////////////////////////////////
 ////////// Shortcode Example: [mepr-sub-expiration membership='123']
