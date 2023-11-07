@@ -177,6 +177,221 @@ add_filter('mepr_transaction_email_params', function($params, $txn) {
   return $params;
 }, 10, 2);
 
+/**
+ * Endpoint for Logged user, used for mobile APP
+**/
+function enrich_post($post){
+  $post->id = $post->ID;
+	unset($post->ID);
+	$post->title = new stdClass();
+	$post->title->rendered = $post->post_title;
+	unset($post->post_title);
+	$post->date = str_replace(" ","T",$post->post_date);
+	unset($post->post_date);
+	$post->link = explode("?",$post->guid)[0].str_replace("-","/",explode(" ",$post->post_date)[0])."/".$post->post_name;
+	$post->excerpt = new stdClass();
+	$post->excerpt->rendered = get_the_excerpt($post->id);
+	$post->featured_media = get_post_thumbnail_id($post->id);
+	$post->categories = wp_get_post_categories($post->id);
+	$post->content = new stdClass();
+	$post->content->rendered = $post->post_content;
+	unset($post->post_content);
+	$tags = get_the_tags($post->id);
+	if($tags)$post->tags = array_map(function($tag){return $tag->term_id;}, $tags);
+	else $post->tags = array();
+	$post->status = $post->post_status;
+	unset($post->post_status);
+	$post->author = intval($post->post_author);
+	unset($post->post_author);
+	$post->modified_by = get_userdata(get_post_meta( $post->id, '_edit_last', true ))->display_name;
+	return $post;
+}
+
+function get_logged_user_mp_posts($request) {
+  $user_id = get_current_user_id();
+
+  if(!$user_id) {
+    return new WP_Error('authentication_failure', 'You have not been authenticated.', array('status' => 403));
+  }
+	
+	$tags = null;
+	if(null !== $request->get_param('tags')) $tags = explode(",",$request->get_param('tags'));
+
+	/*if(null !== $request->get_param('tags') && $request->get_param('tax_relation') == 'AND') $tags_key = 'tag__and';
+	else $tags_key = 'tag__in';*/
+	$tags_key = 'tag__in';
+	
+  $posts_query = new WP_Query(
+		array(
+			's' => $request->get_param('search'),
+			'post__not_in' => explode(',',$request->get_param('exclude')),
+			'posts_per_page' => $request->get_param('per_page'),
+			'paged' => $request->get_param('page'),
+			'date_query' => array(
+				array('after' => $request->get_param('after')),
+				array('before' => $request->get_param('before'))
+			),
+			'orderby' => 'date',
+			'order' => strtoupper($request->get_param('order')),
+			'cat' => $request->get_param('categories'),
+			'category__not_in' => explode(',',$request->get_param('categories_exclude')),
+			'post_status' => $request->get_param('status'),
+			'embed' => $request->get_param('context') == 'embed' ? true : false,
+			'post_type' => 'post',
+			$tags_key => $tags
+		)
+	);
+
+  if (empty($posts_query->posts)) {
+    return new WP_Error('no_posts', 'No posts found.', array('status' => 404));
+  }
+
+  $mp_user = new MeprUser($user_id);
+
+  $posts = $posts_query->posts;
+  $posts_to_display = array();
+
+  foreach ($posts as $post) {
+    if (!MeprRule::is_locked_for_user($mp_user, $post)) {
+      $post = enrich_post($post);
+      $posts_to_display[] = $post;
+    }
+  }
+
+  return new WP_REST_Response($posts_to_display, 200);
+}
+
+function get_logged_user_mp_post($request) {
+  $user_id = get_current_user_id();
+
+  if(!$user_id) {
+    return new WP_Error('authentication_failure', 'You have not been authenticated.', array('status' => 403));
+  }
+
+  $post_id = $request->get_param('id');
+  $post = get_post($post_id);
+
+  if(!$post) {
+    return new WP_Error('no_post', 'No post could be found with the provided ID.', array('status' => 404));
+  }
+
+  $mp_user = new MeprUser($user_id);
+
+  if(!MeprRule::is_locked_for_user($mp_user, $post)) {
+  $post = enrich_post($post);		
+    return new WP_REST_Response($post, 200);
+  }
+}
+
+function register_logged_user_posts_routes() {
+  register_rest_route(
+    'mp/v1',
+    '/logged-user-posts',
+    array(
+      'methods' => 'GET',
+      'callback' => 'get_logged_user_mp_posts',
+      'permission_callback' => function() {
+        return is_user_logged_in();
+      },
+			'args' => array(
+        'search' => array(
+          'type'              => 'string',
+					'sanitize_callback' => 'sanitize_text_field',
+					'validate_callback' => 'rest_validate_request_arg'
+        ),
+				'exclude' => array(
+          'type'              => 'string',
+					'sanitize_callback' => 'sanitize_text_field',
+					'validate_callback' => 'rest_validate_request_arg'
+        ),
+				'per_page' => array(
+          'type'              => 'integer',
+					'default'           => 10,
+					'minimum'           => 1,
+					'maximum'           => 10000,
+					'sanitize_callback' => 'absint',
+					'validate_callback' => 'rest_validate_request_arg',
+        ),
+				'page' => array(
+          'type'              => 'integer',
+					'default'           => 1,
+					'minimum'           => 1,
+					'maximum'           => 10000,
+					'sanitize_callback' => 'absint',
+					'validate_callback' => 'rest_validate_request_arg',
+        ),
+				'after' => array(
+          'type'              => 'string',
+					'sanitize_callback' => 'sanitize_text_field',
+					'validate_callback' => 'rest_validate_request_arg'
+        ),
+				'before' => array(
+          'type'              => 'string',
+					'sanitize_callback' => 'sanitize_text_field',
+					'validate_callback' => 'rest_validate_request_arg'
+        ),
+				'order' => array(
+          'type'              => 'string',
+					'default'			      => 'DESC',
+					'sanitize_callback' => 'sanitize_text_field',
+					'validate_callback' => 'rest_validate_request_arg'
+        ),
+				'tags' => array(
+          'type'              => 'string',
+					'sanitize_callback' => 'sanitize_text_field',
+					'validate_callback' => 'rest_validate_request_arg'
+        ),
+				'tax_relation' => array(
+          'type'              => 'string',
+					'default'			      => 'AND',
+					'sanitize_callback' => 'sanitize_text_field',
+					'validate_callback' => 'rest_validate_request_arg'
+        ),
+				'categories' => array(
+          'type'              => 'string',
+					'sanitize_callback' => 'sanitize_text_field',
+					'validate_callback' => 'rest_validate_request_arg'
+        ),
+				'categories_exclude' => array(
+          'type'              => 'string',
+					'sanitize_callback' => 'sanitize_text_field',
+					'validate_callback' => 'rest_validate_request_arg'
+        ),
+				'status' => array(
+          'type'              => 'string',
+					'default'			      => 'publish',
+					'sanitize_callback' => 'sanitize_text_field',
+					'validate_callback' => 'rest_validate_request_arg'
+        ),
+				'context' => array(
+          'type'              => 'string',
+					'default'			      => 'view',
+					'sanitize_callback' => 'sanitize_text_field',
+					'validate_callback' => 'rest_validate_request_arg'
+        )
+      )
+    )
+  );
+
+  register_rest_route(
+      'mp/v1',
+      '/logged-user-posts/(?P<id>\d+)',
+      array(
+        'methods' => 'GET',
+        'callback' => 'get_logged_user_mp_post',
+        'permission_callback' => function() {
+          return is_user_logged_in();
+        },
+        'args' => array(
+          'id' => array(
+            'default' => ''
+          )
+        )
+      )
+  );
+}
+add_action('rest_api_init', 'register_logged_user_posts_routes');
+
 /*
 ////////////////////////////////////////////////////////////////////////////////
 ////////// Shortcode Example: [mepr-sub-expiration membership='123']
