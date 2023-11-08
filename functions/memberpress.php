@@ -178,7 +178,7 @@ add_filter('mepr_transaction_email_params', function($params, $txn) {
 }, 10, 2);
 
 /**
- * Endpoint for Logged user, used for mobile APP
+ * Endpoint for logged users, used for Mobile APP
 **/
 function enrich_post($post){
   $post->id = $post->ID;
@@ -211,7 +211,7 @@ function get_logged_user_mp_posts($request) {
   $user_id = get_current_user_id();
 
   if(!$user_id) {
-    return new WP_Error('authentication_failure', 'You have not been authenticated.', array('status' => 403));
+    return new WP_Error('authentication_failure', 'Non hai effettuato l\'autenticazione.', array('status' => 403));
   }
 	
 	$tags = null;
@@ -243,7 +243,7 @@ function get_logged_user_mp_posts($request) {
 	);
 
   if (empty($posts_query->posts)) {
-    return new WP_Error('no_posts', 'No posts found.', array('status' => 404));
+    return new WP_Error('no_posts', 'Nessun articolo trovato.', array('status' => 404));
   }
 
   $mp_user = new MeprUser($user_id);
@@ -265,14 +265,14 @@ function get_logged_user_mp_post($request) {
   $user_id = get_current_user_id();
 
   if(!$user_id) {
-    return new WP_Error('authentication_failure', 'You have not been authenticated.', array('status' => 403));
+    return new WP_Error('authentication_failure', 'Non hai effettuato l\'autenticazione.', array('status' => 403));
   }
 
   $post_id = $request->get_param('id');
   $post = get_post($post_id);
 
   if(!$post) {
-    return new WP_Error('no_post', 'No post could be found with the provided ID.', array('status' => 404));
+    return new WP_Error('no_post', 'Nessun articolo trovato con l\'ID fornito.', array('status' => 404));
   }
 
   $mp_user = new MeprUser($user_id);
