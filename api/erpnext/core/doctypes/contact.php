@@ -1,5 +1,4 @@
 <?php
-
 function create_contact(
     $api,
     $username,
@@ -8,6 +7,7 @@ function create_contact(
     $last_name
 ) {
     $data = array();
+	//$username = PREFIX . $username;
     $data['data']['name'] = $username;
     $data['data']['first_name'] = $first_name;
     $data['data']['last_name'] = $last_name;

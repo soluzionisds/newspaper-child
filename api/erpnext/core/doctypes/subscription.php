@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Create
 **/
@@ -10,7 +9,7 @@ function create_subscription(
     $created_at,
     $membership_title
 ) {
-	$subscription_id = PREFIX_SUB . $subscription_id;
+	$subscription_id = PREFIX . $subscription_id;
     $data = array();
     $data['data']['doctype'] = "Subscription";
     $data['data']['mepr_name'] = "mp-sub-id-$subscription_id";
@@ -39,7 +38,6 @@ function create_subscription(
     $data['data']['plans'][0]['doctype'] = "Subscription Plan Detail";
     return json_decode(execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription', 'POST', 'json', $data), true);
 }
-
 /**
  * Cancel
 **/
@@ -51,7 +49,6 @@ function cancel_subscription(
     $subscription['data']['status'] = 'Cancelled';
     execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription/' . $subscription_name, 'PUT', 'json', $subscription);
 }
-
 function upgraded_subscription(
 	$api,
     $subscription_name

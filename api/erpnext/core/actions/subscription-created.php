@@ -1,5 +1,4 @@
 <?php
-
 function erpnext_subscription_created($event)
 {
     $id_subscription = $event->get_data()->rec->id;

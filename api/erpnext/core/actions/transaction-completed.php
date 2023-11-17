@@ -1,5 +1,4 @@
 <?php
-
 function erpnext_transaction_completed($event)
 {
     $id_transaction = $event->get_data()->rec->id;
@@ -14,6 +13,7 @@ function erpnext_transaction_completed($event)
     $membership_title = '' . $transaction->membership->title;
     $total = round((float) $transaction->total, 2, PHP_ROUND_HALF_EVEN);
     $created_at = date("Y-m-d",strtotime($transaction->created_at)+7200);
+    $created_at_time = date("H:i:s",strtotime($transaction->created_at)+7200);
     $expires_at = date("Y-m-d",strtotime($transaction->expires_at)+7200);
     $payment_gateway = $transaction->gateway;
     if ($payment_gateway == PAYMENT_BANKDRAFT) $method = 'Bank Draft';
@@ -89,9 +89,9 @@ function erpnext_transaction_completed($event)
         );
     }	
 	if("0"!==$transaction->subscription){
-    	$data = json_decode(execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription', 'GET', 'x-www-form-urlencoded', 'filters=[["Subscription","mepr_id","=","' . PREFIX_SUB . $transaction->subscription->id . '"]]'))->data;
+    	$data = json_decode(execute_call_erpnext($api, ROOT_URL . '/api/resource/Subscription', 'GET', 'x-www-form-urlencoded', 'filters=[["Subscription","mepr_id","=","' . PREFIX . $transaction->subscription->id . '"]]'))->data;
 		if(empty($data)){
-			$mepr_subscription_id = PREFIX_SUB . $transaction->subscription->id;
+			$mepr_subscription_id = PREFIX . $transaction->subscription->id;
             $subscription_name = 'mp-sub-id-'.$mepr_subscription_id;
 			$subscription = create_subscription(
 				$api,
@@ -111,6 +111,7 @@ function erpnext_transaction_completed($event)
 			$api,
 			$trans_num,
 			$created_at,
+			$created_at_time,
 			$expires_at,
 			$username,
 			$total,
@@ -152,6 +153,7 @@ function erpnext_transaction_completed($event)
 			$api,
 			$trans_num,
 			$created_at,
+			$created_at_time,
 			$expires_at,
 			$username,
 			$total,

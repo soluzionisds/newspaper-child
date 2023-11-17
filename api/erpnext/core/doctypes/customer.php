@@ -1,5 +1,4 @@
 <?php
-
 function create_customer(
     $api,
     $username,
@@ -7,6 +6,7 @@ function create_customer(
     $last_name
 ) {
     $data = array();
+	//$username = PREFIX . $username;
     $data['data']['customer_name'] = $username;
     $data['data']['first_name'] = $first_name;
     $data['data']['last_name'] = $last_name;

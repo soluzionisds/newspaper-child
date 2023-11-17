@@ -1,11 +1,11 @@
 <?php
-
 function create_address(
     $api,
     $username,
     $address_type
 ) {
     $data = array();
+	//$username = PREFIX . $username;
     $data['data']['address_title'] = $username;
     $data['data']['address_line1'] = '0';
     $data['data']['city'] = '0';

@@ -1,9 +1,9 @@
 <?php
-
 function create_invoice(
     $api,
 	$id_transaction,
     $created_at,
+	$created_at_time,
     $expires_at,
     $username,
     $total,
@@ -14,7 +14,11 @@ function create_invoice(
 	$coupon
 ) {
     $data = array();
+	//$id_transaction = PREFIX . $id_transaction;
     $data['data']['from_date'] = $created_at;
+    $data['data']['posting_date'] = $created_at;
+    $data['data']['posting_time'] = $created_at_time;
+    $data['data']['set_posting_time'] = 1;
     $data['data']['to_date'] = $expires_at;
     $data['data']['docstatus'] = 1;
     $data['data']['title'] = $username;

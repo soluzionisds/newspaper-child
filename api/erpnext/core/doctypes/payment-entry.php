@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Commissions
 **/
@@ -12,7 +11,6 @@ function stripe_deduction($total){
 function environmental_deduction_stripe($total){
 	return $total * 0.005;
 }
-
 /**
  * Create
 **/
@@ -41,6 +39,7 @@ function create_payment(
 			break;
 	}
     $data = array();
+	//$id_transaction = PREFIX . $id_transaction;
     $data['data']['docstatus'] = 1;
     $data['data']['naming_series'] = 'ACC-PAY-.YYYY.-';
     $data['data']['mepr_name'] = 'pe-'.$id_transaction;
