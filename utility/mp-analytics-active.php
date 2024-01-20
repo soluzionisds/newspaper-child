@@ -1,12 +1,13 @@
 <?php
 
+$date_exp_from = '2024-01-25 00:00:00';
 $txn_query = $wpdb->prepare("SELECT DISTINCT subscription_id
 FROM {$wpdb->prefix}mepr_transactions
 WHERE txn_type = %s
 AND status = %s
 AND user_id != 0
 AND subscription_id != 0
-AND (expires_at >= %s AND expires_at <= %s)" , 'payment', 'complete', $date_from, $date_to);
+AND (created_at <= %s AND expires_at >= %s AND expires_at <= %s)" , 'payment', 'complete', $date_from, $date_exp_from, $date_to);
 
 $txn_ids = $wpdb->get_col($txn_query);
 
@@ -14,7 +15,7 @@ if ( ! empty( $txn_ids ) ) {
   $count = 0;
   $sum_total = 0;
   ?>
-  <h3>Abbonamenti che scadono dal <?php echo $date_from; ?> al <?php echo $date_to; ?></h3>
+  <h3>Utenti attivi creati prima del <?php echo $date_from; ?> e che scadono prima del <?php echo $date_to; ?> (per abbonamenti che scadono dopo il <?php echo $date_exp_from; ?>)</h3>
   <table class="li-mp-analytics-table">
   <tr><th>Mail</th><th>User</th><th>Membership</th><th>Subscription</th><th>Auto Rebill</th><th>Subscription Created At</th><th>Transaction Expired At</th><th>Transaction Amount</th></tr>
   <?php
@@ -24,7 +25,7 @@ if ( ! empty( $txn_ids ) ) {
     $product = new MeprProduct($subscription->product_id);
     $autorebill = $subscription->status;
 
-    //if($subscription->product_id == 18691 || $subscription->product_id == 18692) {
+    if($user->is_active()) {
       echo '<tr>';
       echo '<td>'.$user->user_email.'</td>';
       $csv_output .= $user->user_email . ", ";
@@ -45,7 +46,7 @@ if ( ! empty( $txn_ids ) ) {
       echo '</tr>';
       $count++;
       $sum_total+= $subscription->total;
-    //}
+    }
   }
   ?>
   <tr>

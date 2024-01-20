@@ -34,9 +34,9 @@ get_header();
 									global $wpdb;
 									$user = wp_get_current_user();
 									$allowed_roles = array('user_manager', 'administrator');
-									$date_from = '2023-10-01 00:00:00';
+									$date_from = '2024-02-01 00:00:00';
 									//$date_no_renewals_to = date('Y-m-d H:i:s', time());
-									$date_to = '2023-10-31 23:59:59';
+									$date_to = '2025-02-01 23:59:59';
 									//Now that we've created such a nice heading for our html table, lets create a heading for our csv table
 									$csv_hdr = "Mail, User, Membership, Subscription, Auto Rebill, Subscription Created At, Transaction Expired At, Transaction Amount";
 									//Quickly create a variable for our output that'll go into the CSV file (we'll make it blank to start).
@@ -44,7 +44,7 @@ get_header();
 
 									if( array_intersect($allowed_roles, $user->roles ) ) {
 
-										$page_to_load = "renewals";
+										$page_to_load = "active";
 
 										switch ($page_to_load) {
 										case "new_subscribers":
@@ -59,24 +59,14 @@ get_header();
 										case "expired":
 											require_once get_stylesheet_directory() . '/utility/mp-analytics-expire.php';
 											break;
+										case "active":
+											require_once get_stylesheet_directory() . '/utility/mp-analytics-active.php';
+											break;
 										default:
 											echo "No selected page";
 										}
 
-										///////////////////////////////////////
-										// Active users at
-										//
-										/*$active_urers_query = $wpdb->get_results($wpdb->prepare("SELECT count(DISTINCT user_id)
-										FROM {$wpdb->prefix}mepr_transactions
-										WHERE status > %s
-										AND ( created_at <= %s AND expires_at = %s OR expires_at = %s OR expires_at = NULL )",
-										'complete', $date_no_renewals_from, $date_no_renewals_from, '0000-00-00 00:00:00'));
-
-										print_r($active_urers_query);*/
-									}
-
-									?>
-
+									}?>
 								</div>
 					<?php endwhile;//end loop
 						}
