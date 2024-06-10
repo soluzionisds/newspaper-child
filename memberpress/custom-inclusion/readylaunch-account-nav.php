@@ -1,0 +1,1 @@
+<?php echo do_shortcode("[mepr-active membership=\"14006\"]<div class=\"mepr-account-message mepr-account-alert-message\"><strong>Attenzione:</strong> abbonamento 1 mese active</div>[/mepr-active]");?>

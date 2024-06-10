@@ -392,6 +392,28 @@ function register_logged_user_posts_routes() {
 }
 add_action('rest_api_init', 'register_logged_user_posts_routes');
 
+/* ReadyLaunch
+* https://gist.github.com/cartpauj/26c89ee92965817eaa10
+* Add item to nav menu
+*/
+function mepr_add_readylaunch_tabs($user) {
+  //$support_active = (isset($_GET['action']) && $_GET['action'] == 'mepr-memberships')?'mepr-active-nav-tab':'';
+  ?>
+    <span class="mepr-nav-item mepr-faq">
+      <a href="/faq">Dubbi e assistenza</a>
+    </span>
+    <span class="mepr-nav-item mepr-memberships<?php //echo " ".$support_active; ?>">
+      <a href="/abbonamenti">Abbonati / Sostieni</a>
+    </span>
+  <?php
+}
+add_action('mepr_account_nav', 'mepr_add_readylaunch_tabs');
+
+function mepr_readylaunch_custom_css() { ?>
+<link rel='stylesheet' href='<?php echo 'https://'.$_SERVER['SERVER_NAME'].'/wp-content/themes/Newspaper-child/memberpress/custom-inclusion/readylaunch.css'; ?>' type='text/css' media='all' />
+<?php }
+add_action('wp_head', 'mepr_readylaunch_custom_css');
+
 /*
 ////////////////////////////////////////////////////////////////////////////////
 ////////// Shortcode Example: [mepr-sub-expiration membership='123']

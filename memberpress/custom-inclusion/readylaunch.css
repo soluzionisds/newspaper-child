@@ -1,0 +1,41 @@
+.mepr-pro-template .site-branding { max-width: 300px; }
+.mepr-account-message.mepr-account-welcome-message:empty { display: none !important; }
+.mepr-newpassword-form a,
+.mepr-newpassword-form a:visited { color: #eb4034; }
+.mepr-account-container .mepr-button.btn-outline { color: #141e4a;border-color: #141e4a; }
+#mepr-account-nav .mepr-nav-item.mepr-memberships { background-color: #ead810; }
+#mepr-account-nav .mepr-nav-item.mepr-memberships a:before { content: "\e904"; }
+#mepr-account-nav .mepr-nav-item.mepr-memberships a { color:#03163f; }
+
+.mpgft-send-gift-form input[type="submit"],
+.mepr-account-container input[type="submit"],
+.mepr-checkout-container .form-wrapper input[type="submit"],
+.mepr-pro-template #mepr-template-login .mepro-form input[type="submit"] { border:0;background-color: #141e4a; }
+.mpgft-send-gift-form input[type="submit"]:hover,
+.mepr-checkout-container .form-wrapper input[type="submit"]:hover,
+.mepr-pro-template #mepr-template-login .mepro-form input[type="submit"]:hover { color: #141e4a;background-color: #ead810; }
+
+.li-list.li-list--subscription { list-style-type:none;margin:0 0 20px 0;padding:0; }
+.li-list--subscription .li-list__item { margin:0 0 10px 0;padding:0 0 5px 0;border-bottom:1px solid #CCC; }
+
+.mepr-pro-template .mp-table tbody tr td:first-child,
+.mepr-pro-template .mp-table tfoot tr th:first-child,
+.mepr-pro-template .site-header .profile-menu__avatar,
+.mepr-pro-template .mepr-rl-footer-widgets { display: none; }
+
+.mepr-account-message.mepr-account-alert-message { border: 1px solid #f0d229;background-color: #fff9d5;width:100%; }
+
+.memberpressproduct-template.postid-14623 .li-privacy-sub-text,
+.memberpressproduct-template.postid-14617 .li-privacy-sub-text,
+.memberpressproduct-template.postid-65188 .li-privacy-sub-text,
+.memberpressproduct-template.postid-65189 .li-privacy-sub-text,
+.memberpressproduct-template.postid-75716 .li-privacy-sub-text,
+.memberpressproduct-template.postid-105080 .li-privacy-sub-text,
+.memberpressproduct-template.premium-regalo .li-privacy-sub-text,
+.memberpressproduct-template.postid-55581 .li-privacy-sub-text__reminder,
+.memberpressproduct-template .mepr-checkbox-field[for=mpgft-signup-gift-checkbox1] { display:none !important; }
+
+/* privacy checkbox */
+.li-privacy-sub-text { padding-top:5px;display:block;font-size:13px;line-height:16px; }
+.li-privacy-sub-text__highlight { color: #CC3333; }
+.mepr-form label[for=mepr_agree_to_privacy_policy1] { display: inline-block !important; }

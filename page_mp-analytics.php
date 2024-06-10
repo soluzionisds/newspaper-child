@@ -34,9 +34,9 @@ get_header();
 									global $wpdb;
 									$user = wp_get_current_user();
 									$allowed_roles = array('user_manager', 'administrator');
-									$date_from = '2024-03-01 00:00:00';
+									$date_from = '2024-04-01 00:00:00';
 									//$date_no_renewals_to = date('Y-m-d H:i:s', time());
-									$date_to = '2024-03-31 23:59:59';
+									$date_to = '2024-04-30 23:59:59';
 									//Now that we've created such a nice heading for our html table, lets create a heading for our csv table
 									$csv_hdr = "Mail, User, Membership, Subscription, Auto Rebill, Subscription Created At, Transaction Expired At, Transaction Amount";
 									//Quickly create a variable for our output that'll go into the CSV file (we'll make it blank to start).
