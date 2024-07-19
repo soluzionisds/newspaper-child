@@ -71,5 +71,8 @@
 .mepr-form label[for=mepr_agree_to_privacy_policy1] { display: inline-block !important; }
 
 @media only screen and (max-width: 1023px) {
-    .mepr-pro-template .mepr-pro-template-membership-text { padding:0 3rem }
+    .mepr-pro-template .mepr-checkout-container .form-wrapper,
+    .mepr-pro-template .mepr-checkout-container .invoice-wrapper,
+    .mepr-pro-template .mepr-rl-footer-widgets,
+    .mepr-pro-template .mepr-pro-template-membership-text { padding-left: 1.5rem;padding-right: 1.5rem; }
 }
