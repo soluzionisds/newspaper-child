@@ -38,11 +38,17 @@
     
     /* Substitute some translation strings to use HTML */
     var rowProratio = $('.account #mepr-account-subscriptions-table .mepr-account-terms');
-	  var rowCancelSubscription  = $('.account .mp_wrapper .mepr_updated');
+    var rowProratioReadyLaunch = $('.mepr-account-container .mepr-pro-account-terms:contains("(compensazione)")');
+	  var rowCancelSubscription = $('.account .mp_wrapper .mepr_updated');
     if(rowProratio.length) {
       var content = rowProratio.html();
       var newContent = content.replace('(compensazione)', '(<a href="/termini-e-condizioni" target="_blank">compensazione</a>)');
       rowProratio.html(newContent);
+    }
+    if(rowProratioReadyLaunch.length) {
+      var content = rowProratioReadyLaunch.html();
+      var newContent = content.replace('(compensazione)', '(<a href="/termini-e-condizioni" target="_blank">compensazione</a>)');
+      rowProratioReadyLaunch.html(newContent);
     }
     if(rowCancelSubscription.length) {
       var cancelContent = rowCancelSubscription.html();
