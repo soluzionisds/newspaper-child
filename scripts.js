@@ -8,26 +8,25 @@
     }
     /* Script for gifts: Remove some fields for Premium membership buyers */
     var url = window.location.href;
-	  if(url.toLowerCase().indexOf('premium-regalo')>=0){
-      if(url.toLowerCase().indexOf('gift-')==-1){
-        if( !$('#mepr_address1').val() ) {
-          $('#mepr_address1').val("---");
-        }
-        if( !$('#mepr_cap1').val() ) {
-          $('#mepr_cap1').val("---");
-        }
-        if( !$('#mepr_city1').val() ) {
-          $('#mepr_city1').val("---");
-        }
-        if( !$('#mepr_provincia1').val() ) {
-          $('#mepr_provincia1').val("ag");
-        }
-        $('.mepr_mepr_address').hide();
-        $('.mepr_mepr_cap').hide();
-        $('.mepr_mepr_city').hide();
-        $('.mepr_mepr_provincia').hide();
-        $('.mepr_mepr_phone').hide();
+	  if((url.toLowerCase().indexOf('premium-regalo') >= 0 && url.toLowerCase().indexOf('gift-') == -1) || url.toLowerCase().indexOf('abbonamento/6-mesi') >= 0 || url.toLowerCase().indexOf('abbonamento/12-mesi') >= 0){
+      if( !$('#mepr_address1').length || !$('#mepr_address1').val() ) {
+        $('#mepr_address1').val("---");
       }
+      if( !$('#mepr_cap1').length || !$('#mepr_cap1').val() ) {
+        $('#mepr_cap1').val("---");
+      }
+      if( !$('#mepr_city1').length || !$('#mepr_city1').val() ) {
+        $('#mepr_city1').val("---");
+      }
+      if( !$('#mepr_provincia1').length || !$('#mepr_provincia1').val() ) {
+        $('#mepr_provincia1').val("ag");
+      }
+      $('.mepr_mepr_address').hide();
+      $('.mepr_mepr_cap').hide();
+      $('.mepr_mepr_city').hide();
+      $('.mepr_mepr_provincia').hide();
+      $('.mepr_mepr_phone').hide();
+      $('.mepr_mepr_state').hide();
 	  }
     /* Script for gifts: Remove membership description for gift destinataires */
     if((url.toLowerCase().indexOf('premium-regalo')>=0) || (url.toLowerCase().indexOf('6-mesi-regalo')>=0) || (url.toLowerCase().indexOf('12-mesi-regalo')>=0)){
@@ -57,6 +56,117 @@
     }
   });
 })(jQuery);
+
+/**
+ * POPUP MAKER
+ * 
+ * Requires Advanced Targeting Conditions extension: https://wppopupmaker.com/extensions/advanced-targeting-conditions/
+ * 
+ * Sets a cookie to display the popup for the duration of the cookie lifetime, after the user has viewed n pages.
+ * Reset when the cookie expires.
+ * 
+ * Popup ID: 1526 (REPLACE throughout snippet with your popup ID)
+ *
+ * For this snippet to work, make sure:
+ * 1. No cookie is set or linked to the trigger in the popup's Popup Settings > Triggers
+ * 2. The following conditions are set:
+ *    - User Has Viewed X Pages
+ *    - Cookie Exists (this should be the value of the popupDisplayCookie; in this case, popup-display-cookie)
+ * 
+ * Code: https://gist.github.com/israelmartins96/0efaa1b1509e2baaa32ac7e6e6fbe324
+ *  
+ * Advanced Targeting Conditions: User Conditions:
+ * https://docs.wppopupmaker.com/article/238-advanced-targeting-conditions-user-conditions
+ * 
+ * Advanced Targeting Condition: Cookie Conditions:
+ * https://docs.wppopupmaker.com/article/237-advanced-targeting-conditions-cookie-conditions
+*/
+
+(function ($, document, undefined) {
+  /**
+   * The site's path
+*/
+const sitePath = '/';
+  /**
+   * The cookie the popup "Cookie Exists" condition will check for to display the popup.
+  */
+  const popupDisplayCookie = 'pum-paywall';
+  /**
+   * The cookie that tracks the page views.
+  */
+  const popupTrackViewsCookie = 'pum_popup_16941_page_views';
+/** Sets cookie
+ * name	string name of the cookie
+ * value string or int value of the cookie
+ * durationDays int number of days to set the cookie for
+ * path	string the cookie path, e.g., "/my-page/"
+*/
+const setCookie = ( name, value, durationDays, path ) => {
+  const theDate = new Date();
+  theDate.setTime( theDate.getTime() + ( durationDays * 24 * 60 * 60 * 1000 ) );
+  let expires = 'expires=' + theDate.toUTCString();
+  document.cookie = name + '=' + value + ';' + expires + ';path=' + path;
+};
+/**
+   * Checks for cookie existence
+   * name string cookie name
+  */
+const getCookie = function ( name ) {
+  let value = '; ' + document.cookie;
+  let parts = value.split( '; ' + name + '=' );
+  if ( parts.length == 2 ) return parts.pop().split( ';' ).shift();
+};
+
+$( document )
+  .on( 'pumInit', function () {
+    // Set cookie if the popup exists and the cookie does not exist or has expired, and reset the cookie that tracks page views
+    // The popup will be created and appear on browser after 5 page visits, set 4 because cookie appears at 5° reload
+    let pageViewsCookie = getCookie( 'pum_popup_16941_page_views' );
+    if ( PUM.getPopup( 16941 ) ) {  
+      if ( ! getCookie( popupDisplayCookie ) ) {
+        PUM.preventOpen( 16941 );
+        // Set cookie for 60 days (two months)
+        if (pageViewsCookie == 4) {
+          setCookie( popupDisplayCookie, 'for-two-months', 1, sitePath );
+        }
+        // Prevent reset before the imposted visits
+        if ( pageViewsCookie > 5 ) {
+          // Unset page-views-tracking cookie
+          setCookie( popupTrackViewsCookie, 0, 0, sitePath );
+          // Reset page-views-tracking cookie
+          setCookie( popupTrackViewsCookie, 0, 1, sitePath );
+        }
+      }
+    }
+} );
+
+}(jQuery, document))
+
+/* MEMBERPRESS DOWNLOADS
+/* Delete all in the first child
+**********************************/
+document.addEventListener('DOMContentLoaded', () => {
+  const spans = document.querySelectorAll('span[style*="position:relative;top:1px;"]');
+
+  spans.forEach(span => {
+      // Controlliamo se l'elemento span ha un antenato con la classe desiderata
+      const hasParentWithClass = (element, className) => {
+        let parent = element.parentNode;
+        while (parent) {
+          if (parent.classList && parent.classList.contains(className)) {
+              return true;
+          }
+          parent = parent.parentNode;
+        }
+        return false;
+      };
+
+      // Eseguiamo l'operazione solo se l'elemento span ha uno dei due genitori
+      if (hasParentWithClass(span, 'mpdl-file-links-item') || hasParentWithClass(span, 'mpdl-file-link')) {
+          span.firstChild.textContent = "";
+      }
+  });
+});
 
 /* Script for gifts, fix some pages
 window.addEventListener("load", function() {

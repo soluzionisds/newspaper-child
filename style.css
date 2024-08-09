@@ -4,7 +4,7 @@ Description: informazione senza padroni - no pubblicità, no fake news, no click
 Author: sebastiano.riva (office)
 Author URI: http://www.sebastianoriva.com/
 Template: Newspaper
-Version: 1.6.8
+Version: 1.7.0
 License: GNU General Public License v2 or later
 License URI:  http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:  Newspaper-child
@@ -26,6 +26,27 @@ Text Domain:  Newspaper-child
 /* disable "Card Exp." column in Subscriptions Account page
 #mepr-account-subscriptions-table :nth-child(5) { display:none; }*/
 .iti.iti--separate-dial-code { width: 100%; }
+
+/* MP Download */
+.mpdl-file-links-list { list-style-type: none; }
+.mpdl-file-links-item { margin:0;padding: 20px 0;border-bottom: 1px solid #CCC; }
+.mpdl-file-link { margin-bottom:0 !important; }
+.mpdl-file-link .mpdl-file-title,
+.mpdl-file-links-item .mpdl-file-title { font-family: 'Roboto',sans-serif;font-weight: 600; font-size: 46px;line-height: 56px; color: #111;text-transform: uppercase; }
+.mpdl-file-link .mpdl-file-pdf:hover,
+.mpdl-file-links-item .mpdl-file-pdf:hover { text-decoration: none; }
+.li-monthly-report-list { display: flex; }
+.li-monthly-report-list__sx { flex-basis: 70%; }
+.li-monthly-report-list__subtitle { font-size: 22px;line-height: 30px;margin:20px 0 0 0;font-family: 'Roboto',sans-serif;color:#111;font-weight: 400; }
+.li-monthly-report-list__date { margin: 20px 0 10px 0;font-family: 'Roboto',sans-serif;text-transform: uppercase;font-size: 15px;font-weight: 500;color: #666; }
+.li-monthly-report-list__line { width: 120px;height: 20px; }
+.li-monthly-report-list__line::after { content: '';display: inline-block;height: 1px;bottom: 0%;background-color: #01133d;width: 100%;margin: auto; }
+.li-monthly-report-list_text { color: #afafaf;font-family: Fira Sans !important;font-size: 12px !important;line-height: 2 !important; }
+.li-monthly-report-list__download,
+.li-monthly-report-list__buy { margin-right: 10px; }
+.li-monthly-report-list__download.li-btn--blue:hover,
+.li-monthly-report-list__buy.li-btn--yellow:hover { text-decoration: none;background-color: #CCC;color: #333;border-color: #CCC; }
+/*body.logged-in .li-monthly-report-list__buy { display:none; }*/
 
 /* PayWall */
 .li-paywall { position:relative;border-top:10px solid #141e4a;padding:25px;margin-bottom:30px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); }
@@ -274,6 +295,16 @@ a.tdb-entry-category[href*="/category/x-app-bottom/"] { display: none; }
 .bbp-author-avatar,
 #bbp-user-avatar { display: none; }
 
+/* Popup Maker */
+.pum-theme-paywall .pum-paywall-contents::before {content: "";position: absolute;top: -110px;left: 0;right: 0;height: 110px;background: -webkit-gradient(linear,left top,left bottom,color-stop(0,rgba(255,255,255,0)),to(#fff));background: linear-gradient(to bottom,rgba(255,255,255,0) 0,#fff 100%); }
+.pum-theme-paywall .pum-paywall-contents { display:flex;align-items: center;justify-content: center;padding: 20px; }
+.pum-theme-paywall .pum-paywall-contents p { margin:0; }
+.pum-theme-paywall .pum-paywall-contents .li-btn { text-align: center; }
+.pum-theme-paywall .pum-paywall-contents__image { width:80px }
+.pum-theme-paywall .pum-paywall-contents__text-wrp { flex-basis:60%;padding: 0 20px; }
+.pum-theme-paywall .pum-paywall-contents__text { padding-bottom:10px;font-size:14px;margin:0; }
+.pum-theme-paywall .pum-close.popmake-close { display:none; }
+
 /* Smartphones & Tablet  */
 @media only screen and (min-width: 320px) and (max-width: 1024px) {
 	#cookie-law-info-bar[data-cli-style="cli-style-v2"] { padding: 8px 10px; }
@@ -317,4 +348,13 @@ a.tdb-entry-category[href*="/category/x-app-bottom/"] { display: none; }
 	.td-scroll-up.td-scroll-up-visible { margin-bottom:75px; }
 	/*.li-gift-columns { margin:40px 0 20px 0; }
 	.li-gift-columns__title { margin:0 0 20px 0; }*/
+
+	.mpdl-file-link .mpdl-file-title,
+	.mpdl-file-links-item .mpdl-file-title { font-size: 26px;line-height: 36px; }
+	.li-monthly-report-list { flex-direction: column; }
+
+	.pum-theme-paywall .pum-paywall-contents { flex-direction: column; }
+	.pum-theme-paywall .pum-paywall-contents__image { padding-bottom: 15px; }
+	.pum-theme-paywall .pum-paywall-contents__text-wrp { padding: 0 10px; }
+	.pum-theme-paywall .pum-paywall-contents__text { font-size:13px;padding: 0 0 15px 0;text-align: center; }
 }
