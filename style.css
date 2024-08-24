@@ -4,16 +4,44 @@ Description: informazione senza padroni - no pubblicità, no fake news, no click
 Author: sebastiano.riva (office)
 Author URI: http://www.sebastianoriva.com/
 Template: Newspaper
-Version: 1.7.0
+Version: 1.7.3
 License: GNU General Public License v2 or later
 License URI:  http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:  Newspaper-child
 */
 
 /********************
-* Forms
+* Contact 7 Forms
 *********************/
 .wpcf7 select { font-size: 15px;line-height: 21px;color: #444;border: 1px solid #e1e1e1;width: 100%;max-width: 100%;height: 34px;padding: 3px 9px; }
+.wpcf7 .email-telefono { display: flex; gap: 10px;width: 100%;}
+.wpcf7 .email-telefono label { flex: 1; margin: 0; box-sizing: border-box;width: 100%; }
+.wpcf7 input[type="text"],
+.wpcf7 input[type="email"],
+.wpcf7 input[type="tel"],
+.wpcf7 input[type="date"],
+.wpcf7 input[type="file"],
+.wpcf7 textarea { background-color: #ffff;border-radius: 10px;border: 1px solid #ddd;padding: 12px 15px;width: 100%;box-sizing: border-box;font-size: 14px;color: #333;transition: all 0.3s ease; }
+.wpcf7 input[type="text"]:hover,
+.wpcf7 input[type="email"]:hover,
+.wpcf7 input[type="tel"]:hover,
+.wpcf7 input[type="date"]:hover,
+.wpcf7 input[type="file"]:hover,
+.wpcf7 textarea:hover { background-color: #e9e9e9; }
+.wpcf7 input[type="text"]:focus,
+.wpcf7 input[type="email"]:focus,
+.wpcf7 input[type="tel"]:focus,
+.wpcf7 input[type="date"]:focus,
+.wpcf7 input[type="file"]:focus,
+.wpcf7 textarea:focus { border-color: #888;box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);outline: none; }
+.wpcf7 input[name="data-di-nascita"] { width: 180px; }
+.wpcf7 input[type="file"] { padding: 8px; }
+.wpcf7 input[type="submit"] { display:block;width: 100%;margin:20px auto;background-color:#0c2d5d;color:#fff;border-radius: 10px;padding: 12px 20px;border: none;cursor: pointer;font-size: 16px;transition: background-color 0.3s ease; }
+.wpcf7 input[type="submit"]:hover { background-color: #00408b; }
+.wpcf7 .privacy-policy-checkbox { font-size: 12px;color: #333;font-family: 'Arial', sans-serif;line-height: 1.4; }
+.wpcf7 .privacy-policy-checkbox a { font-size: 12px;color: #0c2d5d;text-decoration: underline; }
+.wpcf7 .privacy-policy-checkbox a:hover { color: #00408b;text-decoration: none; }
+.wpcf7 .privacy-policy-checkbox input[type="checkbox"] { margin-right: 8px; }
 
 /********************************
 * MemberPress
@@ -32,15 +60,15 @@ Text Domain:  Newspaper-child
 .mpdl-file-links-item { margin:0;padding: 20px 0;border-bottom: 1px solid #CCC; }
 .mpdl-file-link { margin-bottom:0 !important; }
 .mpdl-file-link .mpdl-file-title,
-.mpdl-file-links-item .mpdl-file-title { font-family: 'Roboto',sans-serif;font-weight: 600; font-size: 46px;line-height: 56px; color: #111;text-transform: uppercase; }
+.mpdl-file-links-item .mpdl-file-title { font-family: 'Roboto',sans-serif;font-weight: 600;font-size:35px;line-height:40px; color: #111;text-transform: uppercase; }
 .mpdl-file-link .mpdl-file-pdf:hover,
 .mpdl-file-links-item .mpdl-file-pdf:hover { text-decoration: none; }
 .li-monthly-report-list { display: flex; }
 .li-monthly-report-list__sx { flex-basis: 70%; }
 .li-monthly-report-list__subtitle { font-size: 22px;line-height: 30px;margin:20px 0 0 0;font-family: 'Roboto',sans-serif;color:#111;font-weight: 400; }
 .li-monthly-report-list__date { margin: 20px 0 10px 0;font-family: 'Roboto',sans-serif;text-transform: uppercase;font-size: 15px;font-weight: 500;color: #666; }
-.li-monthly-report-list__line { width: 120px;height: 20px; }
-.li-monthly-report-list__line::after { content: '';display: inline-block;height: 1px;bottom: 0%;background-color: #01133d;width: 100%;margin: auto; }
+.li-monthly-report-list__line { position: relative;width: 120px;height: 20px; }
+.li-monthly-report-list__line::after { position: absolute;content: '';display: inline-block;height: 1px;bottom: 0;background-color: #01133d;width: 100%;margin: auto; }
 .li-monthly-report-list_text { color: #afafaf;font-family: Fira Sans !important;font-size: 12px !important;line-height: 2 !important; }
 .li-monthly-report-list__download,
 .li-monthly-report-list__buy { margin-right: 10px; }
@@ -304,6 +332,11 @@ a.tdb-entry-category[href*="/category/x-app-bottom/"] { display: none; }
 .pum-theme-paywall .pum-paywall-contents__text-wrp { flex-basis:60%;padding: 0 20px; }
 .pum-theme-paywall .pum-paywall-contents__text { padding-bottom:10px;font-size:14px;margin:0; }
 .pum-theme-paywall .pum-close.popmake-close { display:none; }
+
+/* Cloudflare Turnstile */
+.cf-turnstile,
+.cf-turnstile-br,
+.cf7-cf-turnstile { display:block; }
 
 /* Smartphones & Tablet  */
 @media only screen and (min-width: 320px) and (max-width: 1024px) {

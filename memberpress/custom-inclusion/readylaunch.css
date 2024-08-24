@@ -70,6 +70,10 @@
 .li-privacy-sub-text__highlight { color: #CC3333; }
 .mepr-form label[for=mepr_agree_to_privacy_policy1] { display: inline-block !important; }
 
+/* Cloudflare Turnstile */
+.cf-turnstile,
+.cf-turnstile-br { display:block; }
+
 @media only screen and (max-width: 1023px) {
     .mepr-pro-template .mepr-checkout-container .form-wrapper,
     .mepr-pro-template .mepr-checkout-container .invoice-wrapper,
