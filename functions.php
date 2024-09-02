@@ -12,7 +12,7 @@
 add_action( 'wp_enqueue_scripts', 'theme_enqueue_styles');
 function theme_enqueue_styles() {
   wp_enqueue_style('td-theme', get_template_directory_uri() . '/style.css', '', TD_THEME_VERSION, 'all' );
-  wp_enqueue_style('td-theme-child', get_stylesheet_directory_uri() . '/style.css', array('td-theme'), '1.7.3', 'all' );
+  wp_enqueue_style('td-theme-child', get_stylesheet_directory_uri() . '/style.css', array('td-theme'), '1.7.4', 'all' );
   wp_enqueue_script('td-custom-script', get_stylesheet_directory_uri() . '/scripts.js', array( 'jquery' ), '1.3.0');
 }
 
@@ -42,6 +42,27 @@ function keep_me_logged_in_for_90_days( $expirein ) {
 * Adds renewals in the MemberPress statistics
 ****************************/
 add_filter( 'monsterinsights_ecommerce_skip_renewals', '__return_false' );
+
+/***************************
+* Nascondi elemento ad altri ruoli per view counter degli post
+****************************/
+function add_user_role_body_class($classes) {
+    // Verifica se l'utente è loggato
+    if (is_user_logged_in()) {
+        // Ottieni il ruolo dell'utente
+        $current_user = wp_get_current_user();
+        // Controlla se l'utente è un amministratore
+        if (!in_array('administrator', $current_user->roles)) {
+            // Aggiungi la classe 'hide-view-counter' se l'utente non è un admin
+            $classes[] = 'hide-view-counter';
+        }
+    } else {
+        // Utente non loggato, aggiungi la classe 'hide-view-counter'
+        $classes[] = 'hide-view-counter';
+    }
+    return $classes;
+}
+add_filter('body_class', 'add_user_role_body_class');
 
 /***************************
 * bbPress
