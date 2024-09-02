@@ -51,9 +51,9 @@ function add_user_role_body_class($classes) {
     if (is_user_logged_in()) {
         // Ottieni il ruolo dell'utente
         $current_user = wp_get_current_user();
-        // Controlla se l'utente è un amministratore
-        if (!in_array('administrator', $current_user->roles)) {
-            // Aggiungi la classe 'hide-view-counter' se l'utente non è un admin
+        // Controlla se l'utente è un amministratore, editor o autore
+        if (!in_array('administrator', $current_user->roles) && !in_array('editor', $current_user->roles) && !in_array('author', $current_user->roles)) {
+            // Aggiungi la classe 'hide-view-counter' se l'utente non è un admin, editor o autore
             $classes[] = 'hide-view-counter';
         }
     } else {
