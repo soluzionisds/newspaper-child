@@ -90,7 +90,13 @@
   /**
    * The cookie that tracks the page views.
   */
-  const popupTrackViewsCookie = 'pum_popup_16941_page_views';
+  const popupTrackViewsCookieStaging = 'pum_popup_16941_page_views';
+  const popupTrackViewsCookieProd = 'pum_popup_121819_page_views';
+
+  /**
+   * Set the environment
+  */
+  const isProduction = true;
 
 /** Sets cookie
  * name			string name of the cookie
@@ -141,14 +147,15 @@ const getCookieValue = ( name ) => {
 
 $( document )
   .on( 'pumInit', () => {
-    // Set cookie to display the popup if the popup exists, the cookie does not exist or has expired, and the user has 4 or more page views.
-    if ( PUM.getPopup( 16941 ) ) {
-      if ( ( ! getCookie( popupDisplayCookie ) ) && ( getCookie( popupTrackViewsCookie ) >= 4 ) ) {
+    // Set cookie to display the popup if the popup exists, the cookie does not exist or has expired, and the user has 20 or more page views.
+    if (PUM.getPopup(16941) || PUM.getPopup(121819)) {
+      const popuptrackViewsCookie = isProduction ? popupTrackViewsCookieProd : popupTrackViewsCookieStaging;
+  
+      if (!getCookie(popupDisplayCookie) && getCookie(popuptrackViewsCookie) >= 4) {
         // Set cookie for 60 days (two months)
-        setCookie( popupDisplayCookie, 'for-two-months', 1, sitePath );
+        setCookie(popupDisplayCookie, 'for-two-months', 60, sitePath);
       }
     }
-  
 } );
 
 }(jQuery, document))
