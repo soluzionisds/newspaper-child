@@ -4,7 +4,7 @@ Description: informazione senza padroni - no pubblicità, no fake news, no click
 Author: sebastiano.riva (office)
 Author URI: http://www.sebastianoriva.com/
 Template: Newspaper
-Version: 1.7.6
+Version: 1.7.7
 License: GNU General Public License v2 or later
 License URI:  http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:  Newspaper-child
@@ -387,8 +387,8 @@ a.tdb-entry-category[href*="/category/x-app-bottom/"] { display: none; }
 	.mpdl-file-links-item .mpdl-file-title { font-size: 26px;line-height: 36px; }
 	.li-monthly-report-list { flex-direction: column;margin-top: 0; }
 
-	.pum-theme-paywall .pum-paywall-contents { flex-direction: column; }
-	.pum-theme-paywall .pum-paywall-contents__image { padding-bottom: 15px; }
-	.pum-theme-paywall .pum-paywall-contents__text-wrp { padding: 0 10px; }
-	.pum-theme-paywall .pum-paywall-contents__text { font-size:13px;padding: 0 0 15px 0;text-align: center; }
+	.pum-theme-lindipendente-paywall .pum-paywall-contents { flex-direction: column; }
+	.pum-theme-lindipendente-paywall .pum-paywall-contents__image { padding-bottom: 15px; }
+	.pum-theme-lindipendente-paywall .pum-paywall-contents__text-wrp { padding: 0 10px; }
+	.pum-theme-lindipendente-paywall .pum-paywall-contents__text { font-size:13px;padding: 0 0 15px 0;text-align: center; }
 }
