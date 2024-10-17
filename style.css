@@ -4,7 +4,7 @@ Description: informazione senza padroni - no pubblicità, no fake news, no click
 Author: sebastiano.riva (office)
 Author URI: http://www.sebastianoriva.com/
 Template: Newspaper
-Version: 1.7.7
+Version: 1.7.9
 License: GNU General Public License v2 or later
 License URI:  http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:  Newspaper-child
@@ -276,7 +276,8 @@ body:not(.logged-in) .comment-respond,
 body:not(.logged-in) .comment-reply-login,
 body:not(.logged-in) .li-views-counter { display:none; }
 .hide-view-counter .conteggioview,
-.memberpressproduct-template .mepr_custom_field.mepr_mepr_state { display:none !important; }
+.memberpressproduct-template .mepr_custom_field.mepr_mepr_state,
+.page-id-18694 .li-news-ticker.td_block_trending_now { display:none !important; }
 
 a.tdb-entry-category[href*="/category/x-app-top/"],
 a.tdb-entry-category[href*="/category/x-app-bottom/"] { display: none; }
@@ -301,6 +302,7 @@ a.tdb-entry-category[href*="/category/x-app-bottom/"] { display: none; }
 .memberpressproduct-template.postid-75716 .li-privacy-sub-text,
 .memberpressproduct-template.postid-105080 .li-privacy-sub-text,
 .memberpressproduct-template.postid-14123 .li-privacy-sub-text,
+.memberpressproduct-template.postid-124981 .li-privacy-sub-text,
 .memberpressproduct-template.premium-regalo .li-privacy-sub-text,
 .memberpressproduct-template.postid-55581 .li-privacy-sub-text__reminder,
 .memberpressproduct-template .mepr-checkbox-field[for=mpgft-signup-gift-checkbox1] { display:none !important; }

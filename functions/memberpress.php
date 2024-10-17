@@ -411,7 +411,7 @@ add_action('mepr_account_nav', 'mepr_add_readylaunch_tabs');*/
 
 function mepr_readylaunch_custom_css() {
   if ( is_singular() ) {
-    wp_enqueue_style( 'mepr-readylaunch', get_stylesheet_directory_uri() . '/memberpress/custom-inclusion/readylaunch.css', array(), '1.5' );      
+    wp_enqueue_style( 'mepr-readylaunch', get_stylesheet_directory_uri() . '/memberpress/custom-inclusion/readylaunch.css', array(), '1.6' );      
   }
 }
 add_action( 'wp_enqueue_scripts', 'mepr_readylaunch_custom_CSS' );
