@@ -38,6 +38,7 @@
 .mepr-pro-template .site-header .profile-menu__avatar,
 .mepr-pro-template .mepr-rl-registration-footer-widget,
 .mepro-login-contents .mp_login_form #mepr-unauthorized-for-resource { display: none; }
+.mepr-pro-template .pum { display: none !important; }
 
 .login.mepr-pro-template .mepro-login-widget .mepro-boxed { background-color: transparent; }
 #mepr-account-content .mepr-rl-footer-widgets,
