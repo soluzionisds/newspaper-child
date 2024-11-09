@@ -4,7 +4,7 @@ Description: informazione senza padroni - no pubblicità, no fake news, no click
 Author: sebastiano.riva (office)
 Author URI: http://www.sebastianoriva.com/
 Template: Newspaper
-Version: 1.7.9
+Version: 1.7.10
 License: GNU General Public License v2 or later
 License URI:  http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:  Newspaper-child
@@ -336,6 +336,17 @@ a.tdb-entry-category[href*="/category/x-app-bottom/"] { display: none; }
 .pum-theme-lindipendente-paywall .pum-paywall-contents__text { padding-bottom:10px;font-size:15px;margin:0; }
 .pum-theme-lindipendente-paywall .pum-close.popmake-close { display:none; }
 
+.li-popup-half-image { display:flex;justify-content:center;  }
+.li-popup-half-image__column { flex-basis: 50%; }
+.li-popup-half-image__column--sx { padding:20px;align-self:center;text-align:center; }
+.li-popup-half-image__logo { max-width: 300px !important; }
+.li-popup-half-image__title { font-family: Fira Sans;font-size: 40px;line-height: 44px;color:#141e4a; }
+.li-popup-half-image__column--dx { line-height:0; }
+.li-popup-half-image__image { width: 100%;height: 100% !important;object-fit: cover;/*border-radius: 0 10px 10px 0;*/ }
+.li-popup-half-image .li-btn.li-btn--yellow { width:60%;padding: 15px 40px; }
+
+.li-popup-image { display:flex;justify-content:center;line-height:0; }
+
 /* Cloudflare Turnstile */
 .cf-turnstile,
 .cf-turnstile-br,
@@ -393,4 +404,5 @@ a.tdb-entry-category[href*="/category/x-app-bottom/"] { display: none; }
 	.pum-theme-lindipendente-paywall .pum-paywall-contents__image { padding-bottom: 15px; }
 	.pum-theme-lindipendente-paywall .pum-paywall-contents__text-wrp { padding: 0 10px; }
 	.pum-theme-lindipendente-paywall .pum-paywall-contents__text { font-size:13px;padding: 0 0 15px 0;text-align: center; }
+	.li-popup-half-image { flex-direction: column; }
 }
