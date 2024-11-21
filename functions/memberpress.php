@@ -95,12 +95,30 @@ add_action ( 'mepr-txn-status-complete', function ( $txn ) {
 	}
 });
 
+
+/**********/
+/* Mails
+/*
 /* Send transaction "failed" mail also if change status by backoffice */
 function mepr_custom_failed_status_email($txn)
 {
 	\MeprUtils::send_failed_txn_notices($txn);
 }
 add_action('mepr-txn-status-failed', 'mepr_custom_failed_status_email');
+
+/**
+ * Print mail variable {$product-price} in order to show membership price without discount
+ **/
+add_filter('mepr_transaction_email_params', function($params, $txn) {
+  if ($txn->subscription_id > 0) {
+    $sub = $txn->subscription();
+    $params['product-price'] = str_replace( '.', ',', $sub->total );  
+  } else {
+    $params['product-price'] = str_replace( '.', ',', $txn->total );
+  }
+  
+  return $params;
+}, 10, 2);
 
 /* Add default country for phone field */
 function cp_filter_default_phone_input_country( $args ) {
@@ -167,15 +185,6 @@ function mepr_remove_closures() {
     }
 }
 add_action( 'wp_head', 'mepr_remove_closures', 9 );
-
-/**
- * Print mail variable {$product-price} in order to show membership price without discount
- **/
-add_filter('mepr_transaction_email_params', function($params, $txn) {
-  $sub = $txn->subscription();
-  $params['product-price'] = str_replace( '.', ',', $sub->total );
-  return $params;
-}, 10, 2);
 
 /**
  * Endpoint for logged users, used for Mobile APP
