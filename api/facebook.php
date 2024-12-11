@@ -11,7 +11,7 @@ function get_from_webhook_fb_api($webhook_url){
 	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
 	curl_setopt( $ch, CURLOPT_CUSTOMREQUEST, "GET" );
 	$header = array();
-	$header[] = 'MEMBERPRESS-API-KEY: '.MEMBERPRESS_API_KEY;
+	$header[] = 'MEMBERPRESS-API-KEY: '.FB_MEMBERPRESS_API_KEY;
 	$header[] = 'Content-Type: application/json';
 	curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
 	$response = json_decode(curl_exec($ch));
@@ -46,14 +46,14 @@ function init_fb_data(){
 
 function execute_call($curl, $data){
 	curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data) );
-	error_log(print_r(curl_exec($curl),true),LOG_TYPE,__DIR__.'/debug.log');
+	error_log(print_r(curl_exec($curl),true),FB_LOG_TYPE,__DIR__.'/debug.log');
 	curl_close($curl);
 }
 
 function fb_purchase($event)
 {
 	$id_transaction = $event->get_data()->rec->id;
-	$webhook_url = BASE_URL."transactions/$id_transaction";
+	$webhook_url = FB_BASE_URL."transactions/$id_transaction";
 	$response = get_from_webhook_fb_api($webhook_url);
 	if(isset($_COOKIE['_fbp'])) $fbp = $_COOKIE['_fbp'];
 	if(isset($_COOKIE['_fbc'])) $fbc = $_COOKIE['_fbc'];
@@ -81,9 +81,9 @@ function fb_purchase($event)
 	$data['data'][0]['custom_data']['currency'] = 'EUR';
 	$data['data'][0]['custom_data']['value'] = $response->total;
 	
-	if($response->gateway==PAYMENT_OFFLINE) $method = 'Offline payment';
-	else if($response->gateway==PAYMENT_STRIPE) $method = 'Stripe';
-	else if($response->gateway==PAYMENT_PAYPAL) $method = 'Paypal Standard';
+	if($response->gateway==FB_PAYMENT_OFFLINE) $method = 'Offline payment';
+	else if($response->gateway==FB_PAYMENT_STRIPE) $method = 'Stripe';
+	else if($response->gateway==FB_PAYMENT_PAYPAL) $method = 'Paypal Standard';
 	else $method = 'Other';
 	$data['data'][0]['custom_data']['payment_method'] = $method;
 	
@@ -101,7 +101,7 @@ function fb_purchase($event)
 function fb_signup($event)
 {
 	$id = $event->get_data()->rec->ID;
-	$webhook_url = BASE_URL."members/$id";
+	$webhook_url = FB_BASE_URL."members/$id";
 	$response = get_from_webhook_fb_api($webhook_url);
 	if(isset($_COOKIE['_fbp'])) $fbp = $_COOKIE['_fbp'];
 	if(isset($_COOKIE['_fbc'])) $fbc = $_COOKIE['_fbc'];
