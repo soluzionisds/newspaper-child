@@ -8,7 +8,14 @@
     }
     /* Script for gifts: Remove some fields for Premium membership buyers */
     var url = window.location.href;
-	  if((url.toLowerCase().indexOf('premium-regalo') >= 0 && url.toLowerCase().indexOf('gift-') == -1) || url.toLowerCase().indexOf('abbonamento/6-mesi') >= 0 || url.toLowerCase().indexOf('abbonamento/12-mesi') >= 0 && url.toLowerCase().indexOf('cartaceo') == -1){
+	  const lowerUrl = url.toLowerCase();
+
+    const isPremiumRegalo = lowerUrl.includes('premium-regalo') && !lowerUrl.includes('gift-');
+    const is6Mesi = lowerUrl.includes('abbonamento/6-mesi');
+    const is12Mesi = lowerUrl.includes('abbonamento/12-mesi');
+    const isCartaceoRegalo = lowerUrl.includes('cartaceo-regalo') && !lowerUrl.includes('gift-');
+
+    if (isPremiumRegalo || is6Mesi || is12Mesi || isCartaceoRegalo) {
       if( !$('#mepr_address1').length || !$('#mepr_address1').val() ) {
         $('#mepr_address1').val("---");
       }
