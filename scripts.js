@@ -16,6 +16,9 @@
     const isCartaceoRegalo = lowerUrl.includes('cartaceo-regalo') && !lowerUrl.includes('gift-');
 
     if (isPremiumRegalo || is6Mesi || is12Mesi || isCartaceoRegalo) {
+      if( !$('#mepr_book1').length || !$('#mepr_book1').val() ) {
+        $('#mepr_book1').val("---");
+      }
       if( !$('#mepr_address1').length || !$('#mepr_address1').val() ) {
         $('#mepr_address1').val("---");
       }
@@ -28,6 +31,7 @@
       if( !$('#mepr_provincia1').length || !$('#mepr_provincia1').val() ) {
         $('#mepr_provincia1').val("ag");
       }
+      $('.mepr_mepr_book').hide();
       $('.mepr_mepr_address').hide();
       $('.mepr_mepr_cap').hide();
       $('.mepr_mepr_city').hide();
