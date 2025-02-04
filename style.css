@@ -4,7 +4,7 @@ Description: informazione senza padroni - no pubblicità, no fake news, no click
 Author: sebastiano.riva (office)
 Author URI: http://www.sebastianoriva.com/
 Template: Newspaper
-Version: 1.7.10
+Version: 1.7.11
 License: GNU General Public License v2 or later
 License URI:  http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:  Newspaper-child
@@ -69,7 +69,9 @@ Text Domain:  Newspaper-child
 .li-monthly-report-list__date { margin: 20px 0 10px 0;font-family: 'Roboto',sans-serif;text-transform: uppercase;font-size: 15px;font-weight: 500;color: #666; }
 .li-monthly-report-list__line { position: relative;width: 120px;height: 20px; }
 .li-monthly-report-list__line::after { position: absolute;content: '';display: inline-block;height: 1px;bottom: 0;background-color: #01133d;width: 100%;margin: auto; }
-.li-monthly-report-list_text { color: #afafaf;font-family: Fira Sans !important;font-size: 12px !important;line-height: 2 !important; }
+.li-monthly-report-list__chapter { margin: 20px 0 4px 0;color: #afafaf !important;font-family: Fira Sans !important;font-size: 18px !important; }
+.li-monthly-report-list_text { color: #afafaf !important;font-family: Fira Sans !important;font-size: 12px !important;line-height: 2 !important; }
+.li-monthly-report-list__summary { font-family: Fira Sans !important;font-size: 16px !important;line-height: 25px !important; }
 .li-monthly-report-list__download,
 .li-monthly-report-list__buy { margin-right: 10px; }
 .li-monthly-report-list__download.li-btn--blue:hover,
