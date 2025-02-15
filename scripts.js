@@ -65,6 +65,15 @@
       var newCancelContent = cancelContent.replace('Il rinnovo automatico del tuo abbonamento è stato cancellato con successo.', 'Il rinnovo automatico del tuo abbonamento è stato cancellato con successo. Facci sapere come possiamo migliorare, <a href="https://us2.list-manage.com/survey?u=fc6a2373726095bfbf68aad96&id=64e9dad630&attribution=false" target="_blank">clicca qui</a>.');
       rowCancelSubscription.html(newCancelContent);
     }
+
+    /* Accordion Monthly Report */
+    $('.li-monthly-report-list__accordion-header').click(function() {
+      const $content = $(this).next();
+    
+      $content.slideToggle();
+      $(this).toggleClass('li-monthly-report-list__accordion-header--active');
+    });
+
   });
 })(jQuery);
 
