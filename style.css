@@ -4,7 +4,7 @@ Description: informazione senza padroni - no pubblicità, no fake news, no click
 Author: sebastiano.riva (office)
 Author URI: http://www.sebastianoriva.com/
 Template: Newspaper
-Version: 1.7.15
+Version: 1.7.16
 License: GNU General Public License v2 or later
 License URI:  http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:  Newspaper-child
@@ -81,10 +81,13 @@ Text Domain:  Newspaper-child
 .li-monthly-report-list_text { color: #6a6a6a !important;font-family: Fira Sans !important;font-size: 12px !important;line-height: 2 !important; }
 .li-monthly-report-list__summary { font-family: Fira Sans !important;font-size: 16px !important;line-height: 25px !important; }
 .li-monthly-report-list__download,
-.li-monthly-report-list__buy { margin-right: 10px; }
+.li-monthly-report-list__buy,
+.li-monthly-report-list__membership { margin: 5px 10px 5px 0; }
 .li-monthly-report-list__download.li-btn--blue:hover,
+.li-monthly-report-list__membership.li-btn--blue:hover,
 .li-monthly-report-list__buy.li-btn--yellow:hover { text-decoration: none;background-color: #CCC;color: #333;border-color: #CCC; }
 body:not(.logged-in) .li-monthly-report-list__download { display:none; }
+body.logged-in .li-monthly-report-list__membership { display:none; }
 
 /* PayWall */
 .li-paywall { position:relative;border-top:10px solid #141e4a;padding:25px;margin-bottom:30px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); }
@@ -409,6 +412,7 @@ a.tdb-entry-category[href*="/category/x-app-bottom/"] { display: none; }
 	.mpdl-file-link .mpdl-file-title,
 	.mpdl-file-links-item .mpdl-file-title { font-size: 26px;line-height: 36px; }
 	.li-monthly-report-list { flex-direction: column;margin-top: 0; }
+	.li-monthly-report-list__cta-cnt { text-align: center; }
 
 	.pum-theme-lindipendente-paywall .pum-paywall-contents { flex-direction: column; }
 	.pum-theme-lindipendente-paywall .pum-paywall-contents__image { padding-bottom: 15px; }
