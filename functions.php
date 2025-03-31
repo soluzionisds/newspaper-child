@@ -24,58 +24,7 @@ next_post_link( '<span class="next-post-link">%link</span>', apply_filters( 'wpb
 ****************************/
 require_once get_stylesheet_directory() . '/functions/memberpress.php';
 require_once get_stylesheet_directory() . '/functions/login-logo.php';
+require_once get_stylesheet_directory() . '/functions/various.php';
 require_once get_stylesheet_directory() . '/api/erpnext/erpnext.php';
 require_once get_stylesheet_directory() . '/api/facebook.php';
 //require_once get_stylesheet_directory() . '/api/wordpress.php';
-
-/***************************
-* Cookie Session
-* keep users logged in
-****************************/
-add_filter( 'auth_cookie_expiration', 'keep_me_logged_in_for_90_days' );
-function keep_me_logged_in_for_90_days( $expirein ) {
-  return 7776000; // 90 days in seconds
-}
-
-/***************************
-* MonsterInsights
-* Adds renewals in the MemberPress statistics
-****************************/
-add_filter( 'monsterinsights_ecommerce_skip_renewals', '__return_false' );
-
-/***************************
-* Nascondi elemento ad altri ruoli per view counter degli post
-****************************/
-function add_user_role_body_class($classes) {
-    // Verifica se l'utente è loggato
-    if (is_user_logged_in()) {
-        // Ottieni il ruolo dell'utente
-        $current_user = wp_get_current_user();
-        // Controlla se l'utente è un amministratore, editor o autore
-        if (!in_array('administrator', $current_user->roles) && !in_array('editor', $current_user->roles) && !in_array('author', $current_user->roles)) {
-            // Aggiungi la classe 'hide-view-counter' se l'utente non è un admin, editor o autore
-            $classes[] = 'hide-view-counter';
-        }
-    } else {
-        // Utente non loggato, aggiungi la classe 'hide-view-counter'
-        $classes[] = 'hide-view-counter';
-    }
-    return $classes;
-}
-add_filter('body_class', 'add_user_role_body_class');
-
-/***************************
-* bbPress
-* remove bbPress breadcrumb
-function bm_bbp_no_breadcrumb ($param) {
-	return true;
-}
-add_filter ('bbp_no_breadcrumb', 'bm_bbp_no_breadcrumb');
-
-* temporary userpage redirection bbPress
-function user_profile_link(){
-    $author_id = bbp_get_reply_author_id();
-    $user_info = get_userdata($author_id);
-    return site_url()."/";
-}
-add_filter('bbp_get_user_profile_url', 'user_profile_link');*/

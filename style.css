@@ -89,6 +89,12 @@ Text Domain:  Newspaper-child
 body:not(.logged-in) .li-monthly-report-list__download { display:none; }
 body.logged-in .li-monthly-report-list__membership { display:none; }
 
+.li-author-box { display:flex;padding:20px;margin-top:30px;border: 1px solid #EDEDED; }
+.li-author-box__sx { flex-basis:20%; }
+.li-author-box__dx { flex-basis:80%; }
+.li-author-box__name { font-size:20px;line-height:30px;margin-top:0px;margin-bottom:10px; }
+.li-author-box__bio { font-size:14px;margin-bottom:0 !important;line-height:25px; }
+
 /* PayWall */
 .li-paywall { position:relative;border-top:10px solid #141e4a;padding:25px;margin-bottom:30px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); }
 .li-paywall:before {content: "";position: absolute;top: -160px;left: 0;right: 0;height: 150px;background: -webkit-gradient(linear,left top,left bottom,color-stop(0,rgba(255,255,255,0)),to(#fff));background: linear-gradient(to bottom,rgba(255,255,255,0) 0,#fff 100%); }
@@ -408,6 +414,9 @@ a.tdb-entry-category[href*="/category/x-app-bottom/"] { display: none; }
 	.td-scroll-up.td-scroll-up-visible { margin-bottom:75px; }
 	/*.li-gift-columns { margin:40px 0 20px 0; }
 	.li-gift-columns__title { margin:0 0 20px 0; }*/
+	.li-author-box { flex-direction:column; }
+	.li-author-box__sx,
+	.li-author-box__dx { flex-basis:100%; }
 
 	.mpdl-file-link .mpdl-file-title,
 	.mpdl-file-links-item .mpdl-file-title { font-size: 26px;line-height: 36px; }
