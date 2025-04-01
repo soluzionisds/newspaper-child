@@ -4,7 +4,7 @@ Description: informazione senza padroni - no pubblicità, no fake news, no click
 Author: sebastiano.riva (office)
 Author URI: http://www.sebastianoriva.com/
 Template: Newspaper
-Version: 1.7.16
+Version: 1.7.18
 License: GNU General Public License v2 or later
 License URI:  http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:  Newspaper-child
@@ -89,7 +89,7 @@ Text Domain:  Newspaper-child
 body:not(.logged-in) .li-monthly-report-list__download { display:none; }
 body.logged-in .li-monthly-report-list__membership { display:none; }
 
-.li-author-box { display:flex;padding:20px;margin-top:30px;border: 1px solid #EDEDED; }
+.li-author-box { display:flex;padding:20px;margin-top:30px;margin-bottom:10px;border: 1px solid #EDEDED;background-color: #f2f2f2; }
 .li-author-box__sx { flex-basis:20%; }
 .li-author-box__dx { flex-basis:80%; }
 .li-author-box__name { font-size:20px;line-height:30px;margin-top:0px;margin-bottom:10px; }
@@ -414,9 +414,9 @@ a.tdb-entry-category[href*="/category/x-app-bottom/"] { display: none; }
 	.td-scroll-up.td-scroll-up-visible { margin-bottom:75px; }
 	/*.li-gift-columns { margin:40px 0 20px 0; }
 	.li-gift-columns__title { margin:0 0 20px 0; }*/
-	.li-author-box { flex-direction:column; }
-	.li-author-box__sx,
-	.li-author-box__dx { flex-basis:100%; }
+	.li-author-box__sx { flex-basis:35%; }
+	.li-author-box__dx { flex-basis:65%; }
+	.li-author-box__name { font-size:18px;line-height:28px; }
 
 	.mpdl-file-link .mpdl-file-title,
 	.mpdl-file-links-item .mpdl-file-title { font-size: 26px;line-height: 36px; }
